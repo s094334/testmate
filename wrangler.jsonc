@@ -1,14 +1,22 @@
-/**
- * For more details on how to configure Wrangler, refer to:
- * https://developers.cloudflare.com/workers/wrangler/configuration/
- */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "testmate",
   "compatibility_date": "2026-11-03",
-  "pages_build_output_dir": "./dist",
-  "observability": {
-    "enabled": true,
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application",
   },
-  "upload_source_maps": true,
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  "routes": [{ "pattern": "testmate.xin-ping.com", "custom_domain": true }],
+  "env": {
+    "dev": {
+      "workers_dev": false,
+      "preview_urls": false,
+      "routes": [
+        { "pattern": "dev-testmate.xin-ping.com", "custom_domain": true },
+      ],
+    },
+  },
 }
