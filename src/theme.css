@@ -1,0 +1,242 @@
+/*
+ * TestMate design tokens
+ * Source: TestMate-theme-handoff (THEME.md section 2, tokens/tokens.json, 2026-11-10)
+ *
+ * This layer holds raw design values only. shadcn variables (--primary, etc.)
+ * and Tailwind classes reference these; never hard-code colors elsewhere.
+ */
+
+/* ── Breakpoints: replace Tailwind's default sm / md / lg / xl / 2xl ── */
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-tablet: 600px;
+  --breakpoint-desktop: 1024px;
+}
+
+:root {
+  /* ── Color: neutral ── */
+  /* Primary text, 1px borders, focus ring, primary button on public pages */
+  --tm-ink: #1e1e1c;
+  /* Body copy, secondary text (8.3:1 on bg) */
+  --tm-ink-muted: #4a4945;
+  /* Notes, dates, footer, table headers (6.0:1 on bg) */
+  --tm-ink-subtle: #5f5e5a;
+  /* Page background */
+  --tm-bg: #f6f6f3;
+  /* Cards, inputs, header, footer */
+  --tm-surface: #ffffff;
+  /* Dividers (decorative only, not for control borders) */
+  --tm-line: #e2e2dd;
+  /* Input and outlined tag borders (3.6:1 on white) */
+  --tm-line-input: #878680;
+  --tm-disabled-bg: #e2e2dd;
+  --tm-disabled-fg: #5f5e5a;
+  /* Text and icons on -strong role buttons */
+  --tm-on-role: #ffffff;
+  --tm-focus-ring: var(--tm-ink);
+
+  /* ── Color: roles ──
+   * The bright base color (no suffix) is only ~2:1 on white: decoration only,
+   * never for text or under white text.
+   * Buttons, links and selected outlines always use -strong. */
+  --tm-owner: #14ccde;
+  --tm-owner-strong: #0e7c8a;
+  --tm-owner-text: #0b6672;
+  --tm-owner-soft: #f0fbfc;
+
+  --tm-tester: #96d962;
+  --tm-tester-strong: #3f7f22;
+  --tm-tester-text: #346b1b;
+  --tm-tester-soft: #eef8e6;
+
+  --tm-platform: #9a9a93;
+  --tm-platform-strong: #5c5c57;
+  --tm-platform-soft: #eeeeea;
+
+  /* Only where both sides meet: logo, home hero underline,
+   * 404 title underline, successful match */
+  --tm-gradient-match: linear-gradient(
+    90deg,
+    var(--tm-owner),
+    var(--tm-tester)
+  );
+
+  /* ── Color: status (deliberately avoids role colors; always pair with an icon) ── */
+  /* In progress: funded, testing */
+  --tm-status-progress-bg: #edede9;
+  --tm-status-progress-text: #4a4945;
+  /* Pending: awaiting NDA, payment, acceptance */
+  --tm-status-pending-bg: #fbefd2;
+  --tm-status-pending-text: #7a4e06;
+  /* Needs revision: report sent back */
+  --tm-status-revise-bg: #fce3d2;
+  --tm-status-revise-text: #8f3a08;
+  /* Dispute / overdue, also the "required" field marker */
+  --tm-status-dispute-bg: #fadad6;
+  --tm-status-dispute-text: #8e1c16;
+  /* Done / paid out: solid ink with a white check */
+  --tm-status-done-bg: var(--tm-ink);
+  --tm-status-done-text: #ffffff;
+
+  /* ── Color: used in page designs, not yet in tokens.json ── */
+  --tm-tag-industry-bg: #f1edf9;
+  --tm-tag-industry-fg: #5b3f8a;
+  /* Filled star; empty stars use --tm-line */
+  --tm-star: #f2b705;
+  /* Home hero, top half */
+  --tm-home-sky: #ebf1f7;
+  /* Home hero, bottom half */
+  --tm-home-teal: #dfeef1;
+  /* Arrow circle on the "see the core flow" button */
+  --tm-flow-arrow: #cbf1f5;
+
+  /* ── Font families ── */
+  --tm-font-sans: 'Noto Sans TC', system-ui, sans-serif;
+  /* Numbers only: amounts, IDs, dates, step numbers */
+  --tm-font-num: 'Barlow Condensed', 'Noto Sans TC', sans-serif;
+
+  /* ── Type scale: mobile values by default, desktop (>= 1024px) overrides below ──
+   * Each level has three values: size, --line-height, --font-weight. */
+  --tm-text-title-hero: 40px;
+  --tm-text-title-hero--line-height: 1.2;
+  --tm-text-title-hero--font-weight: 700;
+
+  --tm-text-title-page: 32px;
+  --tm-text-title-page--line-height: 1.3;
+  --tm-text-title-page--font-weight: 700;
+
+  /* Conflict 6.4: uses 700, as on the Home A design */
+  --tm-text-subtitle: 24px;
+  --tm-text-subtitle--line-height: 1.4;
+  --tm-text-subtitle--font-weight: 700;
+
+  --tm-text-section-title: 24px;
+  --tm-text-section-title--line-height: 1.4;
+  --tm-text-section-title--font-weight: 700;
+
+  --tm-text-heading: 24px;
+  --tm-text-heading--line-height: 1.4;
+  --tm-text-heading--font-weight: 700;
+
+  --tm-text-subheading: 20px;
+  --tm-text-subheading--line-height: 1.5;
+  --tm-text-subheading--font-weight: 700;
+
+  --tm-text-body-large: 16px;
+  --tm-text-body-large--line-height: 1.6;
+  --tm-text-body-large--font-weight: 400;
+
+  --tm-text-body: 16px;
+  --tm-text-body--line-height: 1.7;
+  --tm-text-body--font-weight: 400;
+
+  --tm-text-body-strong: 16px;
+  --tm-text-body-strong--line-height: 1.6;
+  --tm-text-body-strong--font-weight: 700;
+
+  --tm-text-label: 16px;
+  --tm-text-label--line-height: 1.4;
+  --tm-text-label--font-weight: 700;
+
+  --tm-text-caption: 16px;
+  --tm-text-caption--line-height: 1.6;
+  --tm-text-caption--font-weight: 400;
+
+  /* The only exception below 16px: the "required" marker after a field label */
+  --tm-text-required: 14px;
+  --tm-text-required--font-weight: 700;
+
+  /* Number styles (same on mobile and desktop) */
+  --tm-text-num-display: 48px;
+  --tm-text-num-display--line-height: 1;
+  --tm-text-num-display--font-weight: 600;
+
+  --tm-text-num-heading: 20px;
+  --tm-text-num-heading--line-height: 1.2;
+  --tm-text-num-heading--font-weight: 600;
+
+  --tm-text-num-body: 16px;
+  --tm-text-num-body--line-height: 1.4;
+  --tm-text-num-body--font-weight: 600;
+
+  /* Not used on the home page */
+  --tm-text-eyebrow: 16px;
+  --tm-text-eyebrow--line-height: 1.4;
+  --tm-text-eyebrow--font-weight: 600;
+  --tm-text-eyebrow--letter-spacing: 3px;
+
+  /* Max width of a paragraph (about 36 CJK characters) */
+  --tm-measure: 600px;
+
+  /* ── Spacing (4px system, name = value x 100) ──
+   * Matches Tailwind's default spacing (space-400 = p-4),
+   * so use Tailwind's numbers in classes. */
+  --tm-space-050: 2px;
+  --tm-space-100: 4px;
+  --tm-space-150: 6px;
+  --tm-space-200: 8px;
+  --tm-space-300: 12px;
+  --tm-space-400: 16px;
+  --tm-space-600: 24px;
+  --tm-space-800: 32px;
+  --tm-space-1200: 48px;
+  --tm-space-1600: 64px;
+  --tm-space-2400: 96px;
+  --tm-space-4000: 160px;
+
+  /* ── Radius ── */
+  /* Tags, status badges */
+  --tm-radius-100: 4px;
+  /* Buttons, inputs, cards */
+  --tm-radius-200: 8px;
+  /* Dialogs, large containers */
+  --tm-radius-400: 16px;
+  /* Avatars, dots, pill buttons */
+  --tm-radius-full: 9999px;
+
+  /* ── Strokes ── */
+  --tm-stroke-border: 1px;
+  --tm-stroke-focus: 2px;
+  --tm-stroke-illustration: 2px;
+
+  /* ── Shadows (none by default; rely on 1px borders) ── */
+  /* Dropdowns, dialogs */
+  --tm-shadow-overlay: 0 4px 4px -4px #0c0c0d0d, 0 16px 32px -4px #0c0c0d1a;
+  /* Hover lift on role cards and owner project cards */
+  --tm-shadow-hover: 0 10px 24px rgb(30 30 28 / 12%);
+
+  /* ── Icon sizes ── */
+  /* Next to text */
+  --tm-icon-16: 16px;
+  /* Inside buttons */
+  --tm-icon-20: 20px;
+  --tm-icon-24: 24px;
+  --tm-icon-32: 32px;
+  --tm-icon-40: 40px;
+
+  /* ── Layout ── */
+  /* Includes 24px padding on each side; content area is 1152px */
+  --tm-container-max: 1200px;
+  --tm-gutter-mobile: 16px;
+  --tm-gutter: 24px;
+
+  /* ── Motion ── */
+  /* Color transitions */
+  --tm-duration-color: 150ms;
+  /* Arrows and movement (spec: 150-250ms) */
+  --tm-duration-move: 200ms;
+  --tm-ease: ease-out;
+  /* Move down on press */
+  --tm-press-offset: 1px;
+}
+
+/* Desktop type scale */
+@media (min-width: 1024px) {
+  :root {
+    --tm-text-title-hero: 64px;
+    --tm-text-title-page: 40px;
+    --tm-text-subtitle: 32px;
+    --tm-text-section-title: 26px;
+    --tm-text-body-large: 18px;
+  }
+}
