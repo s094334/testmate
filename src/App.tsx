@@ -1,5 +1,3 @@
-import './App.css'
-
 function App() {
   return <>測試人員媒合平台</>
 }
