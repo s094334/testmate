@@ -1,0 +1,186 @@
+/*
+ * TestMate design tokens
+ * Source: TestMate-theme-handoff (THEME.md section 2, tokens/tokens.json, 2026-11-10)
+ *
+ * Every value lives in @theme, so each token is a Tailwind class
+ * (bg-owner-soft, text-title-hero, ...) and a CSS variable (var(--color-ink)).
+ * Never hard-code these values elsewhere.
+ */
+
+@theme {
+  /* ── Breakpoints: replace Tailwind's default sm / md / lg / xl / 2xl ── */
+  --breakpoint-*: initial;
+  --breakpoint-tablet: 600px;
+  --breakpoint-desktop: 1024px;
+
+  /* ── Color: neutral ── */
+  /* Primary text, 1px borders, focus ring, primary button on public pages */
+  --color-ink: #1e1e1c;
+  /* Body copy, secondary text (8.3:1 on bg) */
+  --color-ink-muted: #4a4945;
+  /* Notes, dates, footer, table headers (6.0:1 on bg) */
+  --color-ink-subtle: #5f5e5a;
+  /* Page background */
+  --color-page: #f6f6f3;
+  /* Cards, inputs, header, footer */
+  --color-surface: #ffffff;
+  /* Dividers (decorative only, not for control borders) */
+  --color-line: #e2e2dd;
+  /* Input and outlined tag borders (3.6:1 on white) */
+  --color-line-input: #878680;
+  --color-disabled-bg: var(--color-line);
+  --color-disabled-fg: var(--color-ink-subtle);
+  /* Text and icons on role-colored buttons */
+  --color-on-role: var(--color-surface);
+
+  /* ── Color: fixed roles ──
+   * Use to mark who someone is (role tags, avatar rings, timelines).
+   * The bright base color (no suffix) is only ~2:1 on white: decoration only,
+   * never for text or under white text. Buttons and links use -strong. */
+  --color-owner: #14ccde;
+  --color-owner-strong: #0e7c8a;
+  --color-owner-text: #0b6672;
+  --color-owner-soft: #f0fbfc;
+
+  --color-tester: #96d962;
+  --color-tester-strong: #3f7f22;
+  --color-tester-text: #346b1b;
+  --color-tester-soft: #eef8e6;
+
+  --color-platform: #9a9a93;
+  --color-platform-strong: #5c5c57;
+  --color-platform-soft: #eeeeea;
+
+  /* ── Color: current role ──
+   * Logged out it is ink; [data-role] below switches it.
+   * Use for "my interface" colors: primary buttons, links, selected states. */
+  --color-role: var(--color-ink);
+  --color-role-soft: var(--color-platform-soft);
+
+  /* ── Color: status (deliberately avoids role colors; always pair with an icon) ── */
+  /* In progress: funded, testing */
+  --color-status-progress-bg: #edede9;
+  --color-status-progress-text: var(--color-ink-muted);
+  /* Pending: awaiting NDA, payment, acceptance */
+  --color-status-pending-bg: #fbefd2;
+  --color-status-pending-text: #7a4e06;
+  /* Needs revision: report sent back */
+  --color-status-revise-bg: #fce3d2;
+  --color-status-revise-text: #8f3a08;
+  /* Dispute / overdue, also the "required" field marker */
+  --color-status-dispute-bg: #fadad6;
+  --color-status-dispute-text: #8e1c16;
+  /* Done / paid out: solid ink with a white check */
+  --color-status-done-bg: var(--color-ink);
+  --color-status-done-text: var(--color-surface);
+
+  /* ── Color: used in page designs, not yet in tokens.json ── */
+  --color-tag-industry-bg: #f1edf9;
+  --color-tag-industry-fg: #5b3f8a;
+  /* Filled star; empty stars use line */
+  --color-star: #f2b705;
+  /* Home hero, top half */
+  --color-home-sky: #ebf1f7;
+  /* Home hero, bottom half */
+  --color-home-teal: #dfeef1;
+  /* Arrow circle on the "see the core flow" button */
+  --color-flow-arrow: #cbf1f5;
+
+  /* ── Font families ── */
+  --font-sans: 'Noto Sans TC', system-ui, sans-serif;
+  /* Numbers only: amounts, IDs, dates, step numbers */
+  --font-num: 'Barlow Condensed', 'Noto Sans TC', sans-serif;
+
+  /* ── Type scale ──
+   * One class sets size, line height and weight, e.g. text-title-hero.
+   * Values are mobile; the desktop block below overrides the sizes that change.
+   * Number styles: combine with font-num, e.g. font-num text-num-display. */
+  --text-title-hero: 40px;
+  --text-title-hero--line-height: 1.2;
+  --text-title-hero--font-weight: 700;
+
+  --text-title-page: 32px;
+  --text-title-page--line-height: 1.3;
+  --text-title-page--font-weight: 700;
+
+  --text-subtitle: 24px;
+  --text-subtitle--line-height: 1.4;
+  --text-subtitle--font-weight: 700;
+
+  --text-section-title: 24px;
+  --text-section-title--line-height: 1.4;
+  --text-section-title--font-weight: 700;
+
+  --text-heading: 24px;
+  --text-heading--line-height: 1.4;
+  --text-heading--font-weight: 700;
+
+  --text-subheading: 20px;
+  --text-subheading--line-height: 1.5;
+  --text-subheading--font-weight: 700;
+
+  --text-body-large: 16px;
+  --text-body-large--line-height: 1.6;
+  --text-body-large--font-weight: 400;
+
+  --text-body: 16px;
+  --text-body--line-height: 1.6;
+  --text-body--font-weight: 400;
+  /* Bold text (buttons, list item names): text-body font-bold
+   * Notes, dates, footer: text-body text-ink-subtle */
+
+  --text-label: 16px;
+  --text-label--line-height: 1.4;
+  --text-label--font-weight: 700;
+
+  /* The only exception below 16px: the "required" marker after a field label */
+  --text-required: 14px;
+  --text-required--font-weight: 700;
+
+  --text-num-display: 48px;
+  --text-num-display--line-height: 1;
+  --text-num-display--font-weight: 600;
+
+  --text-num-heading: 20px;
+  --text-num-heading--line-height: 1.2;
+  --text-num-heading--font-weight: 600;
+
+  --text-num-body: 16px;
+  --text-num-body--line-height: 1.4;
+  --text-num-body--font-weight: 600;
+  /* English uppercase eyebrow (not on the home page):
+   * font-num text-num-body tracking-[3px] */
+
+  /* ── Shadows (none by default; rely on 1px borders) ── */
+  /* Dropdowns, dialogs */
+  --shadow-overlay: 0 4px 4px -4px #0c0c0d0d, 0 16px 32px -4px #0c0c0d1a;
+  /* Hover lift on role cards and owner project cards */
+  --shadow-hover: 0 10px 24px rgb(30 30 28 / 12%);
+
+  /* ── Widths ── */
+  /* max-w-page: container incl. 24px padding each side; content area is 1152px */
+  --container-page: 1200px;
+  /* max-w-measure: max paragraph width (about 36 CJK characters) */
+  --container-measure: 600px;
+}
+
+/* Role switching: <body data-role="owner|tester"> */
+[data-role='owner'] {
+  --color-role: var(--color-owner-strong);
+  --color-role-soft: var(--color-owner-soft);
+}
+[data-role='tester'] {
+  --color-role: var(--color-tester-strong);
+  --color-role-soft: var(--color-tester-soft);
+}
+
+/* Desktop sizes (line height and weight stay the same) */
+:root {
+  @variant desktop {
+    --text-title-hero: 64px;
+    --text-title-page: 40px;
+    --text-subtitle: 32px;
+    --text-section-title: 26px;
+    --text-body-large: 18px;
+  }
+}
