@@ -7,7 +7,7 @@ export function IdentitySection() {
     <div className="bg-[linear-gradient(to_bottom,transparent_200px,var(--color-home-teal)_200px)]">
       <section className="max-w-page tablet:grid tablet:grid-cols-2 tablet:gap-6 tablet:px-6 tablet:pb-24 mx-auto flex flex-col gap-4 px-4 pb-16">
         <Link
-          to="/signup"
+          to="/login"
           className="group/identity bg-surface border-ink hover:shadow-hover tablet:gap-4 tablet:p-8 flex flex-col items-center gap-3 rounded-md border px-4 py-6 text-center transition-[translate,box-shadow] duration-200 ease-out motion-safe:hover:-translate-y-1"
         >
           <OwnerIllustration className="tablet:w-60 w-50" />
@@ -24,7 +24,7 @@ export function IdentitySection() {
           </span>
         </Link>
         <Link
-          to="/signup"
+          to="/login"
           className="group/identity bg-surface border-ink hover:shadow-hover tablet:gap-4 tablet:p-8 flex flex-col items-center gap-3 rounded-md border px-4 py-6 text-center transition-[translate,box-shadow] duration-200 ease-out motion-safe:hover:-translate-y-1"
         >
           <TesterIllustration className="tablet:w-60 w-50" />
