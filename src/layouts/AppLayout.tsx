@@ -6,7 +6,6 @@ import { PublicHeader } from '@/components/Header/PublicHeader'
 export function AppLayout() {
   const { pathname } = useLocation()
 
-  // 換頁時捲回最上面，不然會停在上一頁捲到的位置
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
