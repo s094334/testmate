@@ -1,5 +1,6 @@
 import { AboutSection } from './AboutSection'
 import { IdentitySection } from './IdentitySection'
+import { ProjectsSection } from './ProjectsSection'
 import { TrendSection } from './TrendSection'
 
 export function HomePage() {
@@ -26,6 +27,7 @@ export function HomePage() {
         <IdentitySection />
       </div>
       <AboutSection />
+      <ProjectsSection />
     </>
   )
 }

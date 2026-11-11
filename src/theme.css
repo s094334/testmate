@@ -7,6 +7,15 @@
  * Never hard-code these values elsewhere.
  */
 
+/* Noto Sans TC draws "…" vertically centered (Chinese style).
+ * This face covers only U+2026 with a Latin font, so the dots sit on the baseline.
+ * Used by font-ellipsis, for truncated titles. */
+@font-face {
+  font-family: 'Latin Ellipsis';
+  src: local('Helvetica Neue'), local('Arial'), local('Roboto');
+  unicode-range: U+2026;
+}
+
 @theme {
   /* ── Breakpoints: replace Tailwind's default sm / md / lg / xl / 2xl ── */
   --breakpoint-*: initial;
@@ -90,6 +99,8 @@
   --font-sans: 'Noto Sans TC', system-ui, sans-serif;
   /* Numbers only: amounts, IDs, dates, step numbers */
   --font-num: 'Barlow Condensed', 'Noto Sans TC', sans-serif;
+  /* Same as sans, but the truncation "…" sits on the baseline */
+  --font-ellipsis: 'Latin Ellipsis', 'Noto Sans TC', system-ui, sans-serif;
 
   /* ── Type scale ──
    * One class sets size, line height and weight, e.g. text-title-hero.
