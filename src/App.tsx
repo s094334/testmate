@@ -1,5 +1,13 @@
+import { BrowserRouter } from 'react-router'
+import { PublicHeader } from '@/components/header/PublicHeader'
+
 function App() {
-  return <>測試人員媒合平台</>
+  return (
+    <BrowserRouter>
+      <PublicHeader />
+      測試人員媒合平台
+    </BrowserRouter>
+  )
 }
 
 export default App
