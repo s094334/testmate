@@ -1,3 +1,4 @@
+import { IdentitySection } from './IdentitySection'
 import { TrendSection } from './TrendSection'
 
 export function HomePage() {
@@ -20,6 +21,7 @@ export function HomePage() {
         </p>
       </section>
       <TrendSection />
+      <IdentitySection />
     </div>
   )
 }

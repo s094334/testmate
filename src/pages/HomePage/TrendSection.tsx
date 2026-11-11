@@ -42,7 +42,7 @@ export function TrendSection() {
             <span className="text-ink-subtle tablet:text-[20px] font-bold">
               本週新案件
             </span>
-            <span className="font-num tablet:text-num-display text-[40px] leading-none font-semibold">
+            <span className="font-num tablet:text-num-display from-owner to-tester tablet:bg-[length:100%_12px] bg-linear-to-r bg-[length:100%_8px] bg-[position:0_100%] bg-no-repeat px-1 text-[40px] leading-none font-semibold">
               7
             </span>
           </div>

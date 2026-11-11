@@ -155,7 +155,7 @@
   /* Dropdowns, dialogs */
   --shadow-overlay: 0 4px 4px -4px #0c0c0d0d, 0 16px 32px -4px #0c0c0d1a;
   /* Hover lift on role cards and owner project cards */
-  --shadow-hover: 0 10px 24px rgb(30 30 28 / 12%);
+  --shadow-hover: 0 12px 28px rgb(30 30 28 / 20%);
 
   /* ── Animations: M1 role card selected (check draws in, badge pops) ── */
   --animate-draw: draw 0.45s 0.1s ease-out both;

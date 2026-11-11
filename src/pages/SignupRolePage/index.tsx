@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { CheckIcon } from '@/components/icons/CheckIcon'
+import { OwnerIllustration } from '@/components/illustrations/OwnerIllustration'
+import { TesterIllustration } from '@/components/illustrations/TesterIllustration'
 import { SignupProgress } from '@/components/SignupProgress'
-import { OwnerIllustration } from './OwnerIllustration'
-import { TesterIllustration } from './TesterIllustration'
 
 export function SignupRolePage() {
   const [role, setRole] = useState<'owner' | 'tester' | null>(null)
@@ -28,7 +28,7 @@ export function SignupRolePage() {
               <CheckIcon />
             </span>
           )}
-          <OwnerIllustration />
+          <OwnerIllustration className="tablet:w-45 w-24" />
           <span className="flex flex-col gap-1">
             <b className="text-subheading tablet:text-heading">專案負責人</b>
             <span className="text-ink-muted">我有產品，想找人來測試</span>
@@ -45,7 +45,7 @@ export function SignupRolePage() {
               <CheckIcon />
             </span>
           )}
-          <TesterIllustration />
+          <TesterIllustration className="tablet:w-45 w-24" />
           <span className="flex flex-col gap-1">
             <b className="text-subheading tablet:text-heading">測試人員</b>
             <span className="text-ink-muted">我想接案測試、賺報酬</span>
