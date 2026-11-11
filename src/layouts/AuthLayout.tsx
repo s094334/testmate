@@ -4,7 +4,7 @@ import { AuthBackground } from '@/components/backgrounds/AuthBackground'
 
 export function AuthLayout() {
   return (
-    <div className="tablet:px-6 tablet:py-16 relative isolate flex min-h-dvh flex-col items-center justify-center px-4 pt-15 pb-12">
+    <div className="tablet:px-6 tablet:pt-16 relative isolate flex min-h-dvh flex-col items-center justify-center px-4">
       <AuthBackground />
       <div className="max-w-page tablet:min-h-17 tablet:px-6 absolute inset-x-0 top-0 mx-auto flex min-h-15 items-center pl-4">
         <Link to="/">
