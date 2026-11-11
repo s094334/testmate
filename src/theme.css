@@ -157,6 +157,22 @@
   /* Hover lift on role cards and owner project cards */
   --shadow-hover: 0 10px 24px rgb(30 30 28 / 12%);
 
+  /* ── Animations: floating blobs behind M1–M7 (BlobBackground) ── */
+  --animate-drift-a: drift-a 16s ease-in-out infinite alternate;
+  --animate-drift-b: drift-b 20s ease-in-out infinite alternate;
+  --animate-drift-c: drift-a 24s ease-in-out infinite alternate-reverse;
+
+  @keyframes drift-a {
+    to {
+      transform: translate(40px, -30px) rotate(12deg);
+    }
+  }
+  @keyframes drift-b {
+    to {
+      transform: translate(-36px, 28px) rotate(-10deg);
+    }
+  }
+
   /* ── Widths ── */
   /* max-w-page: container incl. 24px padding each side; content area is 1152px */
   --container-page: 1200px;
