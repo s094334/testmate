@@ -4,6 +4,7 @@ import { AuthLayout } from '@/layouts/AuthLayout'
 import { LoginPage } from '@/pages/LoginPage'
 import { SignupAccountPage } from '@/pages/SignupAccountPage'
 import { SignupRolePage } from '@/pages/SignupRolePage'
+import { SignupTesterProfilePage } from '@/pages/SignupTesterProfilePage'
 
 function App() {
   return (
@@ -16,6 +17,10 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupRolePage />} />
           <Route path="signup/:role/account" element={<SignupAccountPage />} />
+          <Route
+            path="signup/tester/profile"
+            element={<SignupTesterProfilePage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

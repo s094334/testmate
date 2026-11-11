@@ -1,8 +1,9 @@
-import { Link, Navigate, useParams } from 'react-router'
+import { Link, Navigate, useNavigate, useParams } from 'react-router'
 import { SignupProgress } from '@/components/SignupProgress'
 
 export function SignupAccountPage() {
   const { role } = useParams()
+  const navigate = useNavigate()
 
   if (role !== 'owner' && role !== 'tester') {
     return <Navigate to="/signup" replace />
@@ -11,7 +12,10 @@ export function SignupAccountPage() {
   return (
     <form
       data-role={role}
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={(e) => {
+        e.preventDefault()
+        navigate(`/signup/${role}/profile`)
+      }}
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">註冊</h1>
