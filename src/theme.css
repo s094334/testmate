@@ -157,7 +157,7 @@
   /* Hover lift on role cards and owner project cards */
   --shadow-hover: 0 10px 24px rgb(30 30 28 / 12%);
 
-  /* ── Animations: floating blobs behind M1–M7 (BlobBackground) ── */
+  /* ── Animations: floating blobs behind M1–M7 (AuthBackground) ── */
   --animate-drift-a: drift-a 16s ease-in-out infinite alternate;
   --animate-drift-b: drift-b 20s ease-in-out infinite alternate;
   --animate-drift-c: drift-a 24s ease-in-out infinite alternate-reverse;
@@ -170,6 +170,30 @@
   @keyframes drift-b {
     to {
       transform: translate(-36px, 28px) rotate(-10deg);
+    }
+  }
+
+  /* ── Animations: M1 role card selected (check draws in, badge pops) ── */
+  --animate-draw: draw 0.45s 0.1s ease-out both;
+  --animate-pop: pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes pop {
+    0% {
+      transform: scale(0);
+    }
+    60% {
+      transform: scale(1.18);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 

@@ -1,9 +1,6 @@
-export function BlobBackground() {
+export function AuthBackground() {
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-    >
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <svg
         viewBox="0 0 200 200"
         className="animate-drift-a fill-owner/18 tablet:top-10 tablet:left-[6%] tablet:size-90 absolute -top-5 -left-[70px] size-50 motion-reduce:animate-none"
