@@ -10,7 +10,7 @@
 @theme {
   /* ── Breakpoints: replace Tailwind's default sm / md / lg / xl / 2xl ── */
   --breakpoint-*: initial;
-  --breakpoint-tablet: 600px;
+  --breakpoint-tablet: 768px;
   --breakpoint-desktop: 1024px;
 
   /* ── Color: neutral ── */
@@ -174,9 +174,9 @@
   --color-role-soft: var(--color-tester-soft);
 }
 
-/* Desktop sizes (line height and weight stay the same) */
+/* Desktop sizes from 768px up (line height and weight stay the same) */
 :root {
-  @variant desktop {
+  @variant tablet {
     --text-title-hero: 64px;
     --text-title-page: 40px;
     --text-subtitle: 32px;
