@@ -9,7 +9,7 @@ type HeaderShellProps = {
 export function HeaderShell({ children }: HeaderShellProps) {
   return (
     <header className="bg-surface border-line border-b">
-      <nav className="max-w-page tablet:gap-3 tablet:px-6 tablet:py-3 mx-auto flex items-center justify-between gap-2 py-2 pr-2 pl-4">
+      <nav className="max-w-page tablet:gap-3 tablet:px-6 tablet:py-3 tablet:min-h-17 mx-auto flex min-h-15 items-center justify-between gap-2 py-2 pr-2 pl-4">
         <Link to="/" className="flex min-w-0 items-center">
           <img
             src={logo}
