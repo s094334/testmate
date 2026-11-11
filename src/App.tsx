@@ -1,15 +1,14 @@
-import { BrowserRouter } from 'react-router'
-import { Footer } from '@/components/Footer'
-import { PublicHeader } from '@/components/Header/PublicHeader'
+import { BrowserRouter, Route, Routes } from 'react-router'
+import { AppLayout } from '@/layouts/AppLayout'
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex min-h-dvh flex-col">
-        <PublicHeader />
-        <main className="flex-1">測試人員媒合平台</main>
-        <Footer />
-      </div>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route index element="測試人員媒合平台" />
+        </Route>
+      </Routes>
     </BrowserRouter>
   )
 }
