@@ -1,6 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { AppLayout } from '@/layouts/AppLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
+import { CopyrightPage } from '@/pages/LegalPages/CopyrightPage'
+import { PrivacyPage } from '@/pages/LegalPages/PrivacyPage'
+import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { SignupAccountPage } from '@/pages/SignupAccountPage'
 import { SignupAgreementPage } from '@/pages/SignupAgreementPage'
@@ -13,7 +16,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<AppLayout />}>
-          <Route index element="測試人員媒合平台" />
+          <Route index element={<HomePage />} />
+          <Route path="copyright" element={<CopyrightPage />} />
+          <Route path="privacy" element={<PrivacyPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="login" element={<LoginPage />} />

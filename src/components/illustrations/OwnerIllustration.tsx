@@ -1,8 +1,8 @@
-export function OwnerIllustration() {
+export function OwnerIllustration({ className }: { className: string }) {
   return (
     <svg
       viewBox="0 0 240 200"
-      className="tablet:w-45 block h-auto w-24 max-w-full flex-none"
+      className={`block h-auto max-w-full flex-none ${className}`}
     >
       <circle cx="120" cy="96" r="86" fill="#14CCDE" fillOpacity="0.22" />
       <circle
@@ -68,7 +68,7 @@ export function OwnerIllustration() {
         strokeWidth="2.4"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="group-data-selected:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1]"
+        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1]"
       />
       <circle
         cx="182"
@@ -86,7 +86,7 @@ export function OwnerIllustration() {
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="group-data-selected:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1]"
+        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1]"
       />
       <g
         stroke="#1E1E1C"

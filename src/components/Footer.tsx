@@ -7,10 +7,10 @@ export function Footer() {
         <b className="text-ink tablet:block hidden">TestMate 測試咖</b>
         <div className="flex gap-x-6">
           <Link
-            to="/terms"
+            to="/privacy"
             className="hover:text-ink py-2 underline transition-colors duration-150 ease-out"
           >
-            服務條款
+            隱私權聲明
           </Link>
           <Link
             to="/copyright"
