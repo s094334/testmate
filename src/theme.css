@@ -157,6 +157,19 @@
   /* Hover lift on role cards and owner project cards */
   --shadow-hover: 0 12px 28px rgb(30 30 28 / 20%);
 
+  /* ── Animations: home "看核心流程" arrow nudges right and back ── */
+  --animate-nudge: nudge 1.4s ease-in-out infinite;
+
+  @keyframes nudge {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(6px);
+    }
+  }
+
   /* ── Animations: M1 role card selected (check draws in, badge pops) ── */
   --animate-draw: draw 0.45s 0.1s ease-out both;
   --animate-pop: pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
