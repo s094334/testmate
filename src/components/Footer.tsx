@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 export function Footer() {
   return (
     <footer className="bg-surface border-line text-ink-subtle border-t">
-      <div className="max-w-page items-center justify-between p-6 mx-auto flex gap-3">
+      <div className="max-w-page items-center justify-between px-6 min-h-15 tablet:min-h-17 mx-auto flex gap-3">
         <b className="text-ink tablet:block hidden">TestMate 測試咖</b>
         <div className="flex gap-x-6">
           <Link
