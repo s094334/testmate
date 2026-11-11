@@ -3,6 +3,7 @@ import { AppLayout } from '@/layouts/AppLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { LoginPage } from '@/pages/LoginPage'
 import { SignupAccountPage } from '@/pages/SignupAccountPage'
+import { SignupAgreementPage } from '@/pages/SignupAgreementPage'
 import { SignupOwnerProfilePage } from '@/pages/SignupOwnerProfilePage'
 import { SignupRolePage } from '@/pages/SignupRolePage'
 import { SignupTesterProfilePage } from '@/pages/SignupTesterProfilePage'
@@ -25,6 +26,10 @@ function App() {
           <Route
             path="signup/tester/profile"
             element={<SignupTesterProfilePage />}
+          />
+          <Route
+            path="signup/:role/agreement"
+            element={<SignupAgreementPage />}
           />
         </Route>
       </Routes>

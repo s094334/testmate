@@ -1,12 +1,17 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { SignupProgress } from '@/components/SignupProgress'
 
 export function SignupTesterProfilePage() {
+  const navigate = useNavigate()
+
   return (
     <form
       data-role="tester"
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={(e) => {
+        e.preventDefault()
+        navigate('/signup/tester/agreement')
+      }}
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">註冊</h1>
