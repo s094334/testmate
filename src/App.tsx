@@ -1,11 +1,15 @@
 import { BrowserRouter } from 'react-router'
-import { PublicHeader } from '@/components/header/PublicHeader'
+import { Footer } from '@/components/Footer'
+import { PublicHeader } from '@/components/Header/PublicHeader'
 
 function App() {
   return (
     <BrowserRouter>
-      <PublicHeader />
-      測試人員媒合平台
+      <div className="flex min-h-dvh flex-col">
+        <PublicHeader />
+        <main className="flex-1">測試人員媒合平台</main>
+        <Footer />
+      </div>
     </BrowserRouter>
   )
 }
