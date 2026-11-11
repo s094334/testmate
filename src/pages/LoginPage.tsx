@@ -34,12 +34,6 @@ export function LoginPage() {
             className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
           />
         </div>
-        <Link
-          to="/forgot-password"
-          className="hover:text-ink-muted underline transition-colors duration-150 ease-out"
-        >
-          忘記密碼？
-        </Link>
         <button
           type="submit"
           className="border-ink bg-ink text-surface hover:bg-surface hover:text-ink min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
