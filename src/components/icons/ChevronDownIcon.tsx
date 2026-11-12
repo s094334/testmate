@@ -1,6 +1,8 @@
-export function ChevronDownIcon() {
+// className is optional: pass a size (e.g. size-6) or a rotation when needed
+export function ChevronDownIcon({ className }: { className?: string }) {
   return (
     <svg
+      className={className}
       width="20"
       height="20"
       viewBox="0 0 24 24"

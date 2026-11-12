@@ -43,6 +43,7 @@ export const devices: {
 ]
 
 // Projects the tester has joined. For finished projects, `due` is the end date.
+// needsAction: the tester has something to do (red "!" on the status, counted in the tab badge)
 export const joinedProjects: {
   id: string
   name: string
@@ -50,6 +51,7 @@ export const joinedProjects: {
   due: string
   devices: string
   status: ProjectStatus
+  needsAction: boolean
 }[] = [
   {
     id: 'p1',
@@ -58,6 +60,7 @@ export const joinedProjects: {
     due: '2026/11/05',
     devices: 'iPhone SE、Android 手機',
     status: 'FUNDED',
+    needsAction: false,
   },
   {
     id: 'p2',
@@ -66,6 +69,7 @@ export const joinedProjects: {
     due: '2026/11/08',
     devices: 'iPhone 15',
     status: 'TESTING',
+    needsAction: true,
   },
   {
     id: 'p3',
@@ -74,6 +78,7 @@ export const joinedProjects: {
     due: '2026/10/30',
     devices: 'Windows Chrome',
     status: 'SUBMITTED',
+    needsAction: false,
   },
   {
     id: 'p4',
@@ -82,6 +87,7 @@ export const joinedProjects: {
     due: '2026/10/20',
     devices: 'Android 平板',
     status: 'COMPLETED',
+    needsAction: false,
   },
   {
     id: 'p5',
@@ -90,6 +96,7 @@ export const joinedProjects: {
     due: '2026/11/18',
     devices: 'iPhone 15',
     status: 'PENDING_NDA',
+    needsAction: true,
   },
   {
     id: 'p6',
@@ -98,6 +105,7 @@ export const joinedProjects: {
     due: '2026/11/20',
     devices: 'MacBook Air',
     status: 'PENDING_PAYMENT',
+    needsAction: false,
   },
   {
     id: 'p7',
@@ -106,6 +114,7 @@ export const joinedProjects: {
     due: '2026/11/30',
     devices: 'Galaxy Tab S9',
     status: 'TESTING',
+    needsAction: true,
   },
 ]
 

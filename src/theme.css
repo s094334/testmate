@@ -86,6 +86,8 @@
   /* ── Color: used in page designs, not yet in tokens.json ── */
   --color-tag-industry-bg: #f1edf9;
   --color-tag-industry-fg: #5b3f8a;
+  /* Red count badge and "needs action" dot (tester home) */
+  --color-alert: #d93a2f;
   /* Filled star; empty stars use line */
   --color-star: #f2b705;
   /* Home hero, top half */
