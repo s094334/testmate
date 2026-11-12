@@ -1,19 +1,20 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { Footer } from '@/components/Footer'
 import { TesterHeader } from '@/components/Header/TesterHeader'
 
 export function TesterLayout() {
   const { pathname } = useLocation()
+  const main = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    main.current?.scrollTo(0, 0)
   }, [pathname])
 
   return (
-    <div data-role="tester" className="flex min-h-dvh flex-col">
+    <div data-role="tester" className="flex h-dvh flex-col">
       <TesterHeader />
-      <main className="flex flex-1 flex-col">
+      <main ref={main} className="flex min-h-0 flex-1 flex-col overflow-y-auto">
         <Outlet />
       </main>
       <Footer />

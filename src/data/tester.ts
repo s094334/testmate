@@ -49,7 +49,7 @@ export const joinedProjects: {
   name: string
   owner: string
   due: string
-  devices: string
+  devices: string[]
   status: ProjectStatus
   needsAction: boolean
 }[] = [
@@ -58,7 +58,7 @@ export const joinedProjects: {
     name: '電商 App 結帳回歸測試',
     owner: '好買股份有限公司',
     due: '2026/11/05',
-    devices: 'iPhone SE',
+    devices: ['iPhone SE'],
     status: 'FUNDED',
     needsAction: false,
   },
@@ -67,7 +67,7 @@ export const joinedProjects: {
     name: '會員中心改版易用性測試',
     owner: '樂活科技',
     due: '2026/11/08',
-    devices: 'iPhone 15',
+    devices: ['iPhone 15'],
     status: 'TESTING',
     needsAction: true,
   },
@@ -76,7 +76,7 @@ export const joinedProjects: {
     name: '保險試算網頁跨瀏覽器測試',
     owner: '安心保經',
     due: '2026/10/30',
-    devices: 'Windows Chrome',
+    devices: ['Windows Chrome'],
     status: 'SUBMITTED',
     needsAction: false,
   },
@@ -85,7 +85,7 @@ export const joinedProjects: {
     name: '手遊新手教學體驗測試',
     owner: '星砂遊戲',
     due: '2026/10/20',
-    devices: 'Galaxy Tab S12',
+    devices: ['Galaxy Tab S12'],
     status: 'COMPLETED',
     needsAction: false,
   },
@@ -94,7 +94,7 @@ export const joinedProjects: {
     name: '旅遊訂房 App 搜尋測試',
     owner: '遊程旅行社',
     due: '2026/11/18',
-    devices: 'iPhone 15',
+    devices: ['iPhone 15'],
     status: 'PENDING_NDA',
     needsAction: true,
   },
@@ -103,7 +103,7 @@ export const joinedProjects: {
     name: '線上課程網站播放器測試',
     owner: '學無止境',
     due: '2026/11/20',
-    devices: 'MacBook Air',
+    devices: ['MacBook Air'],
     status: 'PENDING_PAYMENT',
     needsAction: false,
   },
@@ -112,13 +112,12 @@ export const joinedProjects: {
     name: '健身課程預約 App 測試',
     owner: '動力健康',
     due: '2026/11/30',
-    devices: 'Galaxy Tab S9',
+    devices: ['Galaxy Tab S9'],
     status: 'TESTING',
     needsAction: true,
   },
 ]
 
-// Projects that invited the tester and are waiting for a reply
 export const invitedProjects = [
   {
     id: 'i1',
@@ -129,7 +128,8 @@ export const invitedProjects = [
     category: '生活服務',
     pay: 'NT$ 1,600',
     replyBy: '2026/11/03',
-    period: '2026/11/01–2026/11/20',
+    startDate: '2026/11/01',
+    endDate: '2026/11/20',
     place: '實地（臺北市）',
     devices: ['iPhone 15'],
     intro:
@@ -145,7 +145,8 @@ export const invitedProjects = [
     category: '金融',
     pay: 'NT$ 1,000',
     replyBy: '2026/11/05',
-    period: '2026/11/03–2026/11/25',
+    startDate: '2026/11/03',
+    endDate: '2026/11/25',
     place: '遠端',
     devices: ['MacBook Air', 'Windows Chrome'],
     intro: '檢查新增帳目、匯出報表在不同瀏覽器的顯示與操作是否一致。',

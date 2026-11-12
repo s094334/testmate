@@ -12,7 +12,7 @@ export function MyDevices() {
         </Link>
       </div>
 
-      <ol className="flex max-h-90 flex-col overflow-y-auto">
+      <ol className="flex min-h-0 flex-1 flex-col overflow-y-auto">
         {devices.map((device) => (
           <li
             key={device.id}

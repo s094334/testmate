@@ -11,7 +11,7 @@ export function InvitedProjects() {
         <Link
           key={project.id}
           to={`/tester/invites/${project.id}`}
-          className="border-line desktop:p-6 desktop:hover:bg-role-soft flex flex-col gap-3 border-t p-4 transition-colors duration-150 ease-out first:border-t-0"
+          className="border-line -outline-offset-2 desktop:p-6 desktop:hover:bg-role-soft flex flex-col gap-3 border-b p-4 transition-colors duration-150 ease-out"
         >
           <h3 className="desktop:text-[20px] text-[18px] leading-[1.4] font-bold">
             {project.name}
@@ -27,9 +27,7 @@ export function InvitedProjects() {
                 公司評價（{project.reviews} 則）
               </span>
             </span>
-            <span className="text-ink-subtle">
-              截止 {project.period.split('–')[1]}
-            </span>
+            <span className="text-ink-subtle">截止 {project.endDate}</span>
           </div>
         </Link>
       ))}
