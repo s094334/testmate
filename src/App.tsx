@@ -4,6 +4,7 @@ import { AuthLayout } from '@/layouts/AuthLayout'
 import { CopyrightPage } from '@/pages/LegalPages/CopyrightPage'
 import { PrivacyPage } from '@/pages/LegalPages/PrivacyPage'
 import { HomePage } from '@/pages/HomePage'
+import { HowItWorksPage } from '@/pages/HowItWorksPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { SignupAccountPage } from '@/pages/SignupAccountPage'
 import { SignupAgreementPage } from '@/pages/SignupAgreementPage'
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="how-it-works" element={<HowItWorksPage />} />
           <Route path="copyright" element={<CopyrightPage />} />
           <Route path="privacy" element={<PrivacyPage />} />
         </Route>

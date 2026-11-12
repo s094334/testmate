@@ -1,4 +1,5 @@
 import { LottieInteractions, LottieLight, lottieInView } from 'lottie-react'
+import { Link } from 'react-router'
 import { ArrowRightIcon } from '@/components/icons/ArrowRightIcon'
 import { testingSteps } from './data'
 
@@ -8,15 +9,15 @@ export function AboutSection() {
       <div className="max-w-page tablet:gap-8 tablet:px-6 tablet:py-16 mx-auto flex flex-col gap-6 px-4 py-12">
         <div className="tablet:gap-4 flex items-center justify-between gap-3">
           <h2>關於測試</h2>
-          <a
-            href="#"
+          <Link
+            to="/how-it-works"
             className="group/flow border-ink bg-surface tablet:min-h-14 tablet:pr-3 tablet:pl-6 inline-flex min-h-12 items-center gap-3 rounded-full border pr-2 pl-4 font-bold whitespace-nowrap"
           >
             看核心流程
             <span className="bg-flow-arrow text-ink animate-nudge inline-flex size-8 items-center justify-center rounded-full transition-[translate] duration-250 group-hover/flow:translate-x-1.5 group-hover/flow:animate-none">
               <ArrowRightIcon />
             </span>
-          </a>
+          </Link>
         </div>
         <div className="tablet:flex-row tablet:flex-wrap tablet:gap-8 flex flex-col gap-6">
           <div className="tablet:flex-[2_1_480px] flex min-w-0 flex-col gap-3">
