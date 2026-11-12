@@ -94,6 +94,8 @@
   --color-home-teal: #dfeef1;
   /* Arrow circle on the "see the core flow" button */
   --color-flow-arrow: #cbf1f5;
+  /* Same arrow circle when the tester role is selected */
+  --color-flow-arrow-tester: #ddf5cb;
 
   /* ── Font families ── */
   --font-sans: 'Noto Sans TC', system-ui, sans-serif;
