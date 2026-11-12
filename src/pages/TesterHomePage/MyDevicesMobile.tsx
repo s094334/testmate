@@ -8,7 +8,7 @@ export function MyDevicesMobile() {
   const [open, setOpen] = useState(false)
 
   return (
-    <aside className="bg-surface border-ink tablet:hidden flex flex-col rounded-md border">
+    <aside className="bg-surface border-ink desktop:hidden flex flex-col rounded-md border">
       <h2 className="text-subheading">
         <button
           type="button"

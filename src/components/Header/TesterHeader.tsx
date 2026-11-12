@@ -26,7 +26,6 @@ export function TesterHeader() {
             />
           </Link>
 
-          {/* Desktop: page links next to the logo */}
           <Link
             to="/tester"
             className={`tablet:block hidden py-2 ${pathname === '/tester' ? 'font-bold shadow-[inset_0_-2px_0_var(--color-role)]' : 'hover:shadow-[inset_0_-2px_0_var(--color-tester)]'}`}

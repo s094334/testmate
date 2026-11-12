@@ -2,10 +2,9 @@ import { Link } from 'react-router'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import { devices } from '@/data/tester'
 
-// Desktop: my devices on the right. Top margin lines it up with the card under the tabs
 export function MyDevices() {
   return (
-    <aside className="bg-surface border-ink tablet:flex desktop:mt-[47px] hidden min-w-0 grow basis-75 flex-col gap-4 rounded-md border p-6">
+    <aside className="bg-surface border-ink desktop:flex desktop:mt-[47px] desktop:grow desktop:basis-75 hidden min-w-0 flex-col gap-4 rounded-md border p-6">
       <div className="flex items-baseline justify-between gap-2">
         <h2 className="text-subheading">我的裝置</h2>
         <Link to="/tester/profile" className="underline">
@@ -13,7 +12,7 @@ export function MyDevices() {
         </Link>
       </div>
 
-      <ol className="flex max-h-75 flex-col overflow-y-auto">
+      <ol className="flex max-h-90 flex-col overflow-y-auto">
         {devices.map((device) => (
           <li
             key={device.id}
