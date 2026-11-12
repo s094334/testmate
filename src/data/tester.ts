@@ -33,32 +33,13 @@ export const devices: {
   type: 'phone' | 'tablet' | 'tv' | 'computer' | 'custom'
   name: string
   os: string
-  browsers: string[]
 }[] = [
-  { id: 'd1', type: 'phone', name: 'iPhone 15', os: 'iOS 18', browsers: [] },
-  {
-    id: 'd2',
-    type: 'tablet',
-    name: 'Galaxy Tab S9',
-    os: 'Android 14',
-    browsers: [],
-  },
-  {
-    id: 'd3',
-    type: 'computer',
-    name: 'MacBook Air',
-    os: 'macOS 15',
-    browsers: ['Safari', 'Chrome'],
-  },
-  {
-    id: 'd4',
-    type: 'computer',
-    name: '華碩筆電',
-    os: 'Windows 11',
-    browsers: ['Chrome', 'Edge'],
-  },
-  { id: 'd5', type: 'phone', name: 'Pixel 8', os: 'Android 15', browsers: [] },
-  { id: 'd6', type: 'tablet', name: 'iPad Air', os: 'iPadOS 18', browsers: [] },
+  { id: 'd1', type: 'phone', name: 'iPhone 15', os: 'iOS 18' },
+  { id: 'd2', type: 'tablet', name: 'Galaxy Tab S9', os: 'Android 14' },
+  { id: 'd3', type: 'computer', name: 'MacBook Air', os: 'macOS 15' },
+  { id: 'd4', type: 'computer', name: '華碩筆電', os: 'Windows 11' },
+  { id: 'd5', type: 'phone', name: 'Pixel 8', os: 'Android 15' },
+  { id: 'd6', type: 'tablet', name: 'iPad Air', os: 'iPadOS 18' },
 ]
 
 // Projects the tester has joined. For finished projects, `due` is the end date.
