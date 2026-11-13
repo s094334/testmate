@@ -5,7 +5,7 @@ export function DisputeTerms() {
     <div className="text-ink-muted flex flex-col gap-10">
       <section className="flex flex-col gap-3">
         <h3 className="text-subheading text-ink flex items-baseline gap-3">
-          <span className="font-num text-num-heading text-ink-subtle flex-none">
+          <span className="font-num text-num-heading text-ink-subtle w-6 flex-none">
             01
           </span>
           什麼時候會進入爭議處理
@@ -33,7 +33,7 @@ export function DisputeTerms() {
 
       <section className="flex flex-col gap-3">
         <h3 className="text-subheading text-ink flex items-baseline gap-3">
-          <span className="font-num text-num-heading text-ink-subtle flex-none">
+          <span className="font-num text-num-heading text-ink-subtle w-6 flex-none">
             02
           </span>
           進入之後會發生什麼
@@ -48,7 +48,7 @@ export function DisputeTerms() {
 
       <section className="flex flex-col gap-3">
         <h3 className="text-subheading text-ink flex items-baseline gap-3">
-          <span className="font-num text-num-heading text-ink-subtle flex-none">
+          <span className="font-num text-num-heading text-ink-subtle w-6 flex-none">
             03
           </span>
           雙方各自選擇處理方式（爭議期限內）
@@ -88,7 +88,7 @@ export function DisputeTerms() {
 
       <section className="flex flex-col gap-3">
         <h3 className="text-subheading text-ink flex items-baseline gap-3">
-          <span className="font-num text-num-heading text-ink-subtle flex-none">
+          <span className="font-num text-num-heading text-ink-subtle w-6 flex-none">
             04
           </span>
           四種結果
@@ -119,7 +119,7 @@ export function DisputeTerms() {
 
       <section className="flex flex-col gap-3">
         <h3 className="text-subheading text-ink flex items-baseline gap-3">
-          <span className="font-num text-num-heading text-ink-subtle flex-none">
+          <span className="font-num text-num-heading text-ink-subtle w-6 flex-none">
             05
           </span>
           期限一覽
@@ -142,7 +142,7 @@ export function DisputeTerms() {
 
       <section className="flex flex-col gap-3">
         <h3 className="text-subheading text-ink flex items-baseline gap-3">
-          <span className="font-num text-num-heading text-ink-subtle flex-none">
+          <span className="font-num text-num-heading text-ink-subtle w-6 flex-none">
             06
           </span>
           其他注意事項

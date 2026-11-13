@@ -28,7 +28,7 @@ export function SignupAgreementPage({
           e.preventDefault()
           if (agreed) onSubmit()
         }}
-        className="bg-surface border-ink tablet:p-12 mx-auto mt-14 flex max-w-180 flex-col gap-5 rounded-md border px-5 py-6"
+        className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-180 flex-col gap-5 rounded-md border px-5 py-6"
       >
         <h1 className="text-subtitle">註冊</h1>
         <div className="flex flex-col gap-3">
@@ -43,7 +43,7 @@ export function SignupAgreementPage({
             <ol className="flex flex-col gap-4">
               {disputeSteps.map((step, index) => (
                 <li key={step.title} className="flex items-baseline gap-3">
-                  <span className="font-num text-num-heading text-ink-subtle flex-none">
+                  <span className="font-num text-num-heading text-ink-subtle w-6 flex-none">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div className="flex flex-col gap-0.5">
