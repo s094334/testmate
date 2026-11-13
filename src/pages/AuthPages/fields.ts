@@ -130,7 +130,7 @@ export const ownerProfileFields: FieldConfig<OwnerProfileFormValues>[] = [
     autoComplete: 'name',
     placeholder: '例：哇哩勒',
     requiredMessage: '請填寫真實姓名',
-    rules: { pattern: { value: /\S/, message: '請' } },
+    rules: { pattern: { value: /\S/, message: '請填寫真實姓名' } },
   },
   {
     label: '手機號碼',
