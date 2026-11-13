@@ -25,6 +25,23 @@ export const statusLabels: Record<ProjectStatus, string> = {
 
 export const tester = {
   name: '哇哩勒',
+  // The login account: shown read-only on the profile page
+  email: 'walile.test@gmail.com',
+  city: '臺北市',
+  phone: '0912-345-678',
+  // Signup skips the SMS check; it is done on the profile page
+  phoneVerified: true,
+  languages: ['中文', '英文', '日語'],
+  // Subset of languages
+  nativeLanguages: ['中文'],
+  interests: [
+    '手機遊戲',
+    'Netflix',
+    '巴哈姆特動畫瘋',
+    'Spotify',
+    '咖啡／茶飲',
+    '科技 3C',
+  ],
 }
 
 // Device type matches the tabs on the profile page: 手機／平板／電視／電腦／自訂
