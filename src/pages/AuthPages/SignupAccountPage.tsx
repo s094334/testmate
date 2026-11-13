@@ -47,19 +47,33 @@ export function SignupAccountPage() {
       <div className="flex flex-col gap-2">
         <label htmlFor="email" className="text-label">
           Email
+          <span className="text-status-dispute-text text-required ml-1.5">
+            必填
+          </span>
         </label>
         <input
           id="email"
           type="email"
           autoComplete="email"
           placeholder="name@example.com"
-          {...register('email')}
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('email', {
+            validate: (value) => value.trim() !== '' || '請填寫 Email',
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.email ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.email && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.email.message}
+          </span>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="password" className="text-label">
           密碼
+          <span className="text-status-dispute-text text-required ml-1.5">
+            必填
+          </span>
         </label>
         <input
           id="password"
@@ -88,6 +102,9 @@ export function SignupAccountPage() {
       <div className="flex flex-col gap-2">
         <label htmlFor="confirm-password" className="text-label">
           確認密碼
+          <span className="text-status-dispute-text text-required ml-1.5">
+            必填
+          </span>
         </label>
         <input
           id="confirm-password"
@@ -95,6 +112,7 @@ export function SignupAccountPage() {
           autoComplete="new-password"
           placeholder="再輸入一次密碼"
           {...register('confirmPassword', {
+            required: '請再輸入一次密碼',
             validate: (value, values) =>
               value === values.password || '兩次密碼不一致',
           })}

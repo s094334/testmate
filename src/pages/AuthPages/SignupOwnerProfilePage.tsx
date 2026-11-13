@@ -33,10 +33,7 @@ export function SignupOwnerProfilePage() {
   return (
     <form
       data-role="owner"
-      onSubmit={
-        // handleSubmit checks every field first and only runs this function when all of them pass
-        handleSubmit(() => navigate('/signup/owner/agreement'))
-      }
+      onSubmit={handleSubmit(() => navigate('/signup/owner/agreement'))}
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">註冊</h1>
