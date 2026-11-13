@@ -1,19 +1,13 @@
-import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 import { Link } from 'react-router'
 
-type FormValues = {
-  email: string
-  password: string
-}
-
 export function LoginPage() {
-  const { register, handleSubmit } = useForm<FormValues>({
-    defaultValues: { email: '', password: '' },
-  })
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   return (
     <form
-      onSubmit={handleSubmit(() => {})}
+      onSubmit={(e) => e.preventDefault()}
       className="bg-surface border-ink tablet:gap-7 tablet:p-12 mx-auto flex max-w-130 flex-col gap-6 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">登入</h1>
@@ -25,8 +19,10 @@ export function LoginPage() {
           id="email"
           type="email"
           autoComplete="email"
-          placeholder="name@example.com"
-          {...register('email')}
+          placeholder="example@example.com"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
@@ -39,25 +35,30 @@ export function LoginPage() {
           type="password"
           autoComplete="current-password"
           placeholder="請輸入密碼"
-          {...register('password')}
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
       <button
         type="submit"
-        className="border-ink bg-ink text-surface hover:bg-surface hover:text-ink min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        disabled={email.trim() === '' || password === ''}
+        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out enabled:active:translate-y-px motion-reduce:active:translate-y-0"
       >
         登入
       </button>
-      <p className="text-ink-muted text-center">
-        還沒有帳號？
-        <Link
-          to="/signup"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
-          註冊
-        </Link>
-      </p>
+      <div className="flex flex-col gap-1">
+        <p className="text-ink-muted text-center">
+          還沒有帳號？
+          <Link
+            to="/signup"
+            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+          >
+            註冊
+          </Link>
+        </p>
+      </div>
     </form>
   )
 }
