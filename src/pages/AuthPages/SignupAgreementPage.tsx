@@ -52,14 +52,14 @@ export function SignupAgreementPage() {
       <div className="flex gap-3">
         <Link
           to={`/signup/${role}/profile`}
-          className="border-ink text-ink hover:bg-platform-soft inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
         >
           上一步
         </Link>
         <button
           type="submit"
           disabled={!agreed}
-          className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out enabled:active:translate-y-px motion-reduce:active:translate-y-0"
+          className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
         >
           完成註冊
         </button>
@@ -70,7 +70,7 @@ export function SignupAgreementPage() {
           to="/terms"
           className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
         >
-          服務條款
+          版權聲明
         </Link>
         與
         <Link
