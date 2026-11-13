@@ -2,6 +2,7 @@
 // This component remembers which step is showing and everything typed so far,
 // and shows one step at a time.
 import { useState } from 'react'
+import { disputeTermsVersion } from '@/data/disputeTerms'
 import type {
   AccountFormValues,
   OwnerProfileFormValues,
@@ -12,6 +13,23 @@ import { SignupAgreementPage } from './SignupAgreementPage'
 import { SignupOwnerProfilePage } from './SignupOwnerProfilePage'
 import { SignupRolePage } from './SignupRolePage'
 import { SignupTesterProfilePage } from './SignupTesterProfilePage'
+
+// What 完成註冊 sends. confirmPassword is left out: it only exists to catch typos in the form.
+type SignupPayload = {
+  role: 'owner' | 'tester'
+  email: string
+  password: string
+  profile: TesterProfileFormValues | OwnerProfileFormValues
+  dispute_terms_version: string
+}
+
+function submitSignup(payload: SignupPayload) {
+  // TODO: send `payload` to the signup API here (there is no backend in this repo yet).
+  // The server must check the consent itself, not trust this page: reject the request unless
+  // dispute_terms_version is a valid version, and record the agreed-at time (with time zone) on its side.
+  // Never log the payload: it contains the password.
+  void payload
+}
 
 export function SignupPage() {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1)
@@ -38,6 +56,7 @@ export function SignupPage() {
     industry: '',
     address: '',
   })
+  // Step 4: ticked inside the full terms dialog
   const [agreed, setAgreed] = useState(false)
 
   if (step === 1 || role === null) {
@@ -109,6 +128,15 @@ export function SignupPage() {
         setAgreed(checked)
         setStep(3)
       }}
+      onSubmit={() =>
+        submitSignup({
+          role,
+          email: account.email,
+          password: account.password,
+          profile: role === 'tester' ? testerProfile : ownerProfile,
+          dispute_terms_version: disputeTermsVersion,
+        })
+      }
     />
   )
 }
