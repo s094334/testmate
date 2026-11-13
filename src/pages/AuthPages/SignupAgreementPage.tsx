@@ -1,15 +1,21 @@
 import { useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router'
+import { Link } from 'react-router'
 import { disputeSteps } from './data'
 import { SignupProgress } from './SignupProgress'
 
-export function SignupAgreementPage() {
-  const { role } = useParams()
-  const [agreed, setAgreed] = useState(false)
+type SignupAgreementPageProps = {
+  role: 'owner' | 'tester'
+  defaultAgreed: boolean
+  onBack: (agreed: boolean) => void
+}
 
-  if (role !== 'owner' && role !== 'tester') {
-    return <Navigate to="/signup" replace />
-  }
+export function SignupAgreementPage({
+  role,
+  defaultAgreed,
+  onBack,
+}: SignupAgreementPageProps) {
+  // Starts from the value saved in SignupPage, so the tick is still there when you come back
+  const [agreed, setAgreed] = useState(defaultAgreed)
 
   return (
     <form
@@ -50,12 +56,13 @@ export function SignupAgreementPage() {
         <span className="font-bold">我已閱讀並同意爭議處理流程</span>
       </label>
       <div className="flex gap-3">
-        <Link
-          to={`/signup/${role}/profile`}
-          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
+        <button
+          type="button"
+          onClick={() => onBack(agreed)}
+          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0 cursor-pointer"
         >
           上一步
-        </Link>
+        </button>
         <button
           type="submit"
           disabled={!agreed}
@@ -67,7 +74,7 @@ export function SignupAgreementPage() {
       <p className="text-ink-muted text-center">
         註冊即表示同意
         <Link
-          to="/terms"
+          to="/copyright"
           className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
         >
           版權聲明

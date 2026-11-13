@@ -1,27 +1,36 @@
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router'
 import { testerProfileFields, type TesterProfileFormValues } from './fields'
 import { FormField } from './FormField'
 import { SignupProgress } from './SignupProgress'
 
-export function SignupTesterProfilePage() {
-  const navigate = useNavigate()
+type SignupTesterProfilePageProps = {
+  defaultValues: TesterProfileFormValues
+  onNext: (values: TesterProfileFormValues) => void
+  onBack: (values: TesterProfileFormValues) => void
+}
+
+export function SignupTesterProfilePage({
+  defaultValues,
+  onNext,
+  onBack,
+}: SignupTesterProfilePageProps) {
   // useForm keeps every field value and every error message.
   // Errors first appear when 下一步 is pressed; after that each field is re-checked while typing
+  // This step is removed from the page when you leave it, so its form starts over
+  // each time it is shown. defaultValues (saved in SignupPage) fills the fields back in
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
-  } = useForm<TesterProfileFormValues>({
-    defaultValues: { name: '', phone: '', city: '' },
-  })
+  } = useForm<TesterProfileFormValues>({ defaultValues })
 
   return (
     <form
       data-role="tester"
       onSubmit={
         // handleSubmit checks every field first and only runs this function when all of them pass
-        handleSubmit(() => navigate('/signup/tester/agreement'))
+        handleSubmit((values) => onNext(values))
       }
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
@@ -42,12 +51,17 @@ export function SignupTesterProfilePage() {
         />
       ))}
       <div className="flex gap-3">
-        <Link
-          to="/signup/tester/account"
-          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
+        <button
+          type="button"
+          onClick={
+            // getValues() reads what is typed right now without checking it,
+            // so half-filled fields are saved too
+            () => onBack(getValues())
+          }
+          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0 cursor-pointer"
         >
           上一步
-        </Link>
+        </button>
         <button
           type="submit"
           className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"

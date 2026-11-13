@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router'
 import {
   ownerCompanyFields,
   ownerProfileFields,
@@ -8,27 +7,30 @@ import {
 import { FormField } from './FormField'
 import { SignupProgress } from './SignupProgress'
 
-export function SignupOwnerProfilePage() {
-  const navigate = useNavigate()
+type SignupOwnerProfilePageProps = {
+  defaultValues: OwnerProfileFormValues
+  onNext: (values: OwnerProfileFormValues) => void
+  onBack: (values: OwnerProfileFormValues) => void
+}
+
+export function SignupOwnerProfilePage({
+  defaultValues,
+  onNext,
+  onBack,
+}: SignupOwnerProfilePageProps) {
+  // This step is removed from the page when you leave it, so its form starts over
+  // each time it is shown. defaultValues (saved in SignupPage) fills the fields back in
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
-  } = useForm<OwnerProfileFormValues>({
-    defaultValues: {
-      name: '',
-      phone: '',
-      company: '',
-      taxId: '',
-      industry: '',
-      address: '',
-    },
-  })
+  } = useForm<OwnerProfileFormValues>({ defaultValues })
 
   return (
     <form
       data-role="owner"
-      onSubmit={handleSubmit(() => navigate('/signup/owner/agreement'))}
+      onSubmit={handleSubmit((values) => onNext(values))}
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">註冊</h1>
@@ -57,12 +59,17 @@ export function SignupOwnerProfilePage() {
         />
       ))}
       <div className="flex gap-3">
-        <Link
-          to="/signup/owner/account"
-          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
+        <button
+          type="button"
+          onClick={
+            // getValues() reads what is typed right now without checking it,
+            // so half-filled fields are saved too
+            () => onBack(getValues())
+          }
+          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0 cursor-pointer"
         >
           上一步
-        </Link>
+        </button>
         <button
           type="submit"
           className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"

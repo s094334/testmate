@@ -1,30 +1,34 @@
 import { useForm } from 'react-hook-form'
-import { Link, Navigate, useNavigate, useParams } from 'react-router'
+import { Link } from 'react-router'
 import { accountFields, type AccountFormValues } from './fields'
 import { FormField } from './FormField'
 import { SignupProgress } from './SignupProgress'
 
-export function SignupAccountPage() {
-  const { role } = useParams()
-  const navigate = useNavigate()
+type SignupAccountPageProps = {
+  role: 'owner' | 'tester'
+  defaultValues: AccountFormValues
+  onNext: (values: AccountFormValues) => void
+  onBack: (values: AccountFormValues) => void
+}
 
+export function SignupAccountPage({
+  role,
+  defaultValues,
+  onNext,
+  onBack,
+}: SignupAccountPageProps) {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
-  } = useForm<AccountFormValues>({
-    defaultValues: { email: '', password: '', confirmPassword: '' },
-  })
-
-  if (role !== 'owner' && role !== 'tester') {
-    return <Navigate to="/signup" replace />
-  }
+  } = useForm<AccountFormValues>({ defaultValues })
 
   return (
     <form
       noValidate
       data-role={role}
-      onSubmit={handleSubmit(() => navigate(`/signup/${role}/profile`))}
+      onSubmit={handleSubmit((values) => onNext(values))}
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">註冊</h1>
@@ -46,12 +50,13 @@ export function SignupAccountPage() {
         />
       ))}
       <div className="flex gap-3">
-        <Link
-          to="/signup"
-          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
+        <button
+          type="button"
+          onClick={() => onBack(getValues())}
+          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0 cursor-pointer"
         >
           上一步
-        </Link>
+        </button>
         <button
           type="submit"
           className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
