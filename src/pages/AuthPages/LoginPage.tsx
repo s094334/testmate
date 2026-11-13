@@ -44,7 +44,7 @@ export function LoginPage() {
       <button
         type="submit"
         disabled={email.trim() === '' || password === ''}
-        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out enabled:active:translate-y-px motion-reduce:active:translate-y-0"
+        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out enabled:cursor-pointer enabled:active:translate-y-px motion-reduce:active:translate-y-0"
       >
         登入
       </button>

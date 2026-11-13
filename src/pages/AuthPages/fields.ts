@@ -95,7 +95,7 @@ export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
     autoComplete: 'name',
     placeholder: '例：哇哩勒',
     requiredMessage: '請填寫真實姓名',
-    rules: { pattern: { value: /\S/, message: '請填寫姓名' } },
+    rules: { pattern: { value: /\S/, message: '請填寫真實姓名' } },
   },
   {
     label: '手機號碼',
@@ -105,7 +105,12 @@ export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
     autoComplete: 'tel',
     placeholder: '例：0912-345-678',
     requiredMessage: '請填寫手機號碼',
-    rules: { pattern: { value: /\S/, message: '請填寫手機號碼' } },
+    rules: {
+      pattern: { value: /\S/, message: '請填寫手機號碼' },
+      validate: (value) =>
+        /^09\d{2}[-\s]?\d{3}[-\s]?\d{3}$/.test(value) ||
+        '請輸入 09 開頭的 10 位數手機號碼',
+    },
   },
   {
     label: '居住地',
@@ -125,7 +130,7 @@ export const ownerProfileFields: FieldConfig<OwnerProfileFormValues>[] = [
     autoComplete: 'name',
     placeholder: '例：哇哩勒',
     requiredMessage: '請填寫真實姓名',
-    rules: { pattern: { value: /\S/, message: '請填寫姓名' } },
+    rules: { pattern: { value: /\S/, message: '請' } },
   },
   {
     label: '手機號碼',
@@ -135,7 +140,14 @@ export const ownerProfileFields: FieldConfig<OwnerProfileFormValues>[] = [
     autoComplete: 'tel',
     placeholder: '例：0912-345-678',
     requiredMessage: '請填寫手機號碼',
-    rules: { pattern: { value: /\S/, message: '請填寫手機號碼' } },
+    rules: {
+      // Spaces only counts as not filled in
+      pattern: { value: /\S/, message: '請填寫手機號碼' },
+      // 09 + 8 more digits; a hyphen or space between the groups is allowed
+      validate: (value) =>
+        /^09\d{2}[-\s]?\d{3}[-\s]?\d{3}$/.test(value) ||
+        '請輸入 09 開頭的 10 位數手機號碼',
+    },
   },
 ]
 
@@ -157,6 +169,8 @@ export const ownerCompanyFields: FieldConfig<OwnerProfileFormValues>[] = [
     inputMode: 'numeric',
     maxLength: 8,
     placeholder: '8 位數字',
+    // Optional: an empty value skips this check
+    rules: { pattern: { value: /^\d{8}$/, message: '統一編號是 8 位數字' } },
   },
   {
     label: '公司產業',

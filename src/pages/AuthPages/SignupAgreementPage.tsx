@@ -66,7 +66,7 @@ export function SignupAgreementPage({
         <button
           type="submit"
           disabled={!agreed}
-          className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
+          className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:cursor-pointer enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:enabled:hover:translate-y-0 motion-reduce:enabled:active:translate-y-0"
         >
           完成註冊
         </button>
@@ -75,6 +75,8 @@ export function SignupAgreementPage({
         註冊即表示同意
         <Link
           to="/copyright"
+          target="_blank"
+          rel="noreferrer"
           className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
         >
           版權聲明
@@ -82,6 +84,8 @@ export function SignupAgreementPage({
         與
         <Link
           to="/privacy"
+          target="_blank"
+          rel="noreferrer"
           className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
         >
           隱私權聲明
