@@ -1,13 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { Link, Navigate, useNavigate, useParams } from 'react-router'
-import { WarningIcon } from '@/components/icons/WarningIcon'
+import { accountFields, type AccountFormValues } from './fields'
+import { FormField } from './FormField'
 import { SignupProgress } from './SignupProgress'
-
-type FormValues = {
-  email: string
-  password: string
-  confirmPassword: string
-}
 
 export function SignupAccountPage() {
   const { role } = useParams()
@@ -17,7 +12,7 @@ export function SignupAccountPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<AccountFormValues>({
     defaultValues: { email: '', password: '', confirmPassword: '' },
   })
 
@@ -27,6 +22,7 @@ export function SignupAccountPage() {
 
   return (
     <form
+      noValidate
       data-role={role}
       onSubmit={handleSubmit(() => navigate(`/signup/${role}/profile`))}
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
@@ -40,91 +36,15 @@ export function SignupAccountPage() {
         <span>
           註冊身分：<b>{role === 'owner' ? '專案負責人' : '測試人員'}</b>
         </span>
-        <Link to="/signup" className="hover:text-ink-muted underline">
-          更改
-        </Link>
       </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-label">
-          Email
-          <span className="text-status-dispute-text text-required ml-1.5">
-            必填
-          </span>
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="name@example.com"
-          {...register('email', {
-            validate: (value) => value.trim() !== '' || '請填寫 Email',
-          })}
-          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.email ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
+      {accountFields.map((field) => (
+        <FormField
+          key={field.name}
+          {...field}
+          register={register}
+          errors={errors}
         />
-        {errors.email && (
-          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
-            <WarningIcon />
-            {errors.email.message}
-          </span>
-        )}
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="password" className="text-label">
-          密碼
-          <span className="text-status-dispute-text text-required ml-1.5">
-            必填
-          </span>
-        </label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="new-password"
-          placeholder="請輸入密碼"
-          {...register('password', {
-            validate: (value) =>
-              (value.length >= 8 &&
-                /[A-Za-z]/.test(value) &&
-                /\d/.test(value)) ||
-              '至少 8 碼，需包含英文與數字',
-            deps: ['confirmPassword'],
-          })}
-          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.password ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
-        />
-        {errors.password ? (
-          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
-            <WarningIcon />
-            {errors.password.message}
-          </span>
-        ) : (
-          <span className="text-ink-subtle">至少 8 碼，需包含英文與數字</span>
-        )}
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="confirm-password" className="text-label">
-          確認密碼
-          <span className="text-status-dispute-text text-required ml-1.5">
-            必填
-          </span>
-        </label>
-        <input
-          id="confirm-password"
-          type="password"
-          autoComplete="new-password"
-          placeholder="再輸入一次密碼"
-          {...register('confirmPassword', {
-            required: '請再輸入一次密碼',
-            validate: (value, values) =>
-              value === values.password || '兩次密碼不一致',
-          })}
-          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.confirmPassword ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
-        />
-        {errors.confirmPassword && (
-          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
-            <WarningIcon />
-            {errors.confirmPassword.message}
-          </span>
-        )}
-      </div>
+      ))}
       <button
         type="submit"
         className="border-ink bg-ink text-surface hover:bg-surface hover:text-ink min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
