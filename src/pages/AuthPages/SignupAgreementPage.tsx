@@ -52,14 +52,14 @@ export function SignupAgreementPage() {
       <div className="flex gap-3">
         <Link
           to={`/signup/${role}/profile`}
-          className="border-role bg-surface hover:bg-role-soft inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          className="border-ink text-ink hover:bg-platform-soft inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
         >
           上一步
         </Link>
         <button
           type="submit"
           disabled={!agreed}
-          className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-md border px-6 font-bold transition-colors duration-250 ease-out"
+          className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out enabled:active:translate-y-px motion-reduce:active:translate-y-0"
         >
           完成註冊
         </button>

@@ -56,7 +56,7 @@ export function SignupRolePage() {
         type="button"
         disabled={!role}
         onClick={() => navigate(`/signup/${role}/account`)}
-        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-md border px-6 font-bold transition-colors duration-250 ease-out"
+        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out enabled:active:translate-y-px motion-reduce:active:translate-y-0"
       >
         {role === 'owner'
           ? '以專案負責人身分繼續'
