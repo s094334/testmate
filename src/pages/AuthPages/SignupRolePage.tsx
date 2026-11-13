@@ -1,13 +1,18 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { OwnerIllustration } from '@/components/illustrations/OwnerIllustration'
 import { TesterIllustration } from '@/components/illustrations/TesterIllustration'
-import { SignupProgress } from '@/components/SignupProgress'
+import { SignupProgress } from './SignupProgress'
 
-export function SignupRolePage() {
-  const [role, setRole] = useState<'owner' | 'tester' | null>(null)
-  const navigate = useNavigate()
+type SignupRolePageProps = {
+  defaultRole: 'owner' | 'tester' | null
+  onNext: (role: 'owner' | 'tester') => void
+}
+
+export function SignupRolePage({ defaultRole, onNext }: SignupRolePageProps) {
+  // Starts from the role saved in SignupPage, so the card is still selected when you come back
+  const [role, setRole] = useState(defaultRole)
 
   return (
     <div className="bg-surface border-ink tablet:gap-7 tablet:p-12 mx-auto flex max-w-180 flex-col gap-6 rounded-md border px-5 py-6">
@@ -55,8 +60,8 @@ export function SignupRolePage() {
       <button
         type="button"
         disabled={!role}
-        onClick={() => navigate(`/signup/${role}/account`)}
-        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-md border px-6 font-bold transition-colors duration-250 ease-out"
+        onClick={() => role && onNext(role)}
+        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:cursor-pointer enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:enabled:hover:translate-y-0 motion-reduce:enabled:active:translate-y-0"
       >
         {role === 'owner'
           ? '以專案負責人身分繼續'
