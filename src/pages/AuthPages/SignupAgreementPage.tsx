@@ -35,35 +35,40 @@ export function SignupAgreementPage({
           <b className="text-subheading">同意爭議處理流程</b>
           <SignupProgress step={4} />
         </div>
-        <section className="flex flex-col gap-4">
-          <ol className="flex flex-col gap-4">
-            {disputeSteps.map((step, index) => (
-              <li key={step.title} className="flex items-baseline gap-3">
-                <span className="font-num text-num-heading text-ink-subtle flex-none">
-                  {String(index + 1).padStart(2, '0')}
+        <section className="border-ink overflow-hidden rounded-md border">
+          <h2 className="border-ink bg-page text-subheading border-b px-5 py-4">
+            爭議處理流程
+          </h2>
+          <div className="flex flex-col gap-5 p-5">
+            <ol className="flex flex-col gap-4">
+              {disputeSteps.map((step, index) => (
+                <li key={step.title} className="flex items-baseline gap-3">
+                  <span className="font-num text-num-heading text-ink-subtle flex-none">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex flex-col gap-0.5">
+                    <b className="text-[18px]">{step.title}</b>
+                    <div className="text-ink-muted">{step.body}</div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="border-ink bg-surface text-ink min-h-13 w-full cursor-pointer rounded-full border-2 px-6 text-[18px] font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
+              >
+                查看完整流程
+              </button>
+              {!agreed && (
+                <span className="text-ink-muted">
+                  請點選查看完整流程，並在文件最下方勾選同意，才能完成註冊。
                 </span>
-                <div className="flex flex-col gap-0.5">
-                  <b className="text-[18px]">{step.title}</b>
-                  <div className="text-ink-muted">{step.body}</div>
-                </div>
-              </li>
-            ))}
-          </ol>
+              )}
+            </div>
+          </div>
         </section>
-        <div className="flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            className="border-ink bg-surface text-ink min-h-13 w-full cursor-pointer rounded-full border-2 px-6 text-[18px] font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
-          >
-            查看完整流程
-          </button>
-          {!agreed && (
-            <span className="text-ink-muted">
-              請點選查看完整流程，並在文件最下方勾選同意，才能完成註冊。
-            </span>
-          )}
-        </div>
         <div className="flex gap-3">
           <button
             type="button"
