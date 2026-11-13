@@ -1,9 +1,19 @@
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 
+type FormValues = {
+  email: string
+  password: string
+}
+
 export function LoginPage() {
+  const { register, handleSubmit } = useForm<FormValues>({
+    defaultValues: { email: '', password: '' },
+  })
+
   return (
     <form
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={handleSubmit(() => {})}
       className="bg-surface border-ink tablet:gap-7 tablet:p-12 mx-auto flex max-w-130 flex-col gap-6 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">登入</h1>
@@ -16,6 +26,7 @@ export function LoginPage() {
           type="email"
           autoComplete="email"
           placeholder="name@example.com"
+          {...register('email')}
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
@@ -28,6 +39,7 @@ export function LoginPage() {
           type="password"
           autoComplete="current-password"
           placeholder="請輸入密碼"
+          {...register('password')}
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>

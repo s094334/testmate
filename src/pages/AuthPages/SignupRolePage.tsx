@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { OwnerIllustration } from '@/components/illustrations/OwnerIllustration'
 import { TesterIllustration } from '@/components/illustrations/TesterIllustration'
-import { SignupProgress } from '@/components/SignupProgress'
+import { SignupProgress } from './SignupProgress'
 
 export function SignupRolePage() {
   const [role, setRole] = useState<'owner' | 'tester' | null>(null)

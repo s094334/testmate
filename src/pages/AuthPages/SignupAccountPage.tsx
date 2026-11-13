@@ -1,9 +1,25 @@
+import { useForm } from 'react-hook-form'
 import { Link, Navigate, useNavigate, useParams } from 'react-router'
-import { SignupProgress } from '@/components/SignupProgress'
+import { WarningIcon } from '@/components/icons/WarningIcon'
+import { SignupProgress } from './SignupProgress'
+
+type FormValues = {
+  email: string
+  password: string
+  confirmPassword: string
+}
 
 export function SignupAccountPage() {
   const { role } = useParams()
   const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: { email: '', password: '', confirmPassword: '' },
+  })
 
   if (role !== 'owner' && role !== 'tester') {
     return <Navigate to="/signup" replace />
@@ -12,10 +28,7 @@ export function SignupAccountPage() {
   return (
     <form
       data-role={role}
-      onSubmit={(e) => {
-        e.preventDefault()
-        navigate(`/signup/${role}/profile`)
-      }}
+      onSubmit={handleSubmit(() => navigate(`/signup/${role}/profile`))}
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">註冊</h1>
@@ -40,6 +53,7 @@ export function SignupAccountPage() {
           type="email"
           autoComplete="email"
           placeholder="name@example.com"
+          {...register('email')}
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
@@ -52,9 +66,24 @@ export function SignupAccountPage() {
           type="password"
           autoComplete="new-password"
           placeholder="請輸入密碼"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('password', {
+            validate: (value) =>
+              (value.length >= 8 &&
+                /[A-Za-z]/.test(value) &&
+                /\d/.test(value)) ||
+              '至少 8 碼，需包含英文與數字',
+            deps: ['confirmPassword'],
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.password ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
-        <span className="text-ink-subtle">至少 8 碼，需包含英文與數字</span>
+        {errors.password ? (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.password.message}
+          </span>
+        ) : (
+          <span className="text-ink-subtle">至少 8 碼，需包含英文與數字</span>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="confirm-password" className="text-label">
@@ -65,8 +94,18 @@ export function SignupAccountPage() {
           type="password"
           autoComplete="new-password"
           placeholder="再輸入一次密碼"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('confirmPassword', {
+            validate: (value, values) =>
+              value === values.password || '兩次密碼不一致',
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.confirmPassword ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.confirmPassword && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.confirmPassword.message}
+          </span>
+        )}
       </div>
       <button
         type="submit"

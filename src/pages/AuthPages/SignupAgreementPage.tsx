@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
-import { SignupProgress } from '@/components/SignupProgress'
+import { SignupProgress } from './SignupProgress'
 
+// Only one checkbox here, so plain useState instead of react-hook-form
 export function SignupAgreementPage() {
   const { role } = useParams()
   const [agreed, setAgreed] = useState(false)

@@ -1,17 +1,42 @@
+import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
-import { SignupProgress } from '@/components/SignupProgress'
+import { WarningIcon } from '@/components/icons/WarningIcon'
+import { SignupProgress } from './SignupProgress'
+
+type FormValues = {
+  name: string
+  phone: string
+  company: string
+  taxId: string
+  industry: string
+  address: string
+}
 
 export function SignupOwnerProfilePage() {
   const navigate = useNavigate()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      name: '',
+      phone: '',
+      company: '',
+      taxId: '',
+      industry: '',
+      address: '',
+    },
+  })
 
   return (
     <form
       data-role="owner"
-      onSubmit={(e) => {
-        e.preventDefault()
-        navigate('/signup/owner/agreement')
-      }}
+      onSubmit={
+        // handleSubmit checks every field first and only runs this function when all of them pass
+        handleSubmit(() => navigate('/signup/owner/agreement'))
+      }
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">註冊</h1>
@@ -34,8 +59,17 @@ export function SignupOwnerProfilePage() {
           type="text"
           autoComplete="name"
           placeholder="例：哇哩勒"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('name', {
+            validate: (value) => value.trim() !== '' || '請填寫姓名',
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.name ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.name && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.name.message}
+          </span>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="phone" className="text-label">
@@ -50,8 +84,17 @@ export function SignupOwnerProfilePage() {
           inputMode="tel"
           autoComplete="tel"
           placeholder="例：0912-345-678"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('phone', {
+            validate: (value) => value.trim() !== '' || '請填寫手機號碼',
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.phone ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.phone && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.phone.message}
+          </span>
+        )}
       </div>
       <h2 className="border-line text-subheading border-t pt-5">公司資料</h2>
       <div className="flex flex-col gap-2">
@@ -66,8 +109,17 @@ export function SignupOwnerProfilePage() {
           type="text"
           autoComplete="organization"
           placeholder="例：哇哩勒股份有限公司"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('company', {
+            validate: (value) => value.trim() !== '' || '請填寫公司名稱',
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.company ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.company && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.company.message}
+          </span>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="tax-id" className="text-label">
@@ -79,6 +131,7 @@ export function SignupOwnerProfilePage() {
           inputMode="numeric"
           maxLength={8}
           placeholder="8 位數字"
+          {...register('taxId')}
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
@@ -93,7 +146,8 @@ export function SignupOwnerProfilePage() {
           <select
             id="industry"
             defaultValue=""
-            className="border-line-input bg-surface min-h-12 w-full appearance-none rounded-md border py-2.5 pr-11 pl-3"
+            {...register('industry', { required: '請選擇公司產業' })}
+            className={`bg-surface min-h-12 w-full appearance-none rounded-md py-2.5 pr-11 pl-3 ${errors.industry ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
           >
             <option value="" disabled>
               請選擇產業
@@ -117,6 +171,12 @@ export function SignupOwnerProfilePage() {
             <ChevronDownIcon />
           </span>
         </div>
+        {errors.industry && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.industry.message}
+          </span>
+        )}
         <span className="text-ink-subtle">
           發布專案時會自動帶入，可再依專案修改
         </span>
@@ -133,8 +193,17 @@ export function SignupOwnerProfilePage() {
           type="text"
           autoComplete="street-address"
           placeholder="例：臺北市信義區市府路 1 號"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('address', {
+            validate: (value) => value.trim() !== '' || '請填寫公司地址',
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.address ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.address && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.address.message}
+          </span>
+        )}
       </div>
       <div className="flex gap-3">
         <Link

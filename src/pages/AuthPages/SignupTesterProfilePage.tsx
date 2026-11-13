@@ -1,17 +1,32 @@
+import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
-import { SignupProgress } from '@/components/SignupProgress'
+import { WarningIcon } from '@/components/icons/WarningIcon'
+import { SignupProgress } from './SignupProgress'
+
+type FormValues = {
+  name: string
+  phone: string
+  city: string
+}
 
 export function SignupTesterProfilePage() {
   const navigate = useNavigate()
+  // useForm keeps every field value and every error message.
+  // Errors first appear when 下一步 is pressed; after that each field is re-checked while typing
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({ defaultValues: { name: '', phone: '', city: '' } })
 
   return (
     <form
       data-role="tester"
-      onSubmit={(e) => {
-        e.preventDefault()
-        navigate('/signup/tester/agreement')
-      }}
+      onSubmit={
+        // handleSubmit checks every field first and only runs this function when all of them pass
+        handleSubmit(() => navigate('/signup/tester/agreement'))
+      }
       className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-130 flex-col gap-5 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">註冊</h1>
@@ -34,8 +49,18 @@ export function SignupTesterProfilePage() {
           type="text"
           autoComplete="name"
           placeholder="例：哇哩勒"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('name', {
+            // Spaces alone do not count as filled in
+            validate: (value) => value.trim() !== '' || '請填寫姓名',
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.name ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.name && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.name.message}
+          </span>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="phone" className="text-label">
@@ -50,8 +75,17 @@ export function SignupTesterProfilePage() {
           inputMode="tel"
           autoComplete="tel"
           placeholder="例：0912-345-678"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+          {...register('phone', {
+            validate: (value) => value.trim() !== '' || '請填寫手機號碼',
+          })}
+          className={`bg-surface min-h-12 rounded-md px-3 py-2.5 ${errors.phone ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.phone && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.phone.message}
+          </span>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="city" className="text-label">
@@ -63,7 +97,8 @@ export function SignupTesterProfilePage() {
         <div className="relative">
           <select
             id="city"
-            className="border-line-input bg-surface min-h-12 w-full appearance-none rounded-md border py-2.5 pr-11 pl-3"
+            {...register('city', { required: '請選擇居住地' })}
+            className={`bg-surface min-h-12 w-full appearance-none rounded-md py-2.5 pr-11 pl-3 ${errors.city ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
           >
             <option value="">請選擇</option>
             <option>臺北市</option>
@@ -93,6 +128,12 @@ export function SignupTesterProfilePage() {
             <ChevronDownIcon />
           </span>
         </div>
+        {errors.city && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.city.message}
+          </span>
+        )}
       </div>
       <div className="flex gap-3">
         <Link
