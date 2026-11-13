@@ -1,10 +1,6 @@
-import { useState } from 'react'
 import { Link } from 'react-router'
 
 export function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
@@ -21,8 +17,6 @@ export function LoginPage() {
           autoComplete="email"
           placeholder="example@example.com"
           name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
@@ -36,15 +30,12 @@ export function LoginPage() {
           autoComplete="current-password"
           placeholder="請輸入密碼"
           name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
       <button
         type="submit"
-        disabled={email.trim() === '' || password === ''}
-        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out enabled:cursor-pointer enabled:active:translate-y-px motion-reduce:active:translate-y-0"
+        className="border-ink bg-ink text-surface min-h-12 w-full cursor-pointer rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
       >
         登入
       </button>
