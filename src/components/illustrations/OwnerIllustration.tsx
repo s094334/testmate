@@ -68,7 +68,7 @@ export function OwnerIllustration({ className }: { className: string }) {
         strokeWidth="2.4"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1]"
+        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1] max-tablet:in-[.identity-card]:[stroke-dashoffset:0]"
       />
       <circle
         cx="182"
@@ -86,7 +86,7 @@ export function OwnerIllustration({ className }: { className: string }) {
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1]"
+        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1] max-tablet:in-[.identity-card]:[stroke-dashoffset:0]"
       />
       <g
         stroke="#1E1E1C"
