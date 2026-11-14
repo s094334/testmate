@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { devices, tester } from '@/data/tester'
 import { BasicInfo } from './BasicInfo'
+import { Devices } from './Devices'
 import { Experience } from './Experience'
 
 export function TesterProfilePage() {
   const [tab, setTab] = useState('basic')
+  const [deviceList, setDeviceList] = useState(devices)
 
   return (
     <div className="max-w-page tablet:px-6 desktop:gap-8 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
@@ -29,7 +31,7 @@ export function TesterProfilePage() {
           >
             裝置
             <span className="bg-tester-strong text-surface font-num h-6 min-w-6 rounded-full px-1.5 text-center text-[16px] leading-6 font-semibold">
-              {devices.length}
+              {deviceList.length}
             </span>
           </TabsTrigger>
           <TabsTrigger
@@ -53,10 +55,8 @@ export function TesterProfilePage() {
           <TabsContent value="experience" keepMounted>
             <Experience />
           </TabsContent>
-          <TabsContent value="devices">
-            <p className="text-ink-subtle desktop:p-8 px-4 py-5">
-              裝置：還沒製作。
-            </p>
+          <TabsContent value="devices" keepMounted>
+            <Devices devices={deviceList} onChange={setDeviceList} />
           </TabsContent>
           <TabsContent value="interests">
             <p className="text-ink-subtle desktop:p-8 px-4 py-5">

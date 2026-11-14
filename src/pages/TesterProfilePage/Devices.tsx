@@ -1,0 +1,124 @@
+import { useState } from 'react'
+import { ComputerIcon } from '@/components/icons/ComputerIcon'
+import { CustomDeviceIcon } from '@/components/icons/CustomDeviceIcon'
+import { PhoneIcon } from '@/components/icons/PhoneIcon'
+import { TabletIcon } from '@/components/icons/TabletIcon'
+import { TvIcon } from '@/components/icons/TvIcon'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import type { Device } from '@/data/tester'
+import { AddedDevices } from './AddedDevices'
+import { CustomDeviceForm } from './CustomDeviceForm'
+import { PickDeviceForm } from './PickDeviceForm'
+
+export function Devices({
+  devices,
+  onChange,
+}: {
+  devices: Device[]
+  onChange: (devices: Device[]) => void
+}) {
+  const [type, setType] = useState<Device['type']>('phone')
+  const [saved, setSaved] = useState(false)
+
+  return (
+    <section className="desktop:gap-6 desktop:p-8 flex flex-col gap-5 px-4 py-5">
+      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
+        <h2 className="text-section-title">裝置</h2>
+
+        <div className="desktop:flex hidden items-center gap-3">
+          <span className="text-ink-subtle">{saved && '已儲存'}</span>
+          <button
+            type="button"
+            onClick={() => setSaved(true)}
+            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          >
+            儲存
+          </button>
+        </div>
+      </div>
+
+      <Tabs value={type} onValueChange={setType} className="flex flex-col">
+        <TabsList className="relative z-1 -mb-px flex gap-1">
+          <TabsTrigger
+            value="phone"
+            className="text-ink-subtle data-active:border-ink data-active:bg-surface data-active:text-ink desktop:flex-none desktop:px-6 flex h-12 flex-1 items-center justify-center gap-2 rounded-t-md border border-b-0 border-transparent px-2 text-[20px] font-medium whitespace-nowrap transition-colors duration-150 ease-out data-active:font-bold"
+          >
+            <PhoneIcon className="desktop:size-5 desktop:translate-y-[1.5px]" />
+            <span className="max-desktop:sr-only">手機</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="tablet"
+            className="text-ink-subtle data-active:border-ink data-active:bg-surface data-active:text-ink desktop:flex-none desktop:px-6 flex h-12 flex-1 items-center justify-center gap-2 rounded-t-md border border-b-0 border-transparent px-2 text-[20px] font-medium whitespace-nowrap transition-colors duration-150 ease-out data-active:font-bold"
+          >
+            <TabletIcon className="desktop:size-5 desktop:translate-y-[1.5px]" />
+            <span className="max-desktop:sr-only">平板</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="tv"
+            className="text-ink-subtle data-active:border-ink data-active:bg-surface data-active:text-ink desktop:flex-none desktop:px-6 flex h-12 flex-1 items-center justify-center gap-2 rounded-t-md border border-b-0 border-transparent px-2 text-[20px] font-medium whitespace-nowrap transition-colors duration-150 ease-out data-active:font-bold"
+          >
+            <TvIcon className="desktop:size-5 desktop:translate-y-[1.5px]" />
+            <span className="max-desktop:sr-only">電視</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="computer"
+            className="text-ink-subtle data-active:border-ink data-active:bg-surface data-active:text-ink desktop:flex-none desktop:px-6 flex h-12 flex-1 items-center justify-center gap-2 rounded-t-md border border-b-0 border-transparent px-2 text-[20px] font-medium whitespace-nowrap transition-colors duration-150 ease-out data-active:font-bold"
+          >
+            <ComputerIcon className="desktop:size-5 desktop:translate-y-[1.5px]" />
+            <span className="max-desktop:sr-only">電腦</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="custom"
+            className="text-ink-subtle data-active:border-ink data-active:bg-surface data-active:text-ink desktop:flex-none desktop:px-6 flex h-12 flex-1 items-center justify-center gap-2 rounded-t-md border border-b-0 border-transparent px-2 text-[20px] font-medium whitespace-nowrap transition-colors duration-150 ease-out data-active:font-bold"
+          >
+            <CustomDeviceIcon className="desktop:size-5 desktop:translate-y-[1.5px]" />
+            <span className="max-desktop:sr-only">自訂</span>
+          </TabsTrigger>
+        </TabsList>
+
+        <div
+          className={`border-ink desktop:p-6 flex flex-col gap-4 rounded-md border p-4 ${type === 'phone' ? 'rounded-tl-none' : ''} ${type === 'custom' ? 'max-desktop:rounded-tr-none' : ''}`}
+        >
+          {type !== 'custom' && (
+            <PickDeviceForm
+              key={type}
+              type={type}
+              onAdd={(device) => {
+                onChange([...devices, device])
+                setSaved(false)
+              }}
+            />
+          )}
+
+          {type === 'custom' && (
+            <CustomDeviceForm
+              onAdd={(device) => {
+                onChange([...devices, device])
+                setSaved(false)
+              }}
+            />
+          )}
+        </div>
+      </Tabs>
+
+      <AddedDevices
+        devices={devices}
+        onRemove={(id) => {
+          onChange(devices.filter((device) => device.id !== id))
+          setSaved(false)
+        }}
+      />
+
+      <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 flex flex-col gap-2 rounded-b-md border-t px-4 py-3">
+        {saved && <span className="text-tester-text">已儲存</span>}
+        <button
+          type="button"
+          onClick={() => setSaved(true)}
+          className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        >
+          儲存
+        </button>
+      </div>
+    </section>
+  )
+}
