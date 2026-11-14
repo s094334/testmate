@@ -65,7 +65,7 @@ export function TesterIllustration({ className }: { className: string }) {
         strokeWidth="4"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1]"
+        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1] max-tablet:in-[.identity-card]:[stroke-dashoffset:0]"
       />
       <g stroke="#1E1E1C" strokeLinecap="round" strokeLinejoin="round">
         <rect
@@ -129,7 +129,7 @@ export function TesterIllustration({ className }: { className: string }) {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1]"
+        className="group-data-selected:animate-draw group-hover/identity:animate-draw [stroke-dasharray:1] [stroke-dashoffset:1] max-tablet:in-[.identity-card]:[stroke-dashoffset:0]"
       />
       <g stroke="#3F7F22" strokeWidth="2" strokeLinecap="round">
         <path d="M204 44 V56 M198 50 H210" />

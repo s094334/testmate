@@ -1,9 +1,18 @@
-import { LottieInteractions, LottieLight, lottieInView } from 'lottie-react'
+import { useRef } from 'react'
+import {
+  LottieInteractions,
+  LottieLight,
+  lottieInView,
+  type LottieHandle,
+} from 'lottie-react'
 import { Link } from 'react-router'
 import { ArrowRightIcon } from '@/components/icons/ArrowRightIcon'
 import { testingSteps } from './data'
 
 export function AboutSection() {
+  // Gives access to the animation's play/stop commands, for replay on click
+  const lottie = useRef<LottieHandle>(null)
+
   return (
     <section className="bg-surface border-line border-y">
       <div className="max-w-page tablet:gap-8 tablet:px-6 tablet:py-16 mx-auto flex flex-col gap-6 px-4 py-12">
@@ -21,17 +30,25 @@ export function AboutSection() {
         </div>
         <div className="tablet:flex-row tablet:flex-wrap tablet:gap-8 flex flex-col gap-6">
           <div className="tablet:flex-[2_1_480px] flex min-w-0 flex-col gap-3">
-            <div className="border-ink bg-platform-soft aspect-video overflow-hidden rounded-md border">
+            <button
+              type="button"
+              onClick={() => {
+                lottie.current?.stop()
+                lottie.current?.play()
+              }}
+              className="border-ink bg-platform-soft block aspect-video w-full cursor-pointer overflow-hidden rounded-md border"
+            >
               <LottieInteractions
                 interactions={[lottieInView({ once: true, amount: 0.5 })]}
               >
                 <LottieLight
+                  lottieRef={lottie}
                   src="/lottie/testmate.json"
                   autoplay={false}
                   className="size-full"
                 />
               </LottieInteractions>
-            </div>
+            </button>
           </div>
           <div className="tablet:flex-[1_1_280px] tablet:justify-center flex min-w-0 flex-col">
             <ol className="tablet:gap-6 tablet:text-[18px] flex flex-col gap-4">
