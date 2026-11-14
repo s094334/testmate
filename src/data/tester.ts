@@ -29,8 +29,6 @@ export const tester = {
   email: 'walile.test@gmail.com',
   city: '臺北市',
   phone: '0912-345-678',
-  // Signup skips the SMS check; it is done on the profile page
-  phoneVerified: true,
   languages: ['中文', '英文', '日語'],
   // Subset of languages
   nativeLanguages: ['中文'],
