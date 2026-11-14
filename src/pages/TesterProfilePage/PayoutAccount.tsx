@@ -35,8 +35,9 @@ export function PayoutAccount() {
           </p>
         </div>
 
+        {/* Desktop only: on mobile, 儲存帳戶 is in the bar at the bottom */}
         {(!account || editing) && (
-          <div className="flex gap-3">
+          <div className="desktop:flex hidden gap-3">
             {editing && (
               <button
                 type="button"
@@ -152,6 +153,20 @@ export function PayoutAccount() {
             ))}
           </div>
         </form>
+      )}
+
+      {/* Mobile save bar for this block: sticks to the bottom while 收款帳戶 is on screen.
+          This block is the last thing in the card, so -mx-4 -mb-5 cancel the card padding */}
+      {(!account || editing) && (
+        <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 rounded-b-md border-t px-4 py-3">
+          <button
+            type="submit"
+            form="payout-form"
+            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 w-full rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          >
+            儲存帳戶
+          </button>
+        </div>
       )}
     </div>
   )

@@ -15,7 +15,7 @@ export function Languages({
   const nativeLanguages = useWatch({ control, name: 'nativeLanguages' })
 
   return (
-    <div className="border-line flex flex-col gap-6 border-t pt-6">
+    <div className="flex flex-col gap-6 pt-6">
       <div className="flex flex-col gap-1">
         <h3 className="text-subheading">語言</h3>
         <p className="text-ink-subtle">

@@ -163,31 +163,24 @@ export function BasicInfo() {
         onChange={() => setSaved(false)}
       />
 
-      <PayoutAccount />
-
-      {/* Mobile save bar: sticks to the bottom of the scroll area while this card is on screen.
-          The negative margins cancel the section padding so it spans the card */}
-      <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 flex flex-col gap-2 rounded-b-md border-t px-4 py-3">
+      {/* Mobile save bar: sticks to the bottom of the screen until you scroll down to it.
+          It sits just before 收款帳戶, so from there on it scrolls away and
+          收款帳戶's own bar (儲存帳戶) takes over. -mx-4 cancels the section padding so it spans the card */}
+      <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 flex flex-col gap-2 border-t px-4 py-3">
         {saved && <span className="text-tester-text">已儲存</span>}
         {!saved && (errors.name || errors.phone) && (
           <span className="text-status-dispute-text">還有必填欄位沒填</span>
         )}
-        <div className="flex gap-2">
-          <button
-            type="button"
-            className="border-role bg-surface hover:bg-role-soft min-h-12 flex-1 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-          >
-            取消
-          </button>
-          <button
-            type="button"
-            onClick={save}
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 flex-1 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-          >
-            儲存
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={save}
+          className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        >
+          儲存
+        </button>
       </div>
+
+      <PayoutAccount />
     </section>
   )
 }
