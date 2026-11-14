@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { devices, tester } from '@/data/tester'
 import { BasicInfo } from './BasicInfo'
+import { Experience } from './Experience'
 
 export function TesterProfilePage() {
   const [tab, setTab] = useState('basic')
@@ -49,10 +50,8 @@ export function TesterProfilePage() {
           <TabsContent value="basic" keepMounted>
             <BasicInfo />
           </TabsContent>
-          <TabsContent value="experience">
-            <p className="text-ink-subtle desktop:p-8 px-4 py-5">
-              經歷：還沒製作。
-            </p>
+          <TabsContent value="experience" keepMounted>
+            <Experience />
           </TabsContent>
           <TabsContent value="devices">
             <p className="text-ink-subtle desktop:p-8 px-4 py-5">

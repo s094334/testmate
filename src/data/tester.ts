@@ -47,6 +47,12 @@ export const tester = {
     '咖啡／茶飲',
     '科技 3C',
   ],
+  // 經歷 tab. hasExperience: 'yes' = 有 QA 經驗, 'no' = 沒有經驗，想試試看.
+  // years must match one of the 年資 options in Experience.tsx
+  experience: {
+    hasExperience: 'yes' as 'yes' | 'no',
+    jobs: [{ years: '1–2 年', company: '好買股份有限公司' }],
+  },
   // Payout bank account. null = not set yet. Once saved it looks like:
   // { bankCode: '822', branchCode: '0012', accountNumber: '123456781234', holderName: '哇哩勒' }
   payout: null as Payout | null,
