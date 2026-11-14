@@ -23,6 +23,13 @@ export const statusLabels: Record<ProjectStatus, string> = {
   REFUNDED: '已退款',
 }
 
+export type Payout = {
+  bankCode: string
+  branchCode: string
+  accountNumber: string
+  holderName: string
+}
+
 export const tester = {
   name: '哇哩勒',
   // The login account: shown read-only on the profile page
@@ -40,6 +47,9 @@ export const tester = {
     '咖啡／茶飲',
     '科技 3C',
   ],
+  // Payout bank account. null = not set yet. Once saved it looks like:
+  // { bankCode: '822', branchCode: '0012', accountNumber: '123456781234', holderName: '哇哩勒' }
+  payout: null as Payout | null,
 }
 
 // Device type matches the tabs on the profile page: 手機／平板／電視／電腦／自訂

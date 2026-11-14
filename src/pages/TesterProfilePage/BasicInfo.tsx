@@ -5,6 +5,7 @@ import { WarningIcon } from '@/components/icons/WarningIcon'
 import { tester } from '@/data/tester'
 import { cityOptions } from './data'
 import { Languages } from './Languages'
+import { PayoutAccount } from './PayoutAccount'
 
 export type FormValues = {
   name: string
@@ -56,7 +57,7 @@ export function BasicInfo() {
           <button
             type="button"
             onClick={save}
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
           >
             儲存
           </button>
@@ -162,6 +163,8 @@ export function BasicInfo() {
         onChange={() => setSaved(false)}
       />
 
+      <PayoutAccount />
+
       {/* Mobile save bar: sticks to the bottom of the scroll area while this card is on screen.
           The negative margins cancel the section padding so it spans the card */}
       <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 flex flex-col gap-2 rounded-b-md border-t px-4 py-3">
@@ -179,7 +182,7 @@ export function BasicInfo() {
           <button
             type="button"
             onClick={save}
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 flex-1 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
           >
             儲存
           </button>
