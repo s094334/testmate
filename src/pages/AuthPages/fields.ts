@@ -180,7 +180,6 @@ export const ownerCompanyFields: FieldConfig<OwnerProfileFormValues>[] = [
     disablePlaceholder: true,
     options: industries,
     requiredMessage: '請選擇公司產業',
-    hint: '發布專案時會自動帶入，可再依專案修改',
   },
   {
     label: '公司地址',
