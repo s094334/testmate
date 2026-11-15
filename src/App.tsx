@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { AppLayout } from '@/layouts/AppLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
+import { OwnerLayout } from '@/layouts/OwnerLayout'
 import { TesterLayout } from '@/layouts/TesterLayout'
 import { CopyrightPage } from '@/pages/LegalPages/CopyrightPage'
 import { PrivacyPage } from '@/pages/LegalPages/PrivacyPage'
@@ -8,6 +9,8 @@ import { HomePage } from '@/pages/HomePage'
 import { HowItWorksPage } from '@/pages/HowItWorksPage'
 import { LoginPage } from '@/pages/AuthPages/LoginPage'
 import { SignupPage } from '@/pages/AuthPages/SignupPage'
+import { OwnerCompanyPage } from '@/pages/OwnerCompanyPage'
+import { OwnerHomePage } from '@/pages/OwnerHomePage'
 import { TesterHomePage } from '@/pages/TesterHomePage'
 import { TesterProfilePage } from '@/pages/TesterProfilePage'
 import { TesterProjectsPage } from '@/pages/TesterProjectsPage'
@@ -30,6 +33,10 @@ function App() {
           <Route index element={<TesterHomePage />} />
           <Route path="profile" element={<TesterProfilePage />} />
           <Route path="projects" element={<TesterProjectsPage />} />
+        </Route>
+        <Route path="owner" element={<OwnerLayout />}>
+          <Route index element={<OwnerHomePage />} />
+          <Route path="company" element={<OwnerCompanyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
