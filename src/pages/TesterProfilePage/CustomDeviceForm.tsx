@@ -28,7 +28,7 @@ export function CustomDeviceForm({
               setName(event.target.value)
               setMessage('')
             }}
-            placeholder="填入手機品牌、型號"
+            placeholder="填入品牌、型號"
             className="border-line-input bg-surface min-h-12 w-full rounded-md border px-3"
           />
         </div>

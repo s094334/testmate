@@ -15,6 +15,7 @@ export function Experience() {
     register,
     handleSubmit,
     control,
+    clearErrors,
     formState: { errors },
   } = useForm<FormValues>({
     shouldFocusError: false,
@@ -65,7 +66,11 @@ export function Experience() {
               type="radio"
               value="no"
               {...register('hasExperience', {
-                onChange: () => setSaved(false),
+                onChange: () => {
+                  setSaved(false)
+                  // RHF only re-checks the field that changed, so clear old jobs errors here
+                  clearErrors('jobs')
+                },
               })}
               className="accent-role size-5 cursor-pointer"
             />
@@ -78,7 +83,10 @@ export function Experience() {
               type="radio"
               value="yes"
               {...register('hasExperience', {
-                onChange: () => setSaved(false),
+                onChange: () => {
+                  setSaved(false)
+                  clearErrors('jobs')
+                },
               })}
               className="accent-role size-5 cursor-pointer"
             />
@@ -125,7 +133,7 @@ export function Experience() {
                       <option>未滿 1 年</option>
                       <option>1–2 年</option>
                       <option>3–5 年</option>
-                      <option>5 年以上</option>
+                      <option>超過 5 年</option>
                     </select>
                   </div>
 
