@@ -18,9 +18,7 @@ type OwnerProject = {
   details: { location: string; equipment: string; testPeriod: string }
   recruitmentStatus: 'recruiting' | 'closed' | 'cancelled'
   applicationCount: number
-  // Recruiting deadline, not the test end date. Not shown on the card.
   endsAt: string
-  // The latest engagement that is not CANCELLED, so CANCELLED never shows up here
   engagement: {
     id: string
     status:
@@ -35,7 +33,6 @@ type OwnerProject = {
     testerName: string
   } | null
   createdAt: string
-  // Front-end only for now: the API has not defined when an owner needs to act
   needsAttention: boolean
 }
 
@@ -100,31 +97,23 @@ export const ownerProjects: OwnerProject[] = [
   },
 ]
 
-// Turns the API fields into the three tags the owner sees
 export function getOwnerStatus(
   project: OwnerProject
 ): 'recruiting' | 'testing' | 'ended' {
-  // Owner's decision: a cancelled project looks the same as 已結束
   if (project.recruitmentStatus === 'cancelled') {
     return 'ended'
   }
-  // Still looking for a tester: 招募中
   if (project.recruitmentStatus === 'recruiting') {
     return 'recruiting'
   }
-  // Closed but nobody was chosen: 已結束 (assumption, not in the API doc)
   if (project.engagement === null) {
     return 'ended'
   }
-  // Test finished and paid out: 已結束
   if (project.engagement.status === 'COMPLETED') {
     return 'ended'
   }
-  // Money went back to the owner: 已結束 (assumption, not in the API doc)
   if (project.engagement.status === 'REFUNDED') {
     return 'ended'
   }
-  // Everything else is 進行中. Owner's decision: PENDING_NDA, PENDING_PAYMENT
-  // and FUNDED count too, along with TESTING, SUBMITTED and DISPUTED.
   return 'testing'
 }
