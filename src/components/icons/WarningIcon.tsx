@@ -1,4 +1,9 @@
-export function WarningIcon() {
+// className is optional: leave it out for the 16px icon next to error text
+export function WarningIcon({
+  className = 'flex-none',
+}: {
+  className?: string
+}) {
   return (
     <svg
       width="16"
@@ -9,7 +14,7 @@ export function WarningIcon() {
       strokeWidth="2.4"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="flex-none"
+      className={className}
     >
       <path d="M12 3l10 18H2z" />
       <path d="M12 10v4M12 17.5v.5" />

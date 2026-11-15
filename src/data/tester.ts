@@ -23,23 +23,71 @@ export const statusLabels: Record<ProjectStatus, string> = {
   REFUNDED: '已退款',
 }
 
+export type Payout = {
+  bankCode: string
+  branchCode: string
+  accountNumber: string
+  holderName: string
+}
+
 export const tester = {
   name: '哇哩勒',
+  // The login account: shown read-only on the profile page
+  email: 'walile.test@gmail.com',
+  city: '臺北市',
+  phone: '0912-345-678',
+  languages: ['中文', '英文', '日語'],
+  // Subset of languages
+  nativeLanguages: ['中文'],
+  interests: [
+    '手機遊戲',
+    'Netflix',
+    '巴哈姆特動畫瘋',
+    'Spotify',
+    '咖啡／茶飲',
+    '科技 3C',
+  ],
+  experience: {
+    hasExperience: 'yes' as 'yes' | 'no',
+    jobs: [{ years: '1–2 年', company: '好買股份有限公司' }],
+  },
+  // Payout bank account. null = not set yet. Once saved it looks like:
+  // { bankCode: '822', branchCode: '0012', accountNumber: '123456781234', holderName: '哇哩勒' }
+  payout: null as Payout | null,
 }
 
 // Device type matches the tabs on the profile page: 手機／平板／電視／電腦／自訂
-export const devices: {
+// name: the model, or the brand when it has no models (e.g. Windows); for 自訂 what the tester typed
+// os: the system version; may be '' for 自訂
+export type Device = {
   id: string
   type: 'phone' | 'tablet' | 'tv' | 'computer' | 'custom'
   name: string
   os: string
-}[] = [
-  { id: 'd1', type: 'phone', name: 'iPhone 15', os: 'iOS 18' },
-  { id: 'd2', type: 'tablet', name: 'Galaxy Tab S9', os: 'Android 14' },
-  { id: 'd3', type: 'computer', name: 'MacBook Air', os: 'macOS 15' },
-  { id: 'd4', type: 'computer', name: '華碩筆電', os: 'Windows 11' },
+}
+
+export const devices: Device[] = [
+  { id: 'd1', type: 'phone', name: 'iPhone 15', os: 'iOS 18（18.7.11）' },
+  {
+    id: 'd2',
+    type: 'tablet',
+    name: 'Galaxy Tab S9',
+    os: 'One UI 6（Android 14）',
+  },
+  {
+    id: 'd3',
+    type: 'computer',
+    name: 'MacBook Air 13 吋 M2（2022）',
+    os: 'macOS 15 Sequoia（15.8.2）',
+  },
+  { id: 'd4', type: 'custom', name: '華碩筆電', os: 'Windows 11 24H2' },
   { id: 'd5', type: 'phone', name: 'Pixel 8', os: 'Android 15' },
-  { id: 'd6', type: 'tablet', name: 'iPad Air', os: 'iPadOS 18' },
+  {
+    id: 'd6',
+    type: 'tablet',
+    name: 'iPad Air（第 5 代）',
+    os: 'iPadOS 18（18.7.11）',
+  },
 ]
 
 // Projects the tester has joined. For finished projects, `due` is the end date.

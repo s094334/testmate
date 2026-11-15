@@ -44,14 +44,14 @@ export function MyDevicesMobile() {
 
           <div className="flex gap-2">
             <Link
-              to="/tester/profile"
+              to="/tester/profile?tab=devices"
               className="border-ink bg-surface flex min-h-12 flex-1 items-center justify-center gap-2 rounded-md border font-bold"
             >
               <PlusIcon />
               新增裝置
             </Link>
             <Link
-              to="/tester/profile"
+              to="/tester/profile?tab=devices"
               className="border-ink bg-surface flex min-h-12 flex-1 items-center justify-center rounded-md border font-bold"
             >
               編輯

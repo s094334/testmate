@@ -7,7 +7,7 @@ export function MyDevices() {
     <aside className="bg-surface border-ink desktop:flex desktop:mt-[47px] desktop:grow desktop:basis-75 hidden min-w-0 flex-col gap-4 rounded-md border p-6">
       <div className="flex items-baseline justify-between gap-2">
         <h2 className="text-subheading">我的裝置</h2>
-        <Link to="/tester/profile" className="underline">
+        <Link to="/tester/profile?tab=devices" className="underline">
           編輯
         </Link>
       </div>
@@ -28,7 +28,7 @@ export function MyDevices() {
       </ol>
 
       <Link
-        to="/tester/profile"
+        to="/tester/profile?tab=devices"
         className="border-ink bg-surface hover:border-role hover:bg-role hover:text-on-role mt-auto flex min-h-12 items-center justify-center gap-2 rounded-md border font-bold transition-colors duration-150 ease-out"
       >
         <PlusIcon />
