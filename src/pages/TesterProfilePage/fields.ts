@@ -7,14 +7,13 @@ export type FieldConfig = {
   name: Path<Payout>
   requiredMessage?: string
   rules?: RegisterOptions<Payout, Path<Payout>>
-} & Pick<ComponentProps<'input'>, 'inputMode' | 'maxLength' | 'autoComplete'>
+} & Pick<ComponentProps<'input'>, 'inputMode' | 'autoComplete'>
 
 export const payoutFields: FieldConfig[] = [
   {
     label: '銀行代碼',
     name: 'bankCode',
     inputMode: 'numeric',
-    maxLength: 3,
     autoComplete: 'off',
     requiredMessage: '請填寫銀行代碼',
   },
@@ -22,14 +21,12 @@ export const payoutFields: FieldConfig[] = [
     label: '分行代碼',
     name: 'branchCode',
     inputMode: 'numeric',
-    maxLength: 3,
     autoComplete: 'off',
   },
   {
     label: '帳號',
     name: 'accountNumber',
     inputMode: 'numeric',
-    maxLength: 16,
     autoComplete: 'off',
     requiredMessage: '請填寫帳號',
   },

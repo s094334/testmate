@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { devices, tester } from '@/data/tester'
 import { BasicInfo } from './BasicInfo'
@@ -7,7 +8,12 @@ import { Experience } from './Experience'
 import { Interests } from './Interests'
 
 export function TesterProfilePage() {
-  const [tab, setTab] = useState('basic')
+  const [params] = useSearchParams()
+  const [tab, setTab] = useState(
+    ['basic', 'experience', 'devices', 'interests'].find(
+      (value) => value === params.get('tab')
+    ) ?? 'basic'
+  )
   const [deviceList, setDeviceList] = useState(devices)
   const [interestList, setInterestList] = useState(tester.interests)
 

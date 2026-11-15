@@ -35,27 +35,16 @@ export function PayoutAccount() {
           </p>
         </div>
 
-        {/* Desktop only: on mobile, 儲存帳戶 is in the bar at the bottom */}
+        {/* Desktop only: on mobile, 儲存帳戶 is in the bar at the bottom.
+            Sits outside the <form> below; form="payout-form" still makes it submit that form */}
         {(!account || editing) && (
-          <div className="desktop:flex hidden gap-3">
-            {editing && (
-              <button
-                type="button"
-                onClick={() => setEditing(false)}
-                className="border-role bg-surface hover:bg-role-soft min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-              >
-                取消
-              </button>
-            )}
-            {/* Sits outside the <form> below; form="payout-form" still makes it submit that form */}
-            <button
-              type="submit"
-              form="payout-form"
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-            >
-              儲存帳戶
-            </button>
-          </div>
+          <button
+            type="submit"
+            form="payout-form"
+            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role desktop:block hidden min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          >
+            儲存帳戶
+          </button>
         )}
       </div>
 
@@ -130,7 +119,6 @@ export function PayoutAccount() {
                   id={field.name}
                   type="text"
                   inputMode={field.inputMode}
-                  maxLength={field.maxLength}
                   autoComplete={field.autoComplete}
                   {...register(field.name, {
                     required: field.requiredMessage,
