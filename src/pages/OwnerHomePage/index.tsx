@@ -1,8 +1,9 @@
 import { Link } from 'react-router'
 import { OwnerStatusTag } from '@/components/OwnerStatusTag'
+import { StatusTag } from '@/components/StatusTag'
 import { FilePlusIcon } from '@/components/icons/FilePlusIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
-import { getOwnerStatus, ownerProjects } from '@/data/owner'
+import { ownerProjects } from '@/data/owner'
 
 export function OwnerHomePage() {
   return (
@@ -50,10 +51,28 @@ export function OwnerHomePage() {
                   {project.name}
                 </h2>
                 <div className="desktop:mt-1 mt-0.5 flex flex-none">
-                  <OwnerStatusTag
-                    status={getOwnerStatus(project)}
-                    needsAttention={project.needsAttention}
-                  />
+                  {/* Matched with a tester: same tag as the tester side */}
+                  {project.engagement !== null && (
+                    <StatusTag
+                      status={project.engagement.status}
+                      needsAction={project.needsAttention}
+                    />
+                  )}
+                  {project.engagement === null &&
+                    project.recruitmentStatus === 'recruiting' && (
+                      <OwnerStatusTag
+                        status="recruiting"
+                        needsAttention={project.needsAttention}
+                      />
+                    )}
+                  {/* Closed or cancelled with no tester. assumption: not decided yet */}
+                  {project.engagement === null &&
+                    project.recruitmentStatus !== 'recruiting' && (
+                      <OwnerStatusTag
+                        status="ended"
+                        needsAttention={project.needsAttention}
+                      />
+                    )}
                 </div>
               </div>
               <p className="text-ink-subtle">

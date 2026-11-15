@@ -1,5 +1,7 @@
 // Mock data shaped like the API (GET /api/auth/company and GET /api/auth/projects)
 
+import { type ProjectStatus } from '@/data/tester'
+
 type Company = {
   realName: string
   email: string
@@ -19,17 +21,10 @@ type OwnerProject = {
   recruitmentStatus: 'recruiting' | 'closed' | 'cancelled'
   applicationCount: number
   endsAt: string
+  // Same statuses as the tester side (the API never returns CANCELLED here)
   engagement: {
     id: string
-    status:
-      | 'PENDING_NDA'
-      | 'PENDING_PAYMENT'
-      | 'FUNDED'
-      | 'TESTING'
-      | 'SUBMITTED'
-      | 'DISPUTED'
-      | 'COMPLETED'
-      | 'REFUNDED'
+    status: ProjectStatus
     testerName: string
   } | null
   createdAt: string
@@ -64,6 +59,22 @@ export const ownerProjects: OwnerProject[] = [
     needsAttention: true,
   },
   {
+    id: 'o4',
+    name: '會員集點功能測試',
+    summary: '集點、兌換與點數到期提醒的完整流程測試。',
+    details: {
+      location: '遠端',
+      equipment: '自備手機',
+      testPeriod: '2026/11/01–2026/11/25',
+    },
+    recruitmentStatus: 'closed',
+    applicationCount: 4,
+    endsAt: '2026-10-31T15:59:59.000Z',
+    engagement: { id: 'e4', status: 'TESTING', testerName: '張家豪' },
+    createdAt: '2026-10-15T02:00:00.000Z',
+    needsAttention: false,
+  },
+  {
     id: 'o2',
     name: '相簿備份 App 測試',
     summary: '自動備份、大量上傳與相簿分享的穩定度測試。',
@@ -96,24 +107,3 @@ export const ownerProjects: OwnerProject[] = [
     needsAttention: false,
   },
 ]
-
-export function getOwnerStatus(
-  project: OwnerProject
-): 'recruiting' | 'testing' | 'ended' {
-  if (project.recruitmentStatus === 'cancelled') {
-    return 'ended'
-  }
-  if (project.recruitmentStatus === 'recruiting') {
-    return 'recruiting'
-  }
-  if (project.engagement === null) {
-    return 'ended'
-  }
-  if (project.engagement.status === 'COMPLETED') {
-    return 'ended'
-  }
-  if (project.engagement.status === 'REFUNDED') {
-    return 'ended'
-  }
-  return 'testing'
-}

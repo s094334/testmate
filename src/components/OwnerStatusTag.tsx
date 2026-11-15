@@ -1,13 +1,13 @@
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { ExclamationIcon } from '@/components/icons/ExclamationIcon'
 import { MegaphoneIcon } from '@/components/icons/MegaphoneIcon'
-import { MinusCircleIcon } from '@/components/icons/MinusCircleIcon'
 
+// Only for projects with no tester yet; matched projects use StatusTag
 export function OwnerStatusTag({
   status,
   needsAttention,
 }: {
-  status: 'recruiting' | 'testing' | 'ended'
+  status: 'recruiting' | 'ended'
   needsAttention: boolean
 }) {
   return (
@@ -18,12 +18,6 @@ export function OwnerStatusTag({
         <>
           <MegaphoneIcon />
           招募中
-        </>
-      )}
-      {status === 'testing' && (
-        <>
-          <MinusCircleIcon className="size-4" />
-          進行中
         </>
       )}
       {status === 'ended' && (
