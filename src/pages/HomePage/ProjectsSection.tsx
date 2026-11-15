@@ -37,12 +37,22 @@ export function ProjectsSection() {
                   招募中
                 </span>
               </div>
-              <h3
-                title={project.title}
-                className="text-subheading tablet:text-[26px] font-ellipsis truncate"
-              >
-                {project.title}
-              </h3>
+              <div className="flex flex-col gap-2">
+                <h3
+                  title={project.title}
+                  className="text-subheading tablet:text-[26px] font-ellipsis truncate"
+                >
+                  {project.title}
+                </h3>
+                <span className="font-num inline-flex items-baseline gap-1.5 leading-none font-semibold">
+                  <span className="tablet:text-[34px] text-[30px] text-ink-subtle">
+                    NT$
+                  </span>
+                  <span className="tablet:text-[34px] text-[30px] text-ink-subtle">
+                    {project.reward.toLocaleString('en-US')}
+                  </span>
+                </span>
+              </div>
               <div className="flex flex-wrap gap-1.5">
                 <span className="bg-tag-industry-bg text-tag-industry-fg rounded-[4px] px-3 py-0.5 font-bold">
                   {project.industry}
@@ -56,29 +66,23 @@ export function ProjectsSection() {
                   </span>
                 ))}
               </div>
-              <dl className="border-line grid grid-cols-2 gap-2 border-t pt-4">
-                <div className="flex flex-col items-center text-center">
-                  <dt className="text-ink-subtle">報酬</dt>
-                  <dd className="font-num text-[24px] leading-[1.2] font-semibold">
-                    NT$ {project.reward.toLocaleString('en-US')}
-                  </dd>
-                </div>
-                <div className="flex flex-col items-center text-center">
-                  <dt className="text-ink-subtle">截止</dt>
-                  <dd className="font-num text-[24px] leading-[1.2] font-semibold">
+              <div className="border-line mt-auto flex items-center justify-between gap-3 border-t pt-4">
+                <span className="text-ink-subtle">
+                  截止{' '}
+                  <b className="font-num text-ink text-[18px] font-semibold">
                     {project.deadline}
-                  </dd>
-                </div>
-              </dl>
-              <a
-                href="#"
-                className="group/case mt-auto inline-flex min-h-11 items-center gap-2 self-end font-bold decoration-2 underline-offset-5 hover:underline"
-              >
-                查看案件
-                <span className="transition-transform duration-150 ease-out group-hover/case:translate-x-1">
-                  <ArrowRightIcon />
+                  </b>
                 </span>
-              </a>
+                <a
+                  href="#"
+                  className="group/case inline-flex min-h-11 items-center gap-2 font-bold whitespace-nowrap decoration-2 underline-offset-5 hover:underline"
+                >
+                  查看案件
+                  <span className="transition-transform duration-150 ease-out group-hover/case:translate-x-1">
+                    <ArrowRightIcon />
+                  </span>
+                </a>
+              </div>
             </article>
           ))}
         </div>

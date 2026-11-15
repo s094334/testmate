@@ -15,7 +15,8 @@ export function LoginPage() {
           id="email"
           type="email"
           autoComplete="email"
-          placeholder="name@example.com"
+          placeholder="example@example.com"
+          name="email"
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
@@ -28,24 +29,27 @@ export function LoginPage() {
           type="password"
           autoComplete="current-password"
           placeholder="請輸入密碼"
+          name="password"
           className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
         />
       </div>
       <button
         type="submit"
-        className="border-ink bg-ink text-surface hover:bg-surface hover:text-ink min-h-12 w-full rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        className="border-ink bg-ink text-surface min-h-12 w-full cursor-pointer rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
       >
         登入
       </button>
-      <p className="text-ink-muted text-center">
-        還沒有帳號？
-        <Link
-          to="/signup"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
-          註冊
-        </Link>
-      </p>
+      <div className="flex flex-col gap-1">
+        <p className="text-ink-muted text-center">
+          還沒有帳號？
+          <Link
+            to="/signup"
+            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+          >
+            註冊
+          </Link>
+        </p>
+      </div>
     </form>
   )
 }
