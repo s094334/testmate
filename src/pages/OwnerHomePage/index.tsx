@@ -9,7 +9,7 @@ export function OwnerHomePage() {
   return (
     <div className="max-w-page tablet:px-6 desktop:gap-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-5 px-4 pt-6 pb-12">
       <div className="flex min-h-12 items-center justify-between gap-4">
-        <h1 className="text-title-page">專案列表</h1>
+        <h1 className="text-subtitle">專案列表</h1>
         {ownerProjects.length > 0 && (
           <Link
             to="/owner/projects/new"
