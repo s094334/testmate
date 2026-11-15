@@ -8,7 +8,6 @@ import { ownerProjects } from '@/data/owner'
 export function OwnerHomePage() {
   return (
     <div className="max-w-page tablet:px-6 desktop:gap-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-5 px-4 pt-6 pb-12">
-      {/* min-h-12 keeps the row as tall as the button, so the heading does not move when the button is hidden */}
       <div className="flex min-h-12 items-center justify-between gap-4">
         <h1 className="text-title-page">專案列表</h1>
         {ownerProjects.length > 0 && (
@@ -27,7 +26,7 @@ export function OwnerHomePage() {
           <div className="bg-owner-soft text-owner-strong flex size-18 items-center justify-center rounded-full">
             <FilePlusIcon />
           </div>
-          <h2 className="text-subheading mt-1">還沒有發布的專案</h2>
+          <h2 className="text-subheading mt-1">還沒有任何專案唷</h2>
           <Link
             to="#"
             className="border-role bg-surface text-ink hover:bg-role hover:text-on-role mt-2 inline-flex min-h-12 items-center gap-2 rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
@@ -51,7 +50,6 @@ export function OwnerHomePage() {
                   {project.name}
                 </h2>
                 <div className="desktop:mt-1 mt-0.5 flex flex-none">
-                  {/* Matched with a tester: same tag as the tester side */}
                   {project.engagement !== null && (
                     <StatusTag
                       status={project.engagement.status}
