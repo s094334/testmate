@@ -15,7 +15,7 @@ export function TesterHeader() {
   const { pathname } = useLocation()
 
   return (
-    <header className="bg-surface border-line relative z-3 border-b">
+    <header className="bg-surface border-line sticky top-0 z-3 border-b">
       <nav className="max-w-page tablet:gap-3 tablet:px-6 tablet:py-3 tablet:min-h-17 mx-auto flex min-h-15 items-center justify-between gap-2 py-2 pr-2 pl-4">
         <div className="flex min-w-0 items-center gap-8">
           <Link to="/tester" className="flex min-w-0 items-center">

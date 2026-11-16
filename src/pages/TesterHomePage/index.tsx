@@ -43,17 +43,19 @@ export function TesterHomePage() {
           className={`bg-surface border-ink flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border ${tab === 'joined' ? 'rounded-tl-none' : ''}`}
         >
           {/* Mobile: the joined list stops at 420px and scrolls.
+              Desktop: contain-size stops the list from making the page taller, so the page
+              fills the space between header and footer and the list scrolls inside it.
               -mb-px on both panels: the scroll area runs 1px past the card, so the last grey line is
               cut off when it would sit right on the card's bottom border */}
           <TabsContent
             value="joined"
-            className="desktop:max-h-none -mb-px max-h-105 min-h-0 flex-1 overflow-y-auto"
+            className="desktop:max-h-none desktop:contain-size -mb-px max-h-105 min-h-0 flex-1 overflow-y-auto"
           >
             <JoinedProjects />
           </TabsContent>
           <TabsContent
             value="invited"
-            className="-mb-px min-h-0 flex-1 overflow-y-auto"
+            className="desktop:contain-size -mb-px min-h-0 flex-1 overflow-y-auto"
           >
             <InvitedProjects />
           </TabsContent>
