@@ -31,6 +31,7 @@ export function FormField<T extends FieldValues>({
   hideHintOnError,
   rows,
   tooltip,
+  headingLabel,
   register,
   errors,
 }: FormFieldProps<T>) {
@@ -40,8 +41,11 @@ export function FormField<T extends FieldValues>({
   return (
     <div className="flex flex-col gap-2">
       {tooltip ? (
-        <div className="flex items-center">
-          <label htmlFor={id} className="text-label">
+        <div className={`flex items-center ${headingLabel ? 'mb-2' : ''}`}>
+          <label
+            htmlFor={id}
+            className={headingLabel ? 'text-subheading' : 'text-label'}
+          >
             {label}
             {requiredMessage && (
               <span className="text-status-dispute-text text-required ml-1.5">
@@ -52,7 +56,10 @@ export function FormField<T extends FieldValues>({
           <InfoPopover label={`${label}說明`}>{tooltip}</InfoPopover>
         </div>
       ) : (
-        <label htmlFor={id} className="text-label">
+        <label
+          htmlFor={id}
+          className={headingLabel ? 'text-subheading mb-2' : 'text-label'}
+        >
           {label}
           {requiredMessage && (
             <span className="text-status-dispute-text text-required ml-1.5">

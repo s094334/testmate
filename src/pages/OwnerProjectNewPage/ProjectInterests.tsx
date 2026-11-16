@@ -21,7 +21,7 @@ export function ProjectInterests({
       <div className="flex flex-col gap-1">
         <h3 className="text-subheading">相關興趣</h3>
         <p className="text-ink-subtle">
-          想指定興趣再加；會優先推薦有相同興趣的測試人員。
+          加入和專案相關的興趣，平台會優先推薦有這些興趣的測試人員。
         </p>
       </div>
 
@@ -108,7 +108,7 @@ export function ProjectInterests({
       <button
         type="button"
         onClick={() => setShowInterests(!showInterests)}
-        className="border-role bg-surface text-role-text hover:bg-platform-soft inline-flex min-h-12 items-center gap-2 self-start rounded-full border border-dashed px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        className="border-role bg-surface text-role-text hover:bg-role hover:text-on-role inline-flex min-h-12 items-center gap-2 self-start rounded-full border border-dashed px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
       >
         {showInterests ? <MinusIcon /> : <PlusIcon />}
         {showInterests

@@ -15,6 +15,8 @@ export type FieldConfig<T extends FieldValues> = {
   hideHintOnError?: boolean
   rows?: number
   tooltip?: string
+  // 20px label with 16px below it, like the 媒合條件 headings (目標裝置 etc.)
+  headingLabel?: boolean
 } & Pick<
   ComponentProps<'input'>,
   'id' | 'autoComplete' | 'inputMode' | 'maxLength'
@@ -202,6 +204,7 @@ export const ownerCompanyFields: FieldConfig<OwnerProfileFormValues>[] = [
 export const projectBasicFields: FieldConfig<ProjectBasicFormValues>[] = [
   {
     label: '專案名稱',
+    headingLabel: true,
     name: 'name',
     id: 'project-name',
     type: 'text',
@@ -211,6 +214,7 @@ export const projectBasicFields: FieldConfig<ProjectBasicFormValues>[] = [
   },
   {
     label: '簡介',
+    headingLabel: true,
     name: 'summary',
     type: 'textarea',
     rows: 3,
