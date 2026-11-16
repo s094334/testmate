@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
+import { owner } from '@/data/owner'
 import {
   projectBasicFields,
   type ProjectBasicFormValues,
@@ -23,6 +24,7 @@ export function OwnerProjectNewPage() {
     shouldFocusError: false,
     defaultValues: {
       name: '',
+      industry: owner.industryTag.name,
       summary: '',
     },
   })
@@ -64,14 +66,25 @@ export function OwnerProjectNewPage() {
         <div className={step === 1 ? 'contents' : 'hidden'}>
           <section className="bg-surface border-ink desktop:px-8 desktop:py-7 flex flex-col gap-8 rounded-md border px-4 py-5">
             <h2 className="text-subheading desktop:text-heading">基本資訊</h2>
-            {projectBasicFields.map((field) => (
+            <FormField
+              {...projectBasicFields.name}
+              register={register}
+              errors={errors}
+            />
+
+            <div className="desktop:w-1/2">
               <FormField
-                key={field.name}
-                {...field}
+                {...projectBasicFields.industry}
                 register={register}
                 errors={errors}
               />
-            ))}
+            </div>
+
+            <FormField
+              {...projectBasicFields.summary}
+              register={register}
+              errors={errors}
+            />
           </section>
 
           <MatchingConditions />
