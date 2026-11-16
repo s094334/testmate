@@ -13,6 +13,8 @@ export type FieldConfig<T extends FieldValues> = {
   disablePlaceholder?: boolean
   hint?: string
   hideHintOnError?: boolean
+  rows?: number
+  tooltip?: string
 } & Pick<
   ComponentProps<'input'>,
   'id' | 'autoComplete' | 'inputMode' | 'maxLength'
