@@ -41,6 +41,11 @@ export type OwnerProfileFormValues = {
   address: string
 }
 
+export type ProjectBasicFormValues = {
+  name: string
+  summary: string
+}
+
 export const accountFields: FieldConfig<AccountFormValues>[] = [
   {
     label: 'Email',
@@ -191,5 +196,28 @@ export const ownerCompanyFields: FieldConfig<OwnerProfileFormValues>[] = [
     placeholder: '例：臺北市信義區市府路 1 號',
     requiredMessage: '請填寫公司地址',
     rules: { pattern: { value: /\S/, message: '請填寫公司地址' } },
+  },
+]
+
+export const projectBasicFields: FieldConfig<ProjectBasicFormValues>[] = [
+  {
+    label: '專案名稱',
+    name: 'name',
+    id: 'project-name',
+    type: 'text',
+    placeholder: '例：多國語系 App 測試',
+    requiredMessage: '請填寫專案名稱',
+    rules: { pattern: { value: /\S/, message: '請填寫專案名稱' } },
+  },
+  {
+    label: '簡介',
+    name: 'summary',
+    type: 'textarea',
+    rows: 3,
+    tooltip: '主要測試內容，大概怎麼進行，以及測試的產品及步驟大概是什麼。',
+    placeholder:
+      '例：確認購物 App 切換成日文後，從瀏覽商品、加入購物車到結帳，翻譯與排版是否正確，有沒有文字被截斷或出現亂碼。',
+    requiredMessage: '請填寫簡介',
+    rules: { pattern: { value: /\S/, message: '請填寫簡介' } },
   },
 ]

@@ -30,7 +30,7 @@ export function OwnerHomePage() {
             </div>
             <h2 className="text-subheading mt-1">還沒有任何專案唷</h2>
             <Link
-              to="#"
+              to="/owner/projects/new"
               className="border-role bg-surface text-ink hover:bg-role hover:text-on-role mt-2 inline-flex min-h-12 items-center gap-2 rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
             >
               <PlusIcon />
