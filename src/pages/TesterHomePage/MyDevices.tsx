@@ -12,7 +12,8 @@ export function MyDevices() {
         </Link>
       </div>
 
-      <ol className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+      {/* contain-size: the list fills the card and scrolls, instead of making the page taller */}
+      <ol className="flex min-h-0 flex-1 flex-col overflow-y-auto contain-size">
         {devices.map((device) => (
           <li
             key={device.id}
