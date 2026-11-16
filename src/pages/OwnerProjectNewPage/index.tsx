@@ -13,6 +13,7 @@ import { FormField } from '@/pages/AuthPages/FormField'
 import { MatchingConditions } from './MatchingConditions'
 import { ProjectProgress } from './ProjectProgress'
 import { ScheduleAndReward } from './ScheduleAndReward'
+import { TestRequirements } from './TestRequirements'
 
 export function OwnerProjectNewPage() {
   const {
@@ -26,7 +27,7 @@ export function OwnerProjectNewPage() {
     },
   })
 
-  const [step, setStep] = useState<1 | 2>(1)
+  const [step, setStep] = useState<1 | 2 | 3>(1)
 
   return (
     <div className="max-w-page tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col px-4 pt-6 pb-12">
@@ -40,11 +41,11 @@ export function OwnerProjectNewPage() {
             上一頁
           </Link>
         )}
-        {step === 2 && (
+        {step !== 1 && (
           <button
             type="button"
             onClick={() => {
-              setStep(1)
+              setStep(step === 3 ? 2 : 1)
               window.scrollTo({ top: 0 })
             }}
             className="desktop:inline-flex hidden min-h-11 cursor-pointer items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
@@ -80,6 +81,10 @@ export function OwnerProjectNewPage() {
           <ScheduleAndReward />
         </div>
 
+        <div className={step === 3 ? 'contents' : 'hidden'}>
+          <TestRequirements />
+        </div>
+
         {step === 1 && (
           <div className="desktop:flex hidden justify-end">
             <button
@@ -98,9 +103,23 @@ export function OwnerProjectNewPage() {
           <div className="desktop:flex hidden justify-end gap-3">
             <button
               type="button"
+              onClick={() => {
+                setStep(3)
+                window.scrollTo({ top: 0 })
+              }}
               className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
             >
               下一步
+            </button>
+          </div>
+        )}
+        {step === 3 && (
+          <div className="desktop:flex hidden justify-end gap-3">
+            <button
+              type="button"
+              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            >
+              發布
             </button>
           </div>
         )}
@@ -115,11 +134,11 @@ export function OwnerProjectNewPage() {
               上一頁
             </Link>
           )}
-          {step === 2 && (
+          {step !== 1 && (
             <button
               type="button"
               onClick={() => {
-                setStep(1)
+                setStep(step === 3 ? 2 : 1)
                 window.scrollTo({ top: 0 })
               }}
               className="border-ink text-ink inline-flex min-h-12 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold active:translate-y-px motion-reduce:active:translate-y-0"
@@ -131,14 +150,14 @@ export function OwnerProjectNewPage() {
           <button
             type="button"
             onClick={() => {
-              if (step === 1) {
-                setStep(2)
+              if (step !== 3) {
+                setStep(step === 1 ? 2 : 3)
                 window.scrollTo({ top: 0 })
               }
             }}
             className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
           >
-            下一步
+            {step === 3 ? '發布' : '下一步'}
           </button>
         </div>
       </div>
