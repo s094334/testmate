@@ -65,6 +65,8 @@
    * Use for "my interface" colors: primary buttons, links, selected states. */
   --color-role: var(--color-ink);
   --color-role-soft: var(--color-platform-soft);
+  /* Text in the role color (selected tags, hints): -text of the role */
+  --color-role-text: var(--color-ink);
 
   /* ── Color: status (deliberately avoids role colors; always pair with an icon) ── */
   /* In progress: funded, testing */
@@ -220,10 +222,12 @@
 [data-role='owner'] {
   --color-role: var(--color-owner-strong);
   --color-role-soft: var(--color-owner-soft);
+  --color-role-text: var(--color-owner-text);
 }
 [data-role='tester'] {
   --color-role: var(--color-tester-strong);
   --color-role-soft: var(--color-tester-soft);
+  --color-role-text: var(--color-tester-text);
 }
 
 /* Desktop sizes from 768px up (line height and weight stay the same) */

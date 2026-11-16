@@ -11,6 +11,7 @@ import { LoginPage } from '@/pages/AuthPages/LoginPage'
 import { SignupPage } from '@/pages/AuthPages/SignupPage'
 import { OwnerCompanyPage } from '@/pages/OwnerCompanyPage'
 import { OwnerHomePage } from '@/pages/OwnerHomePage'
+import { OwnerProjectNewPage } from '@/pages/OwnerProjectNewPage'
 import { TesterHomePage } from '@/pages/TesterHomePage'
 import { TesterProfilePage } from '@/pages/TesterProfilePage'
 import { TesterProjectsPage } from '@/pages/TesterProjectsPage'
@@ -37,6 +38,7 @@ function App() {
         <Route path="owner" element={<OwnerLayout />}>
           <Route index element={<OwnerHomePage />} />
           <Route path="company" element={<OwnerCompanyPage />} />
+          <Route path="projects/new" element={<OwnerProjectNewPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

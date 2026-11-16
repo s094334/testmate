@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
-import { interestCategories } from './interestData'
+import { interestCategories } from '@/data/interests'
 
 export function Interests({
   interests,

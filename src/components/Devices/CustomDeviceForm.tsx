@@ -1,12 +1,13 @@
-// Add-device form for 自訂: the tester types the device name and system version
 import { useState } from 'react'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import type { Device } from '@/data/tester'
 
 export function CustomDeviceForm({
   onAdd,
+  forProject = false,
 }: {
   onAdd: (device: Device) => void
+  forProject?: boolean
 }) {
   const [name, setName] = useState('')
   const [version, setVersion] = useState('')
@@ -34,7 +35,7 @@ export function CustomDeviceForm({
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="custom-version" className="text-label">
-            系統版本
+            {forProject && '最低'}系統版本
           </label>
           <input
             id="custom-version"
@@ -52,7 +53,7 @@ export function CustomDeviceForm({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="text-tester-text min-w-0 wrap-anywhere">
+        <span className="text-role-text min-w-0 wrap-anywhere">
           {message ||
             (name.trim()
               ? '輸入好了，按「加入自訂裝置」。'

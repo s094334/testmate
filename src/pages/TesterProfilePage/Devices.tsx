@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { AddedDevices } from '@/components/Devices/AddedDevices'
+import { CustomDeviceForm } from '@/components/Devices/CustomDeviceForm'
+import { PickDeviceForm } from '@/components/Devices/PickDeviceForm'
 import { ComputerIcon } from '@/components/icons/ComputerIcon'
 import { CustomDeviceIcon } from '@/components/icons/CustomDeviceIcon'
 import { PhoneIcon } from '@/components/icons/PhoneIcon'
@@ -6,9 +9,6 @@ import { TabletIcon } from '@/components/icons/TabletIcon'
 import { TvIcon } from '@/components/icons/TvIcon'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Device } from '@/data/tester'
-import { AddedDevices } from './AddedDevices'
-import { CustomDeviceForm } from './CustomDeviceForm'
-import { PickDeviceForm } from './PickDeviceForm'
 
 export function Devices({
   devices,

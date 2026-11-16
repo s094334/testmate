@@ -1,12 +1,10 @@
-// Renders ONE signup field: label, input (or select), hint and error message.
-// What each field says comes from fields.ts; the pages map over those arrays
-// and hand every entry to this component. How a field looks is decided here.
 import type {
   FieldError,
   FieldErrors,
   FieldValues,
   UseFormRegister,
 } from 'react-hook-form'
+import { InfoPopover } from '@/components/InfoPopover'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
 import type { FieldConfig } from './fields'
@@ -31,6 +29,9 @@ export function FormField<T extends FieldValues>({
   disablePlaceholder,
   hint,
   hideHintOnError,
+  rows,
+  tooltip,
+  headingLabel,
   register,
   errors,
 }: FormFieldProps<T>) {
@@ -39,14 +40,34 @@ export function FormField<T extends FieldValues>({
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-label">
-        {label}
-        {requiredMessage && (
-          <span className="text-status-dispute-text text-required ml-1.5">
-            必填
-          </span>
-        )}
-      </label>
+      {tooltip ? (
+        <div className={`flex items-center ${headingLabel ? 'mb-2' : ''}`}>
+          <label
+            htmlFor={id}
+            className={headingLabel ? 'text-subheading' : 'text-label'}
+          >
+            {label}
+            {requiredMessage && (
+              <span className="text-status-dispute-text text-required ml-1.5">
+                必填
+              </span>
+            )}
+          </label>
+          <InfoPopover label={`${label}說明`}>{tooltip}</InfoPopover>
+        </div>
+      ) : (
+        <label
+          htmlFor={id}
+          className={headingLabel ? 'text-subheading mb-2' : 'text-label'}
+        >
+          {label}
+          {requiredMessage && (
+            <span className="text-status-dispute-text text-required ml-1.5">
+              必填
+            </span>
+          )}
+        </label>
+      )}
       {type === 'select' ? (
         <div className="relative">
           <select
@@ -66,6 +87,15 @@ export function FormField<T extends FieldValues>({
             <ChevronDownIcon />
           </span>
         </div>
+      ) : type === 'textarea' ? (
+        <textarea
+          id={id}
+          rows={rows}
+          maxLength={maxLength}
+          placeholder={placeholder}
+          {...register(name, { required: requiredMessage, ...rules })}
+          className={`bg-surface min-h-12 resize-y rounded-md px-3 py-2.5 ${error ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
+        />
       ) : (
         <input
           id={id}

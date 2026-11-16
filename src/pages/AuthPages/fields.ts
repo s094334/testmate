@@ -13,6 +13,10 @@ export type FieldConfig<T extends FieldValues> = {
   disablePlaceholder?: boolean
   hint?: string
   hideHintOnError?: boolean
+  rows?: number
+  tooltip?: string
+  // 20px label with 16px below it, like the 媒合條件 headings (目標裝置 etc.)
+  headingLabel?: boolean
 } & Pick<
   ComponentProps<'input'>,
   'id' | 'autoComplete' | 'inputMode' | 'maxLength'
@@ -37,6 +41,12 @@ export type OwnerProfileFormValues = {
   taxId: string
   industry: string
   address: string
+}
+
+export type ProjectBasicFormValues = {
+  name: string
+  industry: string
+  summary: string
 }
 
 export const accountFields: FieldConfig<AccountFormValues>[] = [
@@ -191,3 +201,42 @@ export const ownerCompanyFields: FieldConfig<OwnerProfileFormValues>[] = [
     rules: { pattern: { value: /\S/, message: '請填寫公司地址' } },
   },
 ]
+
+export const projectBasicFields: Record<
+  keyof ProjectBasicFormValues,
+  FieldConfig<ProjectBasicFormValues>
+> = {
+  name: {
+    label: '專案名稱',
+    headingLabel: true,
+    name: 'name',
+    id: 'project-name',
+    type: 'text',
+    placeholder: '例：多國語系 App 測試',
+    requiredMessage: '請填寫專案名稱',
+    rules: { pattern: { value: /\S/, message: '請填寫專案名稱' } },
+  },
+  industry: {
+    label: '公司產業',
+    headingLabel: true,
+    name: 'industry',
+    type: 'select',
+    placeholder: '請選擇產業',
+    disablePlaceholder: true,
+    options: industries,
+    requiredMessage: '請選擇公司產業',
+    hint: '預設帶入公司資料，可依這個專案修改',
+  },
+  summary: {
+    label: '簡介',
+    headingLabel: true,
+    name: 'summary',
+    type: 'textarea',
+    rows: 3,
+    tooltip: '主要測試內容，大概怎麼進行，以及測試的產品及步驟大概是什麼。',
+    placeholder:
+      '例：確認購物 App 切換成日文後，從瀏覽商品、加入購物車到結帳，翻譯與排版是否正確，有沒有文字被截斷或出現亂碼。',
+    requiredMessage: '請填寫簡介',
+    rules: { pattern: { value: /\S/, message: '請填寫簡介' } },
+  },
+}

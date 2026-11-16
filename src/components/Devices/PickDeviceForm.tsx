@@ -6,9 +6,11 @@ import { deviceOptions } from './deviceData'
 export function PickDeviceForm({
   type,
   onAdd,
+  forProject = false,
 }: {
   type: Exclude<Device['type'], 'custom'>
   onAdd: (device: Device) => void
+  forProject?: boolean
 }) {
   const [brand, setBrand] = useState('')
   const [model, setModel] = useState('')
@@ -63,6 +65,7 @@ export function PickDeviceForm({
               className={`border-line-input bg-surface disabled:border-line disabled:bg-platform-soft min-h-12 w-full rounded-md border px-3 ${model ? 'text-ink' : 'text-ink-subtle'}`}
             >
               <option value="">{brand ? '請選擇型號' : '先選品牌'}</option>
+              {forProject && chosen !== undefined && <option>不限型號</option>}
               {chosen?.models.map((option) => (
                 <option key={option}>{option}</option>
               ))}
@@ -72,7 +75,7 @@ export function PickDeviceForm({
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="device-version" className="text-label">
-            系統版本
+            {forProject && '最低'}系統版本
           </label>
           <select
             id="device-version"
@@ -84,7 +87,9 @@ export function PickDeviceForm({
             }}
             className={`border-line-input bg-surface disabled:border-line disabled:bg-platform-soft min-h-12 w-full rounded-md border px-3 ${version ? 'text-ink' : 'text-ink-subtle'}`}
           >
-            <option value="">{brand ? '請選擇系統版本' : '先選品牌'}</option>
+            <option value="">
+              {brand ? `請選擇${forProject ? '最低' : ''}系統版本` : '先選品牌'}
+            </option>
             {chosen?.versions.map((option) => (
               <option key={option}>{option}</option>
             ))}
@@ -93,19 +98,20 @@ export function PickDeviceForm({
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="text-tester-text min-w-0 wrap-anywhere">
+        <span className="text-role-text min-w-0 wrap-anywhere">
           {message ||
             (canAdd
               ? '選好了，按「加入裝置」。'
               : chosen?.models.length === 0
-                ? '依序選好品牌和系統版本。'
-                : '依序選好品牌、型號和系統版本。')}
+                ? `依序選好品牌和${forProject ? '最低' : ''}系統版本。`
+                : `依序選好品牌、型號和${forProject ? '最低' : ''}系統版本。`)}
         </span>
         <button
           type="button"
           disabled={!canAdd}
           onClick={() => {
-            const name = model || brand
+            const name =
+              model === '不限型號' ? `${brand}（不限型號）` : model || brand
             onAdd({ id: String(Date.now()), type, name, os: version })
             setBrand('')
             setModel('')
