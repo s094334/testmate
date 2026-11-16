@@ -1,6 +1,6 @@
 import { useWatch, type Control, type UseFormSetValue } from 'react-hook-form'
+import { languageOptions } from '@/data/options'
 import type { FormValues } from './BasicInfo'
-import { languageOptions } from './data'
 
 export function Languages({
   control,
