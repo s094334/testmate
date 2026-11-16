@@ -10,9 +10,11 @@ import { deviceTypeLabels } from './deviceData'
 export function AddedDevices({
   devices,
   onRemove,
+  forProject = false,
 }: {
   devices: Device[]
   onRemove: (id: string) => void
+  forProject?: boolean
 }) {
   return (
     <div className="flex flex-col gap-2">
@@ -24,7 +26,7 @@ export function AddedDevices({
               key={device.id}
               className="border-line flex items-center gap-4 border-t px-4 py-3 first:border-t-0"
             >
-              <span className="bg-tester-strong size-2 flex-none rounded-full" />
+              <span className="bg-role size-2 flex-none rounded-full" />
               {device.type === 'phone' && <PhoneIcon className="flex-none" />}
               {device.type === 'tablet' && <TabletIcon className="flex-none" />}
               {device.type === 'tv' && <TvIcon className="flex-none" />}
@@ -49,6 +51,7 @@ export function AddedDevices({
                   {device.type === 'custom'
                     ? device.os || '未填系統版本'
                     : `${deviceTypeLabels[device.type]}、${device.os}`}
+                  {forProject && device.os && ' 以上'}
                 </span>
               </span>
               <button

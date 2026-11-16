@@ -6,6 +6,7 @@ import {
   type ProjectBasicFormValues,
 } from '@/pages/AuthPages/fields'
 import { FormField } from '@/pages/AuthPages/FormField'
+import { MatchingConditions } from './MatchingConditions'
 
 export function OwnerProjectNewPage() {
   const {
@@ -45,6 +46,8 @@ export function OwnerProjectNewPage() {
             />
           ))}
         </section>
+
+        <MatchingConditions />
       </div>
     </div>
   )
