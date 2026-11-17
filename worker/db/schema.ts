@@ -36,6 +36,26 @@ export const sessions = pgTable('sessions', {
     .defaultNow(),
 })
 
+// Failed logins in a row for one email from one IP. The row is deleted on a successful login.
+// The email does not have to belong to an account, so a guess at an unknown email is counted too.
+export const loginAttempts = pgTable(
+  'login_attempts',
+  {
+    // Lowercased, the same as users.email
+    email: text('email').notNull(),
+    // From the CF-Connecting-IP header
+    ip: text('ip').notNull(),
+    failedCount: integer('failed_count').notNull().default(0),
+    // Set when failedCount reaches 10; failedCount starts again from 0 at the same time
+    lockedUntil: timestamp('locked_until', { withTimezone: true }),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [primaryKey({ columns: [table.email, table.ip] })]
+)
+
 export const tagCategory = pgEnum('tag_category', [
   'device',
   'industry',

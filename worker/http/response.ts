@@ -6,9 +6,11 @@ import type { ZodError } from 'zod'
 // Only the codes used so far; add the rest from API.md「錯誤代碼」 as they are needed
 export type ErrorCode =
   | 'VALIDATION_FAILED'
+  | 'INVALID_CREDENTIALS'
   | 'FORBIDDEN'
   | 'NOT_FOUND'
   | 'EMAIL_TAKEN'
+  | 'TOO_MANY_ATTEMPTS'
   | 'INTERNAL_ERROR'
 
 type ErrorDetail = { field: string; message: string }
