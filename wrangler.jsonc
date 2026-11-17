@@ -3,6 +3,14 @@
   "name": "testmate",
   "compatibility_date": "2026-11-03",
   "main": "./worker/index.ts",
+  "compatibility_flags": ["nodejs_compat"],
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "local-dev",
+      "localConnectionString": "postgres://testmate:testmate@localhost:5432/testmate",
+    },
+  ],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application",
@@ -16,6 +24,13 @@
     "dev": {
       "workers_dev": false,
       "preview_urls": false,
+      "hyperdrive": [
+        {
+          "binding": "HYPERDRIVE",
+          "id": "local-dev",
+          "localConnectionString": "postgres://testmate:testmate@localhost:5432/testmate",
+        },
+      ],
       "routes": [
         { "pattern": "dev-testmate.xin-ping.com", "custom_domain": true },
       ],
