@@ -2,6 +2,7 @@ import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { eq } from 'drizzle-orm'
 import { setCookie } from 'hono/cookie'
 import postgres from 'postgres'
+import { cities } from '../../shared/cities'
 import { createDb } from '../db'
 import {
   companies,
@@ -56,34 +57,7 @@ const registerBody = z.discriminatedUnion(
       profile: z.strictObject(
         {
           ...profileFields,
-          city: z.enum(
-            [
-              '臺北市',
-              '新北市',
-              '桃園市',
-              '臺中市',
-              '臺南市',
-              '高雄市',
-              '基隆市',
-              '新竹市',
-              '嘉義市',
-              '新竹縣',
-              '苗栗縣',
-              '彰化縣',
-              '南投縣',
-              '雲林縣',
-              '嘉義縣',
-              '屏東縣',
-              '宜蘭縣',
-              '花蓮縣',
-              '臺東縣',
-              '澎湖縣',
-              '金門縣',
-              '連江縣',
-              '海外',
-            ],
-            { error: '請選擇縣市' }
-          ),
+          city: z.enum(cities, { error: '請選擇縣市' }),
         },
         { error: profileError }
       ),
