@@ -1,14 +1,32 @@
-import { Hono } from 'hono'
-import postgres from 'postgres'
-import { drizzle } from 'drizzle-orm/postgres-js'
-import { sql } from 'drizzle-orm'
+import { OpenAPIHono } from '@hono/zod-openapi'
+import { HTTPException } from 'hono/http-exception'
+import { register, registerRoute } from './auth/register'
+import { checkOrigin } from './http/origin'
+import { fail, validationFailed } from './http/response'
 
-const app = new Hono<{ Bindings: Env }>().basePath('/api')
+const app = new OpenAPIHono<{ Bindings: Env }>({
+  // Any request that fails a route's zod schema gets 400 VALIDATION_FAILED
+  defaultHook: (result, c) => {
+    if (!result.success) return validationFailed(c, result.error)
+  },
+}).basePath('/api')
 
-app.get('/health', async (c) => {
-  const db = drizzle(postgres(c.env.HYPERDRIVE.connectionString))
-  await db.execute(sql`select 1`)
-  return c.json({ ok: true, db: true })
+app.use(checkOrigin)
+
+app.openapi(registerRoute, register)
+
+app.notFound((c) => fail(c, 404, 'NOT_FOUND', '找不到這個 API'))
+
+app.onError((err, c) => {
+  // Body that is not JSON, or sent without Content-Type: application/json
+  if (
+    err instanceof HTTPException &&
+    (err.status === 400 || err.status === 415)
+  ) {
+    return fail(c, 400, 'VALIDATION_FAILED', '請求格式錯誤')
+  }
+  console.error(err)
+  return fail(c, 500, 'INTERNAL_ERROR', '發生錯誤，請稍後再試')
 })
 
 export default app

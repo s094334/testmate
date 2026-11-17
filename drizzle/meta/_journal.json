@@ -8,6 +8,20 @@
       "when": 1794888194696,
       "tag": "0000_stormy_scrambler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794898892512,
+      "tag": "0001_add_tags_profiles_companies",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794898893562,
+      "tag": "0002_seed_industry_tags",
+      "breakpoints": true
     }
   ]
 }
