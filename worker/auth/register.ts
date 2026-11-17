@@ -1,7 +1,7 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { eq } from 'drizzle-orm'
 import { setCookie } from 'hono/cookie'
-import postgres from 'postgres'
+import { DatabaseError } from 'pg'
 import { cities } from '../../shared/cities'
 import { createDb } from '../db'
 import {
@@ -129,7 +129,7 @@ export const register: RouteHandler<
   { Bindings: Env }
 > = async (c) => {
   const body = c.req.valid('json')
-  const db = createDb(c.env)
+  const db = await createDb(c.env)
 
   if (body.role === 'owner') {
     const [tag] = await db
@@ -205,8 +205,8 @@ export const register: RouteHandler<
   } catch (err) {
     if (
       err instanceof Error &&
-      err.cause instanceof postgres.PostgresError &&
-      err.cause.constraint_name === 'users_email_unique'
+      err.cause instanceof DatabaseError &&
+      err.cause.constraint === 'users_email_unique'
     ) {
       return fail(c, 409, 'EMAIL_TAKEN', '這個 email 已經註冊')
     }
