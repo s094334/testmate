@@ -2,20 +2,47 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "testmate",
   "compatibility_date": "2026-11-03",
+  "main": "./worker/index.ts",
+  "compatibility_flags": ["nodejs_compat"],
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "0ede9780219b49fcb0334805d0bdc63c",
+      "localConnectionString": "postgres://testmate:testmate@localhost:5432/testmate",
+    },
+  ],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"],
   },
   "workers_dev": false,
   "preview_urls": false,
-  "observability": { "enabled": true },
-  "routes": [{ "pattern": "testmate.xin-ping.com", "custom_domain": true }],
+  "observability": {
+    "enabled": true,
+  },
+  "routes": [
+    {
+      "pattern": "testmate.xin-ping.com",
+      "custom_domain": true,
+    },
+  ],
   "env": {
     "dev": {
       "workers_dev": false,
       "preview_urls": false,
+      "hyperdrive": [
+        {
+          "binding": "HYPERDRIVE",
+          "id": "1a7b559b687d43dbb5afc776505266a4",
+          "localConnectionString": "postgres://testmate:testmate@localhost:5432/testmate",
+        },
+      ],
       "routes": [
-        { "pattern": "dev-testmate.xin-ping.com", "custom_domain": true },
+        {
+          "pattern": "dev-testmate.xin-ping.com",
+          "custom_domain": true,
+        },
       ],
     },
   },
