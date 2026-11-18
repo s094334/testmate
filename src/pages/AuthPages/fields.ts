@@ -53,7 +53,6 @@ export type LoginFormValues = {
 
 export type ProjectBasicFormValues = {
   name: string
-  industry: string
   summary: string
 }
 
@@ -248,17 +247,6 @@ export const projectBasicFields: Record<
     placeholder: '例：多國語系 App 測試',
     requiredMessage: '請填寫專案名稱',
     rules: { pattern: { value: /\S/, message: '請填寫專案名稱' } },
-  },
-  industry: {
-    label: '公司產業',
-    headingLabel: true,
-    name: 'industry',
-    type: 'select',
-    placeholder: '請選擇產業',
-    disablePlaceholder: true,
-    options: industries,
-    requiredMessage: '請選擇公司產業',
-    hint: '預設帶入公司資料，可依這個專案修改',
   },
   summary: {
     label: '簡介',

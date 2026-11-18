@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
-import { owner } from '@/data/owner'
 import {
   projectBasicFields,
   type ProjectBasicFormValues,
@@ -24,7 +23,6 @@ export function OwnerProjectNewPage() {
     shouldFocusError: false,
     defaultValues: {
       name: '',
-      industry: owner.industryTag.name,
       summary: '',
     },
   })
@@ -71,14 +69,6 @@ export function OwnerProjectNewPage() {
               register={register}
               errors={errors}
             />
-
-            <div className="desktop:w-1/2">
-              <FormField
-                {...projectBasicFields.industry}
-                register={register}
-                errors={errors}
-              />
-            </div>
 
             <FormField
               {...projectBasicFields.summary}
