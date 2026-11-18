@@ -1,18 +1,18 @@
-import { useForm } from 'react-hook-form'
+import type { FieldErrors, UseFormRegister } from 'react-hook-form'
+import { WarningIcon } from '@/components/icons/WarningIcon'
+import type { ProjectFormValues } from '@/pages/AuthPages/fields'
 
-export function ScheduleAndReward() {
-  const { register } = useForm({
-    defaultValues: {
-      startDate: '',
-      endDate: '',
-      reward: '',
-    },
-  })
-
+export function ScheduleAndReward({
+  register,
+  errors,
+}: {
+  register: UseFormRegister<ProjectFormValues>
+  errors: FieldErrors<ProjectFormValues>
+}) {
   return (
     <>
       <section className="bg-surface border-ink desktop:px-8 desktop:py-7 flex flex-col gap-8 rounded-md border px-4 py-5">
-        <fieldset className="flex flex-col">
+        <fieldset className="flex flex-col gap-2">
           <legend className="text-subheading mb-4">
             專案期間
             <span className="text-status-dispute-text text-required ml-1.5">
@@ -28,8 +28,8 @@ export function ScheduleAndReward() {
               <input
                 id="start-date"
                 type="date"
-                {...register('startDate')}
-                className="border-line-input bg-surface min-h-12 w-full min-w-0 rounded-md border px-3 py-2.5"
+                {...register('startDate', { required: '請選擇開始日期' })}
+                className={`bg-surface min-h-12 w-full min-w-0 rounded-md px-3 py-2.5 ${errors.startDate ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
               />
               <span className="text-ink-subtle desktop:inline hidden">–</span>
               <span className="text-ink-subtle desktop:hidden">至</span>
@@ -39,11 +39,23 @@ export function ScheduleAndReward() {
               <input
                 id="end-date"
                 type="date"
-                {...register('endDate')}
-                className="border-line-input bg-surface min-h-12 w-full min-w-0 rounded-md border px-3 py-2.5"
+                {...register('endDate', { required: '請選擇結束日期' })}
+                className={`bg-surface min-h-12 w-full min-w-0 rounded-md px-3 py-2.5 ${errors.endDate ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
               />
             </div>
           </div>
+          {errors.startDate && (
+            <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+              <WarningIcon />
+              {errors.startDate.message}
+            </span>
+          )}
+          {errors.endDate && (
+            <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+              <WarningIcon />
+              {errors.endDate.message}
+            </span>
+          )}
         </fieldset>
       </section>
 
@@ -65,10 +77,27 @@ export function ScheduleAndReward() {
                 type="text"
                 inputMode="numeric"
                 placeholder="例：1200"
-                {...register('reward')}
-                className="border-line-input bg-surface min-h-12 w-full rounded-md border py-2.5 pr-3 pl-13"
+                {...register('reward', {
+                  required: '請填寫報酬金額',
+                  // Commas only between digits: 1,200 and 12,00 pass, 1,2,, does not
+                  validate: (value) =>
+                    !/^\d+([,，]\d+)*$/.test(value.trim())
+                      ? '請填寫報酬金額'
+                      : Number(value.replace(/[,，]/g, '')) < 1
+                        ? '報酬至少 1 元'
+                        : Number(value.replace(/[,，]/g, '')) > 100000
+                          ? '報酬最多 100,000 元'
+                          : true,
+                })}
+                className={`bg-surface min-h-12 w-full rounded-md py-2.5 pr-3 pl-13 ${errors.reward ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
               />
             </div>
+            {errors.reward && (
+              <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+                <WarningIcon />
+                {errors.reward.message}
+              </span>
+            )}
             <span className="text-ink-subtle">
               付給測試人員的報酬，報告通過後一次撥款。
             </span>

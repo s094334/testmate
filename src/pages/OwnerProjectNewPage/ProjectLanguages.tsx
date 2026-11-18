@@ -1,15 +1,30 @@
-import { useWatch, type Control, type UseFormSetValue } from 'react-hook-form'
+import {
+  useController,
+  useWatch,
+  type Control,
+  type UseFormSetValue,
+} from 'react-hook-form'
+import { WarningIcon } from '@/components/icons/WarningIcon'
 import { languageOptions } from '@/data/options'
-import type { FormValues } from './MatchingConditions'
+import type { ProjectFormValues } from '@/pages/AuthPages/fields'
 
 export function ProjectLanguages({
   control,
   setValue,
 }: {
-  control: Control<FormValues>
-  setValue: UseFormSetValue<FormValues>
+  control: Control<ProjectFormValues>
+  setValue: UseFormSetValue<ProjectFormValues>
 }) {
-  const languages = useWatch({ control, name: 'languages' })
+  const {
+    field: { value: languages, onChange },
+    fieldState: { error },
+  } = useController({
+    control,
+    name: 'languages',
+    rules: {
+      validate: (value) => value.length > 0 || '請選擇至少一種測試語言',
+    },
+  })
   const nativeLanguages = useWatch({ control, name: 'nativeLanguages' })
 
   return (
@@ -39,12 +54,9 @@ export function ProjectLanguages({
                 checked={languages.includes(language)}
                 onChange={(e) => {
                   if (e.target.checked) {
-                    setValue('languages', [...languages, language])
+                    onChange([...languages, language])
                   } else {
-                    setValue(
-                      'languages',
-                      languages.filter((l) => l !== language)
-                    )
+                    onChange(languages.filter((l) => l !== language))
                     setValue(
                       'nativeLanguages',
                       nativeLanguages.filter((l) => l !== language)
@@ -83,6 +95,12 @@ export function ProjectLanguages({
           </div>
         ))}
       </div>
+      {error && (
+        <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+          <WarningIcon />
+          {error.message}
+        </span>
+      )}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form'
 import { cityOptions } from '@/data/options'
+import type { Device } from '@/data/tester'
 import { industries } from './data'
 
 export type FieldConfig<T extends FieldValues> = {
@@ -54,6 +55,24 @@ export type LoginFormValues = {
 export type ProjectBasicFormValues = {
   name: string
   summary: string
+}
+
+// Every field of the 發布專案 form, across its three steps
+export type ProjectFormValues = ProjectBasicFormValues & {
+  devices: Device[]
+  languages: string[]
+  nativeLanguages: string[]
+  interests: string[]
+  experience: 'any' | 'yes'
+  years: 'under_1' | '1_to_2' | '3_to_5' | 'over_5'
+  mode: 'remote' | 'onsite'
+  city: string
+  startDate: string
+  endDate: string
+  reward: string
+  howToTest: string
+  successCriteria: string
+  specialRequirements: string
 }
 
 export const accountFields: FieldConfig<AccountFormValues>[] = [
@@ -236,7 +255,7 @@ export const ownerCompanyFields: FieldConfig<OwnerProfileFormValues>[] = [
 
 export const projectBasicFields: Record<
   keyof ProjectBasicFormValues,
-  FieldConfig<ProjectBasicFormValues>
+  FieldConfig<ProjectFormValues>
 > = {
   name: {
     label: '專案名稱',

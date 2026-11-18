@@ -1,14 +1,21 @@
-import { useWatch, type Control, type UseFormRegister } from 'react-hook-form'
-import type { FormValues } from './MatchingConditions'
+import {
+  useFormState,
+  useWatch,
+  type Control,
+  type UseFormRegister,
+} from 'react-hook-form'
+import { WarningIcon } from '@/components/icons/WarningIcon'
+import type { ProjectFormValues } from '@/pages/AuthPages/fields'
 
 export function ProjectExperience({
   register,
   control,
 }: {
-  register: UseFormRegister<FormValues>
-  control: Control<FormValues>
+  register: UseFormRegister<ProjectFormValues>
+  control: Control<ProjectFormValues>
 }) {
   const experience = useWatch({ control, name: 'experience' })
+  const { errors } = useFormState({ control, name: ['experience', 'years'] })
 
   return (
     <fieldset className="flex flex-col gap-4">
@@ -43,6 +50,12 @@ export function ProjectExperience({
           需要 QA 經驗
         </label>
       </div>
+      {errors.experience && (
+        <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+          <WarningIcon />
+          {errors.experience.message}
+        </span>
+      )}
 
       {experience === 'yes' && (
         <div className="flex max-w-80 flex-col gap-1.5">
@@ -52,13 +65,19 @@ export function ProjectExperience({
           <select
             id="min-years"
             {...register('years')}
-            className="border-line-input bg-surface min-h-12 w-full rounded-md border px-3"
+            className={`bg-surface min-h-12 w-full rounded-md px-3 ${errors.years ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
           >
-            <option>未滿 1 年</option>
-            <option>1–2 年</option>
-            <option>3–5 年</option>
-            <option>超過 5 年</option>
+            <option value="under_1">未滿 1 年</option>
+            <option value="1_to_2">1–2 年</option>
+            <option value="3_to_5">3–5 年</option>
+            <option value="over_5">超過 5 年</option>
           </select>
+          {errors.years && (
+            <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+              <WarningIcon />
+              {errors.years.message}
+            </span>
+          )}
         </div>
       )}
     </fieldset>

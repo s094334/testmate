@@ -1,14 +1,14 @@
-import { useForm } from 'react-hook-form'
+import type { FieldErrors, UseFormRegister } from 'react-hook-form'
+import { WarningIcon } from '@/components/icons/WarningIcon'
+import type { ProjectFormValues } from '@/pages/AuthPages/fields'
 
-export function TestRequirements() {
-  const { register } = useForm({
-    defaultValues: {
-      howToTest: '',
-      successCriteria: '',
-      specialRequirements: '',
-    },
-  })
-
+export function TestRequirements({
+  register,
+  errors,
+}: {
+  register: UseFormRegister<ProjectFormValues>
+  errors: FieldErrors<ProjectFormValues>
+}) {
   return (
     <section className="bg-surface border-ink desktop:px-8 desktop:py-7 flex flex-col gap-8 rounded-md border px-4 py-5">
       <h2 className="text-subheading desktop:text-heading">測試要求</h2>
@@ -37,9 +37,18 @@ export function TestRequirements() {
             '   2. 從首頁進入任一商品，加入購物車並完成結帳流程。\n' +
             '   3. 錄製完整流程影片，並截取所有必要的螢幕截圖（例如：購物車頁、結帳頁、付款完成頁，以及任何文字被截斷或出現亂碼的畫面）。'
           }
-          {...register('howToTest')}
-          className="border-line-input bg-surface max-desktop:h-[calc(12lh+22px)] min-h-12 resize-y rounded-md border px-3 py-2.5"
+          {...register('howToTest', {
+            required: '請填寫如何測試',
+            pattern: { value: /\S/, message: '請填寫如何測試' },
+          })}
+          className={`bg-surface max-desktop:h-[calc(12lh+22px)] min-h-12 resize-y rounded-md px-3 py-2.5 ${errors.howToTest ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.howToTest && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.howToTest.message}
+          </span>
+        )}
       </div>
 
       <div className="flex flex-col gap-4">
@@ -64,9 +73,18 @@ export function TestRequirements() {
             '・購物車、結帳、付款完成三個畫面都有螢幕截圖。\n' +
             '・發現的問題都附上重現步驟、截圖與裝置型號。'
           }
-          {...register('successCriteria')}
-          className="border-line-input bg-surface max-desktop:h-[calc(7lh+22px)] min-h-12 resize-y rounded-md border px-3 py-2.5"
+          {...register('successCriteria', {
+            required: '請填寫成功標準',
+            pattern: { value: /\S/, message: '請填寫成功標準' },
+          })}
+          className={`bg-surface max-desktop:h-[calc(7lh+22px)] min-h-12 resize-y rounded-md px-3 py-2.5 ${errors.successCriteria ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.successCriteria && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.successCriteria.message}
+          </span>
+        )}
       </div>
 
       <div className="flex flex-col gap-4">
@@ -78,8 +96,14 @@ export function TestRequirements() {
           rows={3}
           placeholder="例：每一項都要附上螢幕截圖"
           {...register('specialRequirements')}
-          className="border-line-input bg-surface min-h-12 resize-y rounded-md border px-3 py-2.5"
+          className={`bg-surface min-h-12 resize-y rounded-md px-3 py-2.5 ${errors.specialRequirements ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
         />
+        {errors.specialRequirements && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.specialRequirements.message}
+          </span>
+        )}
       </div>
     </section>
   )
