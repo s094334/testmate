@@ -40,3 +40,37 @@ export type Tag = {
   category: 'device' | 'industry' | 'interest' | 'audience'
   name: string
 }
+
+// Sent to POST /api/projects. Written from worker/projects/create.ts, not API.md:
+// API.md「10. POST /api/projects」is older than the 發布專案 form.
+// confidential_details, environment_info and test_items are left out until the
+// form has a step for them.
+export type CreateProjectBody = {
+  name: string
+  summary: string
+  devices: (
+    | {
+        device_tag_id: string
+        brand: string
+        model: string | null
+        min_os_version: string
+      }
+    | {
+        device_tag_id: null
+        custom_name: string
+        min_os_version: string | null
+      }
+  )[]
+  languages: { name: string; native_required: boolean }[]
+  interest_tag_ids: string[]
+  qa_experience_required: boolean
+  min_qa_years?: 'under_1' | '1_to_2' | '3_to_5' | 'over_5'
+  test_mode: 'remote' | 'onsite'
+  test_city?: string
+  start_date: string
+  end_date: string
+  reward: number
+  how_to_test: string
+  success_criteria: string
+  special_requirements: string
+}

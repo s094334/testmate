@@ -1,18 +1,23 @@
 // 相關興趣 in 媒合條件. Same categories as the tester's 興趣, folded behind a button
 // because it's optional.
 import { useState } from 'react'
+import { useController, type Control } from 'react-hook-form'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { MinusIcon } from '@/components/icons/MinusIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
+import { WarningIcon } from '@/components/icons/WarningIcon'
 import { interestCategories } from '@/data/interests'
+import type { ProjectFormValues } from '@/pages/AuthPages/fields'
 
 export function ProjectInterests({
-  interests,
-  onChange,
+  control,
 }: {
-  interests: string[]
-  onChange: (interests: string[]) => void
+  control: Control<ProjectFormValues>
 }) {
+  const {
+    field: { value: interests, onChange },
+    fieldState: { error },
+  } = useController({ control, name: 'interests' })
   const [showInterests, setShowInterests] = useState(false)
   const [openCategory, setOpenCategory] = useState('遊戲')
 
@@ -117,6 +122,12 @@ export function ProjectInterests({
             ? `相關興趣（已選 ${interests.length} 項）`
             : '加入相關興趣'}
       </button>
+      {error && (
+        <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+          <WarningIcon />
+          {error.message}
+        </span>
+      )}
     </div>
   )
 }

@@ -112,7 +112,14 @@ export function PickDeviceForm({
           onClick={() => {
             const name =
               model === '不限型號' ? `${brand}（不限型號）` : model || brand
-            onAdd({ id: String(Date.now()), type, name, os: version })
+            onAdd({
+              id: String(Date.now()),
+              type,
+              name,
+              os: version,
+              brand,
+              model,
+            })
             setBrand('')
             setModel('')
             setVersion('')

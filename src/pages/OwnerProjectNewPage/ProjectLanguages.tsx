@@ -1,26 +1,30 @@
-import { useWatch, type Control, type UseFormSetValue } from 'react-hook-form'
+import {
+  useController,
+  useWatch,
+  type Control,
+  type UseFormSetValue,
+} from 'react-hook-form'
+import { WarningIcon } from '@/components/icons/WarningIcon'
 import { languageOptions } from '@/data/options'
-import type { FormValues } from './MatchingConditions'
+import type { ProjectFormValues } from '@/pages/AuthPages/fields'
 
 export function ProjectLanguages({
   control,
   setValue,
 }: {
-  control: Control<FormValues>
-  setValue: UseFormSetValue<FormValues>
+  control: Control<ProjectFormValues>
+  setValue: UseFormSetValue<ProjectFormValues>
 }) {
-  const languages = useWatch({ control, name: 'languages' })
+  const {
+    field: { value: languages, onChange },
+    fieldState: { error },
+  } = useController({ control, name: 'languages' })
   const nativeLanguages = useWatch({ control, name: 'nativeLanguages' })
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <h3 className="text-subheading">
-          測試語言
-          <span className="text-status-dispute-text text-required ml-1.5">
-            必填
-          </span>
-        </h3>
+        <h3 className="text-subheading">測試語言</h3>
         <p className="text-ink-subtle">
           勾選需要的語言；要找母語者，再勾選「需母語」。
         </p>
@@ -39,12 +43,9 @@ export function ProjectLanguages({
                 checked={languages.includes(language)}
                 onChange={(e) => {
                   if (e.target.checked) {
-                    setValue('languages', [...languages, language])
+                    onChange([...languages, language])
                   } else {
-                    setValue(
-                      'languages',
-                      languages.filter((l) => l !== language)
-                    )
+                    onChange(languages.filter((l) => l !== language))
                     setValue(
                       'nativeLanguages',
                       nativeLanguages.filter((l) => l !== language)
@@ -83,6 +84,12 @@ export function ProjectLanguages({
           </div>
         ))}
       </div>
+      {error && (
+        <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+          <WarningIcon />
+          {error.message}
+        </span>
+      )}
     </div>
   )
 }

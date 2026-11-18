@@ -29,6 +29,27 @@
       "when": 1794904550748,
       "tag": "0003_add_login_attempts",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794989634088,
+      "tag": "0004_tester_qa_experience_custom_devices",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794990439505,
+      "tag": "0005_seed_device_interest_tags",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794998214410,
+      "tag": "0006_add_projects",
+      "breakpoints": true
     }
   ]
 }

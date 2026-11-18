@@ -1,11 +1,14 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { HTTPException } from 'hono/http-exception'
+import { getProfile, getProfileRoute } from './auth/get-profile'
 import { getSession, getSessionRoute } from './auth/get-session'
 import { login, loginRoute } from './auth/login'
 import { logout, logoutRoute } from './auth/logout'
 import { register, registerRoute } from './auth/register'
+import { saveProfile, saveProfileRoute } from './auth/save-profile'
 import { checkOrigin } from './http/origin'
 import { fail, validationFailed } from './http/response'
+import { createProject, createProjectRoute } from './projects/create'
 import { listTags, listTagsRoute } from './tags/list'
 
 const app = new OpenAPIHono<{ Bindings: Env }>({
@@ -21,6 +24,9 @@ app.openapi(registerRoute, register)
 app.openapi(loginRoute, login)
 app.openapi(logoutRoute, logout)
 app.openapi(getSessionRoute, getSession)
+app.openapi(getProfileRoute, getProfile)
+app.openapi(saveProfileRoute, saveProfile)
+app.openapi(createProjectRoute, createProject)
 app.openapi(listTagsRoute, listTags)
 
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', '找不到這個 API'))

@@ -1,36 +1,20 @@
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import type { Device } from '@/data/tester'
+import type { Control, UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import type { ProjectFormValues } from '@/pages/AuthPages/fields'
 import { ProjectDevices } from './ProjectDevices'
 import { ProjectExperience } from './ProjectExperience'
 import { ProjectInterests } from './ProjectInterests'
 import { ProjectLanguages } from './ProjectLanguages'
 import { ProjectTestMode } from './ProjectTestMode'
 
-export type FormValues = {
-  languages: string[]
-  nativeLanguages: string[]
-  experience: 'any' | 'yes'
-  years: string
-  mode: 'remote' | 'onsite'
-  city: string
-}
-
-export function MatchingConditions() {
-  const { register, control, setValue } = useForm<FormValues>({
-    defaultValues: {
-      languages: [],
-      nativeLanguages: [],
-      experience: 'any',
-      years: '未滿 1 年',
-      mode: 'remote',
-      city: '',
-    },
-  })
-
-  const [devices, setDevices] = useState<Device[]>([])
-  const [interests, setInterests] = useState<string[]>([])
-
+export function MatchingConditions({
+  register,
+  control,
+  setValue,
+}: {
+  register: UseFormRegister<ProjectFormValues>
+  control: Control<ProjectFormValues>
+  setValue: UseFormSetValue<ProjectFormValues>
+}) {
   return (
     <section className="bg-surface border-ink desktop:px-8 desktop:py-7 flex flex-col gap-8 rounded-md border px-4 py-5">
       <div className="flex flex-col gap-1">
@@ -40,11 +24,11 @@ export function MatchingConditions() {
         </p>
       </div>
 
-      <ProjectDevices devices={devices} onChange={setDevices} />
+      <ProjectDevices control={control} />
 
       <ProjectLanguages control={control} setValue={setValue} />
 
-      <ProjectInterests interests={interests} onChange={setInterests} />
+      <ProjectInterests control={control} />
 
       <ProjectExperience register={register} control={control} />
 

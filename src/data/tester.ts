@@ -59,11 +59,15 @@ export const tester = {
 // Device type matches the tabs on the profile page: 手機／平板／電視／電腦／自訂
 // name: the model, or the brand when it has no models (e.g. Windows); for 自訂 what the tester typed
 // os: the system version; may be '' for 自訂
+// brand, model: what was picked on PickDeviceForm, kept apart for the API.
+// model is '' for a brand without models (e.g. Windows), or 不限型號.
 export type Device = {
   id: string
   type: 'phone' | 'tablet' | 'tv' | 'computer' | 'custom'
   name: string
   os: string
+  brand?: string
+  model?: string
 }
 
 export const devices: Device[] = [

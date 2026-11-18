@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useController, type Control } from 'react-hook-form'
 import { AddedDevices } from '@/components/Devices/AddedDevices'
 import { CustomDeviceForm } from '@/components/Devices/CustomDeviceForm'
 import { PickDeviceForm } from '@/components/Devices/PickDeviceForm'
@@ -7,26 +8,25 @@ import { CustomDeviceIcon } from '@/components/icons/CustomDeviceIcon'
 import { PhoneIcon } from '@/components/icons/PhoneIcon'
 import { TabletIcon } from '@/components/icons/TabletIcon'
 import { TvIcon } from '@/components/icons/TvIcon'
+import { WarningIcon } from '@/components/icons/WarningIcon'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Device } from '@/data/tester'
+import type { ProjectFormValues } from '@/pages/AuthPages/fields'
 
 export function ProjectDevices({
-  devices,
-  onChange,
+  control,
 }: {
-  devices: Device[]
-  onChange: (devices: Device[]) => void
+  control: Control<ProjectFormValues>
 }) {
   const [type, setType] = useState<Device['type']>('phone')
+  const {
+    field: { value: devices, onChange },
+    fieldState: { error },
+  } = useController({ control, name: 'devices' })
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-subheading">
-        目標裝置
-        <span className="text-status-dispute-text text-required ml-1.5">
-          必填
-        </span>
-      </h3>
+      <h3 className="text-subheading">目標裝置</h3>
 
       <Tabs value={type} onValueChange={setType} className="flex flex-col">
         <TabsList className="relative z-1 -mb-px flex gap-1">
@@ -95,6 +95,12 @@ export function ProjectDevices({
           onChange(devices.filter((device) => device.id !== id))
         }
       />
+      {error && (
+        <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+          <WarningIcon />
+          {error.message}
+        </span>
+      )}
     </div>
   )
 }

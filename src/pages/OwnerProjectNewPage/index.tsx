@@ -1,35 +1,130 @@
-// The whole 發布專案 flow lives at one address, /owner/projects/new.
-// `step` says which step is showing. A step you leave is only hidden, not removed,
-// so everything typed in it is still there when you come back.
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { useForm, type Path } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router'
+import { ApiError, request } from '@/api/client'
+import { useTags } from '@/api/tags'
+import type { CreateProjectBody } from '@/api/types'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
-import { owner } from '@/data/owner'
+import { WarningIcon } from '@/components/icons/WarningIcon'
 import {
   projectBasicFields,
-  type ProjectBasicFormValues,
+  type ProjectFormValues,
 } from '@/pages/AuthPages/fields'
 import { FormField } from '@/pages/AuthPages/FormField'
+import { formFieldOf, toCreateProjectBody } from './createProjectBody'
 import { MatchingConditions } from './MatchingConditions'
 import { ProjectProgress } from './ProjectProgress'
 import { ScheduleAndReward } from './ScheduleAndReward'
 import { TestRequirements } from './TestRequirements'
 
+const stepFields: Record<1 | 2, Path<ProjectFormValues>[]> = {
+  1: [
+    'name',
+    'summary',
+    'devices',
+    'languages',
+    'interests',
+    'experience',
+    'years',
+    'mode',
+    'city',
+  ],
+  2: ['startDate', 'endDate', 'reward'],
+}
+
 export function OwnerProjectNewPage() {
+  const navigate = useNavigate()
+
   const {
     register,
+    control,
+    setValue,
+    setError,
+    getFieldState,
+    trigger,
+    handleSubmit,
     formState: { errors },
-  } = useForm<ProjectBasicFormValues>({
+  } = useForm<ProjectFormValues>({
     shouldFocusError: false,
     defaultValues: {
       name: '',
-      industry: owner.industryTag.name,
       summary: '',
+      devices: [],
+      languages: [],
+      nativeLanguages: [],
+      interests: [],
+      experience: 'any',
+      years: 'under_1',
+      mode: 'remote',
+      city: '',
+      startDate: '',
+      endDate: '',
+      reward: '',
+      howToTest: '',
+      successCriteria: '',
+      specialRequirements: '',
     },
   })
 
   const [step, setStep] = useState<1 | 2 | 3>(1)
+
+  const { data: deviceTags } = useTags('device')
+  const { data: interestTags } = useTags('interest')
+
+  // 發布 is on step 3, but the other steps are only hidden and are checked too.
+  // Go back to the first step that has a problem, so its message can be seen.
+  function showFirstStepWithError(fields: string[]) {
+    const stepWithError = stepFields[1].some((field) => fields.includes(field))
+      ? 1
+      : stepFields[2].some((field) => fields.includes(field))
+        ? 2
+        : 3
+    if (stepWithError !== 3) {
+      setStep(stepWithError)
+      window.scrollTo({ top: 0 })
+    }
+  }
+
+  const publish = useMutation({
+    mutationFn: (body: CreateProjectBody) =>
+      request<{ id: string }>('/api/projects', { method: 'POST', body }),
+    onSuccess: () => navigate('/owner'),
+    onError: (error) => {
+      if (!(error instanceof ApiError)) {
+        setError('root', { message: '無法連線，請稍後再試' })
+        return
+      }
+      if (error.code !== 'VALIDATION_FAILED') {
+        setError('root', { message: error.message })
+        return
+      }
+      const fields: Path<ProjectFormValues>[] = []
+      error.details.forEach((detail) => {
+        const field = formFieldOf(detail.field)
+        if (!field) {
+          setError('root', { message: detail.message })
+        } else if (!getFieldState(field).error) {
+          setError(field, { message: detail.message })
+          fields.push(field)
+        }
+      })
+      showFirstStepWithError(fields)
+    },
+  })
+
+  const submit = handleSubmit(
+    (values) => {
+      if (!deviceTags || !interestTags) {
+        setError('root', { message: '無法連線，請稍後再試' })
+        return
+      }
+      publish.mutate(
+        toCreateProjectBody(values, deviceTags.items, interestTags.items)
+      )
+    },
+    (errors) => showFirstStepWithError(Object.keys(errors))
+  )
 
   return (
     <div className="max-w-page tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col px-4 pt-6 pb-12">
@@ -72,14 +167,6 @@ export function OwnerProjectNewPage() {
               errors={errors}
             />
 
-            <div className="desktop:w-1/2">
-              <FormField
-                {...projectBasicFields.industry}
-                register={register}
-                errors={errors}
-              />
-            </div>
-
             <FormField
               {...projectBasicFields.summary}
               register={register}
@@ -87,24 +174,37 @@ export function OwnerProjectNewPage() {
             />
           </section>
 
-          <MatchingConditions />
+          <MatchingConditions
+            register={register}
+            control={control}
+            setValue={setValue}
+          />
         </div>
 
         <div className={step === 2 ? 'contents' : 'hidden'}>
-          <ScheduleAndReward />
+          <ScheduleAndReward register={register} errors={errors} />
         </div>
 
         <div className={step === 3 ? 'contents' : 'hidden'}>
-          <TestRequirements />
+          <TestRequirements register={register} errors={errors} />
         </div>
+
+        {errors.root && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errors.root.message}
+          </span>
+        )}
 
         {step === 1 && (
           <div className="desktop:flex hidden justify-end">
             <button
               type="button"
-              onClick={() => {
-                setStep(2)
-                window.scrollTo({ top: 0 })
+              onClick={async () => {
+                if (await trigger(stepFields[1])) {
+                  setStep(2)
+                  window.scrollTo({ top: 0 })
+                }
               }}
               className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
             >
@@ -116,9 +216,11 @@ export function OwnerProjectNewPage() {
           <div className="desktop:flex hidden justify-end gap-3">
             <button
               type="button"
-              onClick={() => {
-                setStep(3)
-                window.scrollTo({ top: 0 })
+              onClick={async () => {
+                if (await trigger(stepFields[2])) {
+                  setStep(3)
+                  window.scrollTo({ top: 0 })
+                }
               }}
               className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
             >
@@ -130,6 +232,8 @@ export function OwnerProjectNewPage() {
           <div className="desktop:flex hidden justify-end gap-3">
             <button
               type="button"
+              disabled={publish.isPending}
+              onClick={submit}
               className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
             >
               發布
@@ -162,8 +266,11 @@ export function OwnerProjectNewPage() {
           )}
           <button
             type="button"
-            onClick={() => {
-              if (step !== 3) {
+            disabled={step === 3 && publish.isPending}
+            onClick={async () => {
+              if (step === 3) {
+                submit()
+              } else if (await trigger(stepFields[step])) {
                 setStep(step === 1 ? 2 : 3)
                 window.scrollTo({ top: 0 })
               }

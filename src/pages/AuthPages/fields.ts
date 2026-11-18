@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form'
 import { cityOptions } from '@/data/options'
+import type { Device } from '@/data/tester'
 import { industries } from './data'
 
 export type FieldConfig<T extends FieldValues> = {
@@ -53,8 +54,25 @@ export type LoginFormValues = {
 
 export type ProjectBasicFormValues = {
   name: string
-  industry: string
   summary: string
+}
+
+// Every field of the 發布專案 form, across its three steps
+export type ProjectFormValues = ProjectBasicFormValues & {
+  devices: Device[]
+  languages: string[]
+  nativeLanguages: string[]
+  interests: string[]
+  experience: 'any' | 'yes'
+  years: 'under_1' | '1_to_2' | '3_to_5' | 'over_5'
+  mode: 'remote' | 'onsite'
+  city: string
+  startDate: string
+  endDate: string
+  reward: string
+  howToTest: string
+  successCriteria: string
+  specialRequirements: string
 }
 
 export const accountFields: FieldConfig<AccountFormValues>[] = [
@@ -237,7 +255,7 @@ export const ownerCompanyFields: FieldConfig<OwnerProfileFormValues>[] = [
 
 export const projectBasicFields: Record<
   keyof ProjectBasicFormValues,
-  FieldConfig<ProjectBasicFormValues>
+  FieldConfig<ProjectFormValues>
 > = {
   name: {
     label: '專案名稱',
@@ -248,17 +266,6 @@ export const projectBasicFields: Record<
     placeholder: '例：多國語系 App 測試',
     requiredMessage: '請填寫專案名稱',
     rules: { pattern: { value: /\S/, message: '請填寫專案名稱' } },
-  },
-  industry: {
-    label: '公司產業',
-    headingLabel: true,
-    name: 'industry',
-    type: 'select',
-    placeholder: '請選擇產業',
-    disablePlaceholder: true,
-    options: industries,
-    requiredMessage: '請選擇公司產業',
-    hint: '預設帶入公司資料，可依這個專案修改',
   },
   summary: {
     label: '簡介',
