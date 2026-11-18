@@ -1,5 +1,6 @@
+import { and, eq, gt, sql } from 'drizzle-orm'
 import type { Db, Tx } from '../db'
-import { sessions } from '../db/schema'
+import { companies, sessions, testerProfiles, users } from '../db/schema'
 
 const toHex = (bytes: Uint8Array) =>
   Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
@@ -26,3 +27,30 @@ export async function createSession(db: Db | Tx, userId: string) {
 
   return token
 }
+
+// Finds who a `session` cookie belongs to, shaped as API.md `User`.
+// An expired session is treated the same as no session.
+export async function getSession(db: Db, token: string) {
+  const [user] = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      role: users.role,
+      // A tester has a tester profile, an owner has a company; never both
+      display_name: sql<string>`coalesce(${testerProfiles.realName}, ${companies.realName})`,
+    })
+    .from(sessions)
+    .innerJoin(users, eq(users.id, sessions.userId))
+    .leftJoin(testerProfiles, eq(testerProfiles.userId, users.id))
+    .leftJoin(companies, eq(companies.userId, users.id))
+    .where(
+      and(
+        eq(sessions.tokenHash, await hashToken(token)),
+        gt(sessions.expiresAt, new Date())
+      )
+    )
+
+  return user ?? null
+}
+
+export type SessionUser = NonNullable<Awaited<ReturnType<typeof getSession>>>
