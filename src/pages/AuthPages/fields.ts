@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form'
-import { cities, industries } from './data'
+import { cityOptions } from '@/data/options'
+import { industries } from './data'
 
 export type FieldConfig<T extends FieldValues> = {
   label: string
@@ -9,7 +10,9 @@ export type FieldConfig<T extends FieldValues> = {
   placeholder?: string
   requiredMessage?: string
   rules?: RegisterOptions<T, Path<T>>
-  options?: string[]
+  // A plain string is both what is shown and what is saved.
+  // { value, label } shows the label but saves the value, e.g. a tag's id.
+  options?: readonly (string | { value: string; label: string })[]
   disablePlaceholder?: boolean
   hint?: string
   hideHintOnError?: boolean
@@ -41,6 +44,11 @@ export type OwnerProfileFormValues = {
   taxId: string
   industry: string
   address: string
+}
+
+export type LoginFormValues = {
+  email: string
+  password: string
 }
 
 export type ProjectBasicFormValues = {
@@ -97,6 +105,31 @@ export const accountFields: FieldConfig<AccountFormValues>[] = [
   },
 ]
 
+export const loginFields: FieldConfig<LoginFormValues>[] = [
+  {
+    label: 'Email',
+    name: 'email',
+    type: 'email',
+    autoComplete: 'email',
+    placeholder: 'example@example.com',
+    rules: {
+      required: '請填寫 Email',
+      pattern: {
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: '請輸入正確的 email 格式',
+      },
+    },
+  },
+  {
+    label: '密碼',
+    name: 'password',
+    type: 'password',
+    autoComplete: 'current-password',
+    placeholder: '請輸入密碼',
+    rules: { required: '請填寫密碼' },
+  },
+]
+
 export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
   {
     label: '姓名',
@@ -127,7 +160,7 @@ export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
     name: 'city',
     type: 'select',
     placeholder: '請選擇',
-    options: cities,
+    options: cityOptions,
     requiredMessage: '請選擇居住地',
   },
 ]

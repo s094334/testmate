@@ -1,4 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
+import { request } from '@/api/client'
+import type { Tag } from '@/api/types'
 import {
   ownerCompanyFields,
   ownerProfileFields,
@@ -27,6 +30,13 @@ export function SignupOwnerProfilePage({
     formState: { errors },
   } = useForm<OwnerProfileFormValues>({ defaultValues })
 
+  // Signup sends the industry's tag id, which only the backend knows.
+  // Coming back to this step shows the saved list at once, without waiting.
+  const { data: industryTags } = useQuery({
+    queryKey: ['tags', 'industry'],
+    queryFn: () => request<{ items: Tag[] }>('/api/tags?category=industry'),
+  })
+
   return (
     <form
       data-role="owner"
@@ -54,6 +64,15 @@ export function SignupOwnerProfilePage({
         <FormField
           key={field.name}
           {...field}
+          // 公司產業 shows the tag names but saves the tag id
+          options={
+            field.name === 'industry'
+              ? industryTags?.items.map((tag) => ({
+                  value: tag.id,
+                  label: tag.name,
+                }))
+              : field.options
+          }
           register={register}
           errors={errors}
         />

@@ -1,41 +1,58 @@
-import { Link } from 'react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router'
+import { ApiError, request } from '@/api/client'
+import type { User } from '@/api/types'
+import { WarningIcon } from '@/components/icons/WarningIcon'
+import { loginFields, type LoginFormValues } from './fields'
+import { FormField } from './FormField'
 
 export function LoginPage() {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({ defaultValues: { email: '', password: '' } })
+
+  const login = useMutation({
+    mutationFn: (body: LoginFormValues) =>
+      request<User>('/api/auth/login', { method: 'POST', body }),
+    onSuccess: (user) => {
+      queryClient.setQueryData(['session'], user)
+      navigate(user.role === 'owner' ? '/owner' : '/tester')
+    },
+  })
+
   return (
     <form
-      onSubmit={(e) => e.preventDefault()}
+      noValidate
+      onSubmit={handleSubmit((values) => login.mutate(values))}
       className="bg-surface border-ink tablet:gap-7 tablet:p-12 mx-auto flex max-w-130 flex-col gap-6 rounded-md border px-5 py-6"
     >
       <h1 className="text-subtitle">登入</h1>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-label">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          placeholder="example@example.com"
-          name="email"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
+      {loginFields.map((field) => (
+        <FormField
+          key={field.name}
+          {...field}
+          register={register}
+          errors={errors}
         />
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="password" className="text-label">
-          密碼
-        </label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          placeholder="請輸入密碼"
-          name="password"
-          className="border-line-input bg-surface min-h-12 rounded-md border px-3 py-2.5"
-        />
-      </div>
+      ))}
+      {login.error && (
+        <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+          <WarningIcon />
+          {login.error instanceof ApiError
+            ? login.error.message
+            : '無法連線，請稍後再試'}
+        </span>
+      )}
       <button
         type="submit"
-        className="border-ink bg-ink text-surface min-h-12 w-full cursor-pointer rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
+        disabled={login.isPending}
+        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:cursor-pointer enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:enabled:hover:translate-y-0 motion-reduce:enabled:active:translate-y-0"
       >
         登入
       </button>

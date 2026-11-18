@@ -4,8 +4,8 @@ import { setCookie } from 'hono/cookie'
 import { createDb } from '../db'
 import { companies, loginAttempts, testerProfiles, users } from '../db/schema'
 import { fail, ok } from '../http/response'
-import { hashPassword, verifyPassword } from './password'
-import { createSession } from './session'
+import { hashPassword, verifyPassword } from './lib/password'
+import { createSession } from './lib/session'
 
 const loginBody = z.object({
   email: z

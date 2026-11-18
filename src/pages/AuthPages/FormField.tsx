@@ -79,9 +79,15 @@ export function FormField<T extends FieldValues>({
             <option value="" disabled={disablePlaceholder}>
               {placeholder}
             </option>
-            {options?.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
+            {options?.map((option) =>
+              typeof option === 'string' ? (
+                <option key={option}>{option}</option>
+              ) : (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              )
+            )}
           </select>
           <span className="text-ink-muted pointer-events-none absolute top-1/2 right-3 -translate-y-1/2">
             <ChevronDownIcon />

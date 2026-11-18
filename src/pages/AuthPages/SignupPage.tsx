@@ -1,8 +1,11 @@
 // The whole signup flow lives at ONE address, /signup.
 // This component remembers which step is showing and everything typed so far,
 // and shows one step at a time.
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { disputeTermsVersion } from '@/data/disputeTerms'
+import { useNavigate } from 'react-router'
+import { ApiError, request } from '@/api/client'
+import type { RegisterBody, User } from '@/api/types'
 import type {
   AccountFormValues,
   OwnerProfileFormValues,
@@ -14,24 +17,19 @@ import { SignupOwnerProfilePage } from './SignupOwnerProfilePage'
 import { SignupRolePage } from './SignupRolePage'
 import { SignupTesterProfilePage } from './SignupTesterProfilePage'
 
-// What 完成註冊 sends. confirmPassword is left out: it only exists to catch typos in the form.
-type SignupPayload = {
-  role: 'owner' | 'tester'
-  email: string
-  password: string
-  profile: TesterProfileFormValues | OwnerProfileFormValues
-  dispute_terms_version: string
-}
-
-function submitSignup(payload: SignupPayload) {
-  // TODO: send `payload` to the signup API here (there is no backend in this repo yet).
-  // The server must check the consent itself, not trust this page: reject the request unless
-  // dispute_terms_version is a valid version, and record the agreed-at time (with time zone) on its side.
-  // Never log the payload: it contains the password.
-  void payload
-}
-
 export function SignupPage() {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const signup = useMutation({
+    mutationFn: (body: RegisterBody) =>
+      request<User>('/api/auth/register', { method: 'POST', body }),
+    onSuccess: (user) => {
+      queryClient.setQueryData(['session'], user)
+      navigate(user.role === 'owner' ? '/owner' : '/tester')
+    },
+  })
+
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1)
   const [role, setRole] = useState<'owner' | 'tester' | null>(null)
 
@@ -126,16 +124,51 @@ export function SignupPage() {
       defaultAgreed={agreed}
       onBack={(checked) => {
         setAgreed(checked)
+        // Coming back later starts without the old error message
+        signup.reset()
         setStep(3)
       }}
+      submitting={signup.isPending}
+      errorMessage={
+        signup.error
+          ? signup.error instanceof ApiError
+            ? signup.error.message
+            : // fetch itself failed: offline, or the server cannot be reached
+              '無法連線，請稍後再試'
+          : undefined
+      }
+      // The form's field names differ from the API's, so each one is matched here.
+      // confirmPassword is left out: it only exists to catch typos in the form.
       onSubmit={() =>
-        submitSignup({
-          role,
-          email: account.email,
-          password: account.password,
-          profile: role === 'tester' ? testerProfile : ownerProfile,
-          dispute_terms_version: disputeTermsVersion,
-        })
+        signup.mutate(
+          role === 'tester'
+            ? {
+                role,
+                email: account.email,
+                password: account.password,
+                agreed: true,
+                profile: {
+                  real_name: testerProfile.name,
+                  phone: testerProfile.phone,
+                  city: testerProfile.city,
+                },
+              }
+            : {
+                role,
+                email: account.email,
+                password: account.password,
+                agreed: true,
+                profile: {
+                  real_name: ownerProfile.name,
+                  phone: ownerProfile.phone,
+                  name: ownerProfile.company,
+                  tax_id: ownerProfile.taxId || null,
+                  // The select saves the tag id, see SignupOwnerProfilePage
+                  industry_tag_id: ownerProfile.industry,
+                  address: ownerProfile.address,
+                },
+              }
+        )
       }
     />
   )

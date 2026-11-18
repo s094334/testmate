@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router'
+import { useLogout, useSession } from '@/api/session'
 import logo from '@/assets/logo.png'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { LogoutIcon } from '@/components/icons/LogoutIcon'
@@ -9,10 +10,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { owner } from '@/data/owner'
 
 export function OwnerHeader() {
   const { pathname } = useLocation()
+  const { data: user } = useSession()
+  const logout = useLogout()
 
   return (
     <header className="bg-surface border-line sticky top-0 z-3 border-b">
@@ -43,9 +45,9 @@ export function OwnerHeader() {
         <DropdownMenu>
           <DropdownMenuTrigger className="tablet:gap-3 tablet:pl-0 inline-flex min-h-12 flex-none items-center gap-2 rounded-md px-2">
             <span className="border-owner bg-owner-soft tablet:size-11 tablet:text-[18px] inline-flex size-10 items-center justify-center rounded-full border-3 font-bold">
-              {owner.name[0]}
+              {user?.display_name[0]}
             </span>
-            <b>{owner.name}</b>
+            <b>{user?.display_name}</b>
             <ChevronDownIcon />
           </DropdownMenuTrigger>
 
@@ -77,7 +79,8 @@ export function OwnerHeader() {
             <DropdownMenuSeparator className="bg-line tablet:hidden mx-0 my-2" />
 
             <DropdownMenuItem
-              render={<Link to="/" />}
+              onClick={() => logout.mutate()}
+              disabled={logout.isPending}
               className="text-ink-subtle focus:bg-platform-soft min-h-12 rounded-none px-4 text-base"
             >
               <span className="flex translate-y-0.25">
