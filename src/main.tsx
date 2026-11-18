@@ -1,11 +1,24 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ApiError } from '@/api/client'
 import './index.css'
 import App from './App.tsx'
 
+function goToLoginIfLoggedOut(error: Error) {
+  if (error instanceof ApiError && error.code === 'UNAUTHENTICATED') {
+    window.location.assign('/login')
+  }
+}
+
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({ onError: goToLoginIfLoggedOut }),
+  mutationCache: new MutationCache({ onError: goToLoginIfLoggedOut }),
   defaultOptions: {
     queries: {
       // Asking again will not change a 4xx (not logged in, no permission…);
