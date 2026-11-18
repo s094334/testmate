@@ -39,7 +39,13 @@ export function ScheduleAndReward({
               <input
                 id="end-date"
                 type="date"
-                {...register('endDate', { required: '請選擇結束日期' })}
+                {...register('endDate', {
+                  required: '請選擇結束日期',
+                  validate: (value, values) =>
+                    !values.startDate ||
+                    value >= values.startDate ||
+                    '結束日期不能早於開始日期',
+                })}
                 className={`bg-surface min-h-12 w-full min-w-0 rounded-md px-3 py-2.5 ${errors.endDate ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
               />
             </div>
