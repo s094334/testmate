@@ -1,9 +1,21 @@
+import { Navigate } from 'react-router'
+import { useSession } from '@/api/session'
 import { AboutSection } from './AboutSection'
 import { IdentitySection } from './IdentitySection'
 import { ProjectsSection } from './ProjectsSection'
 import { TrendSection } from './TrendSection'
 
 export function HomePage() {
+  const { data: user, isPending } = useSession()
+
+  if (isPending) return null
+  // The home page is for visitors; a logged-in person goes to their own home
+  if (user) {
+    return (
+      <Navigate to={user.role === 'owner' ? '/owner' : '/tester'} replace />
+    )
+  }
+
   return (
     <>
       <div className="bg-home-sky">
