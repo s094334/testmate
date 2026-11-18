@@ -4,7 +4,7 @@ import { deleteCookie } from 'hono/cookie'
 import { createDb } from '../db'
 import { sessions } from '../db/schema'
 import { requireAuth, type AuthEnv } from '../http/auth'
-import { hashToken } from './session'
+import { hashToken } from './lib/session'
 
 export const logoutRoute = createRoute({
   method: 'post',

@@ -1,6 +1,6 @@
 import { getCookie } from 'hono/cookie'
 import { createMiddleware } from 'hono/factory'
-import { getSession, type SessionUser } from '../auth/session'
+import { findSessionUser, type SessionUser } from '../auth/lib/session'
 import { createDb } from '../db'
 import { fail } from './response'
 
@@ -15,7 +15,9 @@ export type AuthEnv = {
 // API.md wants 401 before 400.
 export const requireAuth = createMiddleware<AuthEnv>(async (c, next) => {
   const token = getCookie(c, 'session')
-  const user = token ? await getSession(await createDb(c.env), token) : null
+  const user = token
+    ? await findSessionUser(await createDb(c.env), token)
+    : null
 
   if (!token || !user) {
     return fail(c, 401, 'UNAUTHENTICATED', '請先登入')

@@ -12,8 +12,8 @@ import {
   users,
 } from '../db/schema'
 import { fail, ok } from '../http/response'
-import { hashPassword } from './password'
-import { createSession } from './session'
+import { hashPassword } from './lib/password'
+import { createSession } from './lib/session'
 
 // Fields both roles send. `role` decides which profile comes with them.
 const account = {

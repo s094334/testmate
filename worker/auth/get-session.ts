@@ -2,7 +2,7 @@ import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { requireAuth, type AuthEnv } from '../http/auth'
 import { ok } from '../http/response'
 
-export const currentUserRoute = createRoute({
+export const getSessionRoute = createRoute({
   method: 'get',
   path: '/auth/session',
   middleware: [requireAuth] as const,
@@ -28,6 +28,5 @@ export const currentUserRoute = createRoute({
   },
 })
 
-export const currentUser: RouteHandler<typeof currentUserRoute, AuthEnv> = (
-  c
-) => ok(c, c.get('user'))
+export const getSession: RouteHandler<typeof getSessionRoute, AuthEnv> = (c) =>
+  ok(c, c.get('user'))
