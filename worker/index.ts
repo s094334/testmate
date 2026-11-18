@@ -2,6 +2,7 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import { HTTPException } from 'hono/http-exception'
 import { currentUser, currentUserRoute } from './auth/current-user'
 import { login, loginRoute } from './auth/login'
+import { logout, logoutRoute } from './auth/logout'
 import { register, registerRoute } from './auth/register'
 import { checkOrigin } from './http/origin'
 import { fail, validationFailed } from './http/response'
@@ -17,6 +18,7 @@ app.use(checkOrigin)
 
 app.openapi(registerRoute, register)
 app.openapi(loginRoute, login)
+app.openapi(logoutRoute, logout)
 app.openapi(currentUserRoute, currentUser)
 
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', '找不到這個 API'))
