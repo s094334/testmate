@@ -28,7 +28,18 @@ export function ScheduleAndReward({
               <input
                 id="start-date"
                 type="date"
-                {...register('startDate', { required: '請選擇開始日期' })}
+                {...register('startDate', {
+                  required: '請選擇開始日期',
+                  pattern: {
+                    value: /^\d{4}-\d{2}-\d{2}$/,
+                    message: '請選擇開始日期',
+                  },
+                  validate: (value) =>
+                    value >=
+                      new Date().toLocaleDateString('en-CA', {
+                        timeZone: 'Asia/Taipei',
+                      }) || '開始日期不能早於今天',
+                })}
                 className={`bg-surface min-h-12 w-full min-w-0 rounded-md px-3 py-2.5 ${errors.startDate ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
               />
               <span className="text-ink-subtle desktop:inline hidden">–</span>
@@ -41,6 +52,10 @@ export function ScheduleAndReward({
                 type="date"
                 {...register('endDate', {
                   required: '請選擇結束日期',
+                  pattern: {
+                    value: /^\d{4}-\d{2}-\d{2}$/,
+                    message: '請選擇結束日期',
+                  },
                   validate: (value, values) =>
                     !values.startDate ||
                     value >= values.startDate ||
