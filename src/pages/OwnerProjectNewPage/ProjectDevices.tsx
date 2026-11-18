@@ -22,22 +22,11 @@ export function ProjectDevices({
   const {
     field: { value: devices, onChange },
     fieldState: { error },
-  } = useController({
-    control,
-    name: 'devices',
-    rules: {
-      validate: (value) => value.length > 0 || '請加入至少一台目標裝置',
-    },
-  })
+  } = useController({ control, name: 'devices' })
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-subheading">
-        目標裝置
-        <span className="text-status-dispute-text text-required ml-1.5">
-          必填
-        </span>
-      </h3>
+      <h3 className="text-subheading">目標裝置</h3>
 
       <Tabs value={type} onValueChange={setType} className="flex flex-col">
         <TabsList className="relative z-1 -mb-px flex gap-1">

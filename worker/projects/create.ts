@@ -126,10 +126,10 @@ const createProjectBody = z
                 }
               }
             }),
-          { error: '請加入至少一台目標裝置' }
+          { error: '目標裝置格式錯誤' }
         )
-        .min(1, '請加入至少一台目標裝置')
-        .max(50, '目標裝置最多 50 台'),
+        .max(50, '目標裝置最多 50 台')
+        .default([]),
       languages: z
         .array(
           z.object(
@@ -159,15 +159,15 @@ const createProjectBody = z
             },
             { error: '測試語言格式錯誤' }
           ),
-          { error: '請選擇至少一種測試語言' }
+          { error: '測試語言格式錯誤' }
         )
-        .min(1, '請選擇至少一種測試語言')
         .refine(
           (languages) =>
             new Set(languages.map(({ name }) => name)).size ===
             languages.length,
           '同一種語言只能選一次'
-        ),
+        )
+        .default([]),
       interest_tag_ids: z
         .array(z.uuid({ error: '請選擇興趣' }), { error: '請選擇興趣' })
         .max(100, '興趣太多')
@@ -420,19 +420,21 @@ export const createProject: RouteHandler<
       })
       .returning({ id: projects.id })
 
-    await tx.insert(projectDevices).values(
-      body.devices.map((device, i) => ({
-        projectId: project.id,
-        deviceTagId: device.device_tag_id ?? null,
-        brand: device.brand ?? null,
-        // An empty model (listed device) or min_os_version (custom device)
-        // means it was left blank
-        model: device.model || null,
-        minOsVersion: device.min_os_version || null,
-        customName: device.custom_name ?? null,
-        sortOrder: i,
-      }))
-    )
+    if (body.devices.length > 0) {
+      await tx.insert(projectDevices).values(
+        body.devices.map((device, i) => ({
+          projectId: project.id,
+          deviceTagId: device.device_tag_id ?? null,
+          brand: device.brand ?? null,
+          // An empty model (listed device) or min_os_version (custom device)
+          // means it was left blank
+          model: device.model || null,
+          minOsVersion: device.min_os_version || null,
+          customName: device.custom_name ?? null,
+          sortOrder: i,
+        }))
+      )
+    }
 
     // The same id sent twice would break the (project_id, tag_id) primary key
     const interestTagIds = [...new Set(body.interest_tag_ids)]

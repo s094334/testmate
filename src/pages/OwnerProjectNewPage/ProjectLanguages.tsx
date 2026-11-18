@@ -18,24 +18,13 @@ export function ProjectLanguages({
   const {
     field: { value: languages, onChange },
     fieldState: { error },
-  } = useController({
-    control,
-    name: 'languages',
-    rules: {
-      validate: (value) => value.length > 0 || '請選擇至少一種測試語言',
-    },
-  })
+  } = useController({ control, name: 'languages' })
   const nativeLanguages = useWatch({ control, name: 'nativeLanguages' })
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <h3 className="text-subheading">
-          測試語言
-          <span className="text-status-dispute-text text-required ml-1.5">
-            必填
-          </span>
-        </h3>
+        <h3 className="text-subheading">測試語言</h3>
         <p className="text-ink-subtle">
           勾選需要的語言；要找母語者，再勾選「需母語」。
         </p>
