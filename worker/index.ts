@@ -6,6 +6,7 @@ import { logout, logoutRoute } from './auth/logout'
 import { register, registerRoute } from './auth/register'
 import { checkOrigin } from './http/origin'
 import { fail, validationFailed } from './http/response'
+import { listTags, listTagsRoute } from './tags/list'
 
 const app = new OpenAPIHono<{ Bindings: Env }>({
   // Any request that fails a route's zod schema gets 400 VALIDATION_FAILED
@@ -20,6 +21,7 @@ app.openapi(registerRoute, register)
 app.openapi(loginRoute, login)
 app.openapi(logoutRoute, logout)
 app.openapi(currentUserRoute, currentUser)
+app.openapi(listTagsRoute, listTags)
 
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', '找不到這個 API'))
 
