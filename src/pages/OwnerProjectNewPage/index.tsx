@@ -18,6 +18,21 @@ import { ProjectProgress } from './ProjectProgress'
 import { ScheduleAndReward } from './ScheduleAndReward'
 import { TestRequirements } from './TestRequirements'
 
+const stepFields: Record<1 | 2, Path<ProjectFormValues>[]> = {
+  1: [
+    'name',
+    'summary',
+    'devices',
+    'languages',
+    'interests',
+    'experience',
+    'years',
+    'mode',
+    'city',
+  ],
+  2: ['startDate', 'endDate', 'reward'],
+}
+
 export function OwnerProjectNewPage() {
   const navigate = useNavigate()
 
@@ -27,6 +42,7 @@ export function OwnerProjectNewPage() {
     setValue,
     setError,
     getFieldState,
+    trigger,
     handleSubmit,
     formState: { errors },
   } = useForm<ProjectFormValues>({
@@ -59,23 +75,9 @@ export function OwnerProjectNewPage() {
   // 發布 is on step 3, but the other steps are only hidden and are checked too.
   // Go back to the first step that has a problem, so its message can be seen.
   function showFirstStepWithError(fields: string[]) {
-    const stepWithError = fields.some((field) =>
-      [
-        'name',
-        'summary',
-        'devices',
-        'languages',
-        'interests',
-        'experience',
-        'years',
-        'mode',
-        'city',
-      ].includes(field)
-    )
+    const stepWithError = stepFields[1].some((field) => fields.includes(field))
       ? 1
-      : fields.some((field) =>
-            ['startDate', 'endDate', 'reward'].includes(field)
-          )
+      : stepFields[2].some((field) => fields.includes(field))
         ? 2
         : 3
     if (stepWithError !== 3) {
@@ -198,9 +200,11 @@ export function OwnerProjectNewPage() {
           <div className="desktop:flex hidden justify-end">
             <button
               type="button"
-              onClick={() => {
-                setStep(2)
-                window.scrollTo({ top: 0 })
+              onClick={async () => {
+                if (await trigger(stepFields[1])) {
+                  setStep(2)
+                  window.scrollTo({ top: 0 })
+                }
               }}
               className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
             >
@@ -212,9 +216,11 @@ export function OwnerProjectNewPage() {
           <div className="desktop:flex hidden justify-end gap-3">
             <button
               type="button"
-              onClick={() => {
-                setStep(3)
-                window.scrollTo({ top: 0 })
+              onClick={async () => {
+                if (await trigger(stepFields[2])) {
+                  setStep(3)
+                  window.scrollTo({ top: 0 })
+                }
               }}
               className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
             >
@@ -261,10 +267,10 @@ export function OwnerProjectNewPage() {
           <button
             type="button"
             disabled={step === 3 && publish.isPending}
-            onClick={() => {
+            onClick={async () => {
               if (step === 3) {
                 submit()
-              } else {
+              } else if (await trigger(stepFields[step])) {
                 setStep(step === 1 ? 2 : 3)
                 window.scrollTo({ top: 0 })
               }
