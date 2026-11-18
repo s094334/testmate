@@ -1,5 +1,3 @@
-// The complete dispute process, shown in signup step 4 and later in the project page's dispute dialog.
-// It is the one copy of this text: when the wording changes, bump disputeTermsVersion in src/data/disputeTerms.ts.
 export function DisputeTerms() {
   return (
     <div className="text-ink-muted flex flex-col gap-10">
