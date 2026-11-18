@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { WarningIcon } from '@/components/icons/WarningIcon'
 import { disputeSteps } from './data'
 import { DisputeTermsDialog } from './DisputeTermsDialog'
 import { SignupProgress } from './SignupProgress'
@@ -9,6 +10,10 @@ type SignupAgreementPageProps = {
   defaultAgreed: boolean
   onBack: (agreed: boolean) => void
   onSubmit: () => void
+  // True while the signup request is on its way
+  submitting: boolean
+  // Why the signup failed, e.g. 這個 email 已經註冊
+  errorMessage?: string
 }
 
 export function SignupAgreementPage({
@@ -16,6 +21,8 @@ export function SignupAgreementPage({
   defaultAgreed,
   onBack,
   onSubmit,
+  submitting,
+  errorMessage,
 }: SignupAgreementPageProps) {
   const [agreed, setAgreed] = useState(defaultAgreed)
   const [open, setOpen] = useState(false)
@@ -26,7 +33,7 @@ export function SignupAgreementPage({
         data-role={role}
         onSubmit={(e) => {
           e.preventDefault()
-          if (agreed) onSubmit()
+          if (agreed && !submitting) onSubmit()
         }}
         className="bg-surface border-ink tablet:p-12 mx-auto flex max-w-180 flex-col gap-5 rounded-md border px-5 py-6"
       >
@@ -69,6 +76,12 @@ export function SignupAgreementPage({
             </div>
           </div>
         </section>
+        {errorMessage && (
+          <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+            <WarningIcon />
+            {errorMessage}
+          </span>
+        )}
         <div className="flex gap-3">
           <button
             type="button"
@@ -79,7 +92,8 @@ export function SignupAgreementPage({
           </button>
           <button
             type="submit"
-            disabled={!agreed}
+            // Also off while sending, so a double click cannot register twice
+            disabled={!agreed || submitting}
             className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:cursor-pointer enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:enabled:hover:translate-y-0 motion-reduce:enabled:active:translate-y-0"
           >
             完成註冊

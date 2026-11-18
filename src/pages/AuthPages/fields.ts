@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form'
-import { cities, industries } from './data'
+import { cityOptions } from '@/data/options'
+import { industries } from './data'
 
 export type FieldConfig<T extends FieldValues> = {
   label: string
@@ -9,7 +10,9 @@ export type FieldConfig<T extends FieldValues> = {
   placeholder?: string
   requiredMessage?: string
   rules?: RegisterOptions<T, Path<T>>
-  options?: string[]
+  // A plain string is both what is shown and what is saved.
+  // { value, label } shows the label but saves the value, e.g. a tag's id.
+  options?: readonly (string | { value: string; label: string })[]
   disablePlaceholder?: boolean
   hint?: string
   hideHintOnError?: boolean
@@ -127,7 +130,7 @@ export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
     name: 'city',
     type: 'select',
     placeholder: '請選擇',
-    options: cities,
+    options: cityOptions,
     requiredMessage: '請選擇居住地',
   },
 ]
