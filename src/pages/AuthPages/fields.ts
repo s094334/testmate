@@ -46,6 +46,11 @@ export type OwnerProfileFormValues = {
   address: string
 }
 
+export type LoginFormValues = {
+  email: string
+  password: string
+}
+
 export type ProjectBasicFormValues = {
   name: string
   industry: string
@@ -97,6 +102,31 @@ export const accountFields: FieldConfig<AccountFormValues>[] = [
       validate: (value, values) =>
         value === values.password || '兩次密碼不一致',
     },
+  },
+]
+
+export const loginFields: FieldConfig<LoginFormValues>[] = [
+  {
+    label: 'Email',
+    name: 'email',
+    type: 'email',
+    autoComplete: 'email',
+    placeholder: 'example@example.com',
+    rules: {
+      required: '請填寫 Email',
+      pattern: {
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: '請輸入正確的 email 格式',
+      },
+    },
+  },
+  {
+    label: '密碼',
+    name: 'password',
+    type: 'password',
+    autoComplete: 'current-password',
+    placeholder: '請輸入密碼',
+    rules: { required: '請填寫密碼' },
   },
 ]
 
