@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router'
 import { ApiError, request } from './client'
 import type { User } from './types'
 
@@ -25,5 +26,26 @@ export function useSession() {
     // Ask again at most every 5 minutes when a page or header mounts;
     // switching back to the browser tab after that checks it again
     staleTime: 5 * 60 * 1000,
+  })
+}
+
+export function useLogout() {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const loggedOut = () => {
+    // Drop every saved answer, so nothing of this person stays on the page
+    queryClient.clear()
+    queryClient.setQueryData(['session'], null)
+    navigate('/')
+  }
+
+  return useMutation({
+    mutationFn: () => request<void>('/api/auth/logout', { method: 'POST' }),
+    onSuccess: loggedOut,
+    onError: (error) => {
+      // 401: the session had already ended, so this person is logged out anyway
+      if (error instanceof ApiError && error.status === 401) loggedOut()
+    },
   })
 }
