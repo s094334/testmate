@@ -1,9 +1,8 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { eq } from 'drizzle-orm'
 import { setCookie } from 'hono/cookie'
-import { DatabaseError } from 'pg'
 import { cities } from '../../shared/cities'
-import { createDb } from '../db'
+import { createDb, isUniqueViolation, saveTogether } from '../db'
 import {
   companies,
   disputeAgreements,
@@ -13,7 +12,7 @@ import {
 } from '../db/schema'
 import { fail, ok } from '../http/response'
 import { hashPassword } from './lib/password'
-import { createSession } from './lib/session'
+import { newSession } from './lib/session'
 
 // Fields both roles send. `role` decides which profile comes with them.
 const account = {
@@ -129,8 +128,10 @@ export const register: RouteHandler<
   { Bindings: Env }
 > = async (c) => {
   const body = c.req.valid('json')
-  const db = await createDb(c.env)
+  const db = createDb(c.env)
 
+  // Tags are seed data that no API changes, so the category read here
+  // cannot change before the batch below runs
   if (body.role === 'owner') {
     const [tag] = await db
       .select({ category: tags.category })
@@ -145,46 +146,43 @@ export const register: RouteHandler<
   }
 
   const password = await hashPassword(body.password)
+  const userId = crypto.randomUUID()
+  const session = await newSession(db, userId)
 
   try {
-    // Account, profile, agreement and session are saved together or not at all
-    const { user, token } = await db.transaction(async (tx) => {
-      const [user] = await tx
-        .insert(users)
-        .values({
-          email: body.email,
-          passwordHash: password.hash,
-          passwordSalt: password.salt,
-          passwordIterations: password.iterations,
-          role: body.role,
-        })
-        .returning({ id: users.id, email: users.email, role: users.role })
+    // Account, profile, agreement and session are saved together or not at all.
+    // A taken email is not looked up first: the unique index on users.email
+    // fails the batch, so two signups with one email at the same time cannot both pass.
+    await saveTogether(db, [
+      db.insert(users).values({
+        id: userId,
+        email: body.email,
+        passwordHash: password.hash,
+        passwordSalt: password.salt,
+        passwordIterations: password.iterations,
+        role: body.role,
+      }),
+      body.role === 'tester'
+        ? db.insert(testerProfiles).values({
+            userId,
+            realName: body.profile.real_name,
+            phone: body.profile.phone,
+            city: body.profile.city,
+          })
+        : db.insert(companies).values({
+            userId,
+            realName: body.profile.real_name,
+            phone: body.profile.phone,
+            name: body.profile.name,
+            taxId: body.profile.tax_id,
+            industryTagId: body.profile.industry_tag_id,
+            address: body.profile.address,
+          }),
+      db.insert(disputeAgreements).values({ userId }),
+      session.insert,
+    ])
 
-      if (body.role === 'tester') {
-        await tx.insert(testerProfiles).values({
-          userId: user.id,
-          realName: body.profile.real_name,
-          phone: body.profile.phone,
-          city: body.profile.city,
-        })
-      } else {
-        await tx.insert(companies).values({
-          userId: user.id,
-          realName: body.profile.real_name,
-          phone: body.profile.phone,
-          name: body.profile.name,
-          taxId: body.profile.tax_id,
-          industryTagId: body.profile.industry_tag_id,
-          address: body.profile.address,
-        })
-      }
-
-      await tx.insert(disputeAgreements).values({ userId: user.id })
-
-      return { user, token: await createSession(tx, user.id) }
-    })
-
-    setCookie(c, 'session', token, {
+    setCookie(c, 'session', session.token, {
       httpOnly: true,
       secure: true,
       sameSite: 'Lax',
@@ -195,19 +193,15 @@ export const register: RouteHandler<
     return ok(
       c,
       {
-        id: user.id,
-        email: user.email,
-        role: user.role,
+        id: userId,
+        email: body.email,
+        role: body.role,
         display_name: body.profile.real_name,
       },
       201
     )
   } catch (err) {
-    if (
-      err instanceof Error &&
-      err.cause instanceof DatabaseError &&
-      err.cause.constraint === 'users_email_unique'
-    ) {
+    if (isUniqueViolation(err, users.email)) {
       return fail(c, 409, 'EMAIL_TAKEN', '這個 email 已經註冊')
     }
     throw err

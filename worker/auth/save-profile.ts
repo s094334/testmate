@@ -1,7 +1,7 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { and, eq, inArray } from 'drizzle-orm'
 import { cities } from '../../shared/cities'
-import { createDb } from '../db'
+import { createDb, insertRows, saveTogether } from '../db'
 import {
   tags,
   testerDevices,
@@ -222,7 +222,7 @@ export const saveProfile: RouteHandler<
 > = async (c) => {
   const body = c.req.valid('json')
   const user = c.get('user')
-  const db = await createDb(c.env)
+  const db = createDb(c.env)
 
   const tagFields = [
     ...body.devices.flatMap((device, i) =>
@@ -245,17 +245,13 @@ export const saveProfile: RouteHandler<
     })),
   ]
 
+  // All of them rather than `id in (...)`: the sent ids could go over D1's
+  // limit of 100 bound parameters, and the whole list is only 80 rows.
+  // Tags are seed data that no API changes, so nothing read here can change
+  // before the batch below runs.
   const foundTags =
     tagFields.length > 0
-      ? await db
-          .select({ id: tags.id, category: tags.category })
-          .from(tags)
-          .where(
-            inArray(
-              tags.id,
-              tagFields.map((tagField) => tagField.id)
-            )
-          )
+      ? await db.select({ id: tags.id, category: tags.category }).from(tags)
       : []
 
   // A tag id that does not exist, or belongs to another category
@@ -274,10 +270,10 @@ export const saveProfile: RouteHandler<
   const qaYears = body.experiences.reduce((sum, { years }) => sum + years, 0)
 
   // Profile, devices and tags are saved together or not at all
-  await db.transaction(async (tx) => {
+  await saveTogether(db, [
     // The profile is created at signup; insert anyway in case it is missing,
     // so saving never fails on a tester without one
-    await tx
+    db
       .insert(testerProfiles)
       .values({
         userId: user.id,
@@ -301,49 +297,51 @@ export const saveProfile: RouteHandler<
           languages: body.languages,
           updatedAt: new Date(),
         },
-      })
+      }),
 
-    await tx.delete(testerDevices).where(eq(testerDevices.userId, user.id))
-    if (body.devices.length > 0) {
-      await tx.insert(testerDevices).values(
-        body.devices.map((device, i) => ({
-          userId: user.id,
-          deviceTagId: device.device_tag_id ?? null,
-          brand: device.brand ?? null,
-          // An empty model (listed device) or os_version (custom device)
-          // means it was left blank
-          model: device.model || null,
-          osVersion: device.os_version || null,
-          customName: device.custom_name ?? null,
-          sortOrder: i,
-        }))
-      )
-    }
+    db.delete(testerDevices).where(eq(testerDevices.userId, user.id)),
+    ...insertRows(
+      db,
+      testerDevices,
+      body.devices.map((device, i) => ({
+        userId: user.id,
+        deviceTagId: device.device_tag_id ?? null,
+        brand: device.brand ?? null,
+        // An empty model (listed device) or os_version (custom device)
+        // means it was left blank
+        model: device.model || null,
+        osVersion: device.os_version || null,
+        customName: device.custom_name ?? null,
+        sortOrder: i,
+      }))
+    ),
 
     // Only interest rows are replaced; industry and audience rows saved
     // before those fields were removed are left as they are
-    await tx
+    db
       .delete(testerProfileTags)
       .where(
         and(
           eq(testerProfileTags.userId, user.id),
           inArray(
             testerProfileTags.tagId,
-            tx
+            db
               .select({ id: tags.id })
               .from(tags)
               .where(eq(tags.category, 'interest'))
           )
         )
-      )
+      ),
     // The same id sent twice would break the (user_id, tag_id) primary key
-    const interestTagIds = [...new Set(body.interest_tag_ids)]
-    if (interestTagIds.length > 0) {
-      await tx
-        .insert(testerProfileTags)
-        .values(interestTagIds.map((tagId) => ({ userId: user.id, tagId })))
-    }
-  })
+    ...insertRows(
+      db,
+      testerProfileTags,
+      [...new Set(body.interest_tag_ids)].map((tagId) => ({
+        userId: user.id,
+        tagId,
+      }))
+    ),
+  ])
 
   return ok(c, await findTesterProfile(db, user))
 }

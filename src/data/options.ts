@@ -3,7 +3,7 @@ export { cities as cityOptions } from '../../shared/cities'
 export const languageOptions = [
   '中文',
   '英文',
-  '日語',
+  '日文',
   '韓文',
   '泰文',
   '越南文',

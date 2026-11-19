@@ -1,10 +1,11 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { users } from './accounts'
+import { timestamp } from './columns'
 import { tags } from './tags'
 
 // One per owner, created at signup, edited later with PUT /api/auth/company
-export const companies = pgTable('companies', {
-  userId: uuid('user_id')
+export const companies = sqliteTable('companies', {
+  userId: text('user_id')
     .primaryKey()
     .references(() => users.id, { onDelete: 'cascade' }),
   // The owner's own name and phone, not the company's
@@ -14,15 +15,15 @@ export const companies = pgTable('companies', {
   name: text('name').notNull(),
   taxId: text('tax_id'),
   // A tag in the industry category
-  industryTagId: uuid('industry_tag_id')
+  industryTagId: text('industry_tag_id')
     .notNull()
     .references(() => tags.id),
   address: text('address').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true })
+  createdAt: timestamp('created_at')
     .notNull()
-    .defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .$defaultFn(() => new Date()),
+  updatedAt: timestamp('updated_at')
     .notNull()
-    .defaultNow()
+    .$defaultFn(() => new Date())
     .$onUpdate(() => new Date()),
 })

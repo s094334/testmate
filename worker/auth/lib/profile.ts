@@ -2,7 +2,7 @@ import { z } from '@hono/zod-openapi'
 import { and, eq } from 'drizzle-orm'
 import type { Db } from '../../db'
 import {
-  tagCategory,
+  tagCategories,
   tags,
   testerDevices,
   testerProfileTags,
@@ -11,7 +11,7 @@ import {
 
 const tag = z.object({
   id: z.uuid(),
-  category: z.enum(tagCategory.enumValues),
+  category: z.enum(tagCategories),
   name: z.string(),
 })
 

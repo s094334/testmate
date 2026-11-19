@@ -12,6 +12,8 @@
     "deploy": "npm run build && wrangler deploy",
     "deploy:dev": "npm run build && wrangler deploy --env dev",
     "cf-typegen": "wrangler types",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
