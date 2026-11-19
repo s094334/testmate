@@ -143,6 +143,57 @@ export const recruitCandidates: Record<
   ],
 }
 
+// Testers the platform suggests for a recruiting project, by project id.
+// Inviting one moves them into recruitCandidates as noreply.
+export const recommendedTesters: Record<
+  string,
+  {
+    id: string
+    name: string
+    fullName: string
+    email: string
+    initial: string
+    rating: number
+    reviews: number
+    city: string
+    years: string
+    devices: string[]
+    languages: string[]
+    interests: string[]
+  }[]
+> = {
+  o1: [
+    {
+      id: 'r1',
+      name: '許Ｏ明',
+      fullName: '許志明',
+      email: 'chihming.hsu@example.com',
+      initial: '許',
+      rating: 5.0,
+      reviews: 27,
+      city: '新北市',
+      years: '5 年以上',
+      devices: ['iPhone 16', 'Galaxy S24'],
+      languages: ['中文', '英文', '韓文', '泰文'],
+      interests: ['科技 3C', 'AI 工具', '理財投資'],
+    },
+    {
+      id: 'r2',
+      name: '蔡Ｏ珊',
+      fullName: '蔡佩珊',
+      email: 'peishan.tsai@example.com',
+      initial: '蔡',
+      rating: 4.6,
+      reviews: 11,
+      city: '高雄市',
+      years: '3–5 年',
+      devices: ['iPhone 15 Pro'],
+      languages: ['中文', '英文', '日文'],
+      interests: ['美食料理', '攝影'],
+    },
+  ],
+}
+
 export const ownerProjects: OwnerProject[] = [
   {
     id: 'o1',
