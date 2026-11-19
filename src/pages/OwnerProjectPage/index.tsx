@@ -31,7 +31,7 @@ export function OwnerProjectPage() {
           <ChevronDownIcon className="rotate-90" />
           專案列表
         </Link>
-        <h1 className="tablet:text-subtitle tablet:col-span-1 col-span-2 row-start-2 text-[28px]">
+        <h1 className="text-subtitle tablet:col-span-1 col-span-2 row-start-2">
           {project.name}
         </h1>
         <Link
@@ -71,9 +71,6 @@ export function OwnerProjectPage() {
             className="bg-page text-ink data-active:bg-role-soft data-active:text-role tablet:flex-none tablet:h-12 tablet:min-h-0 tablet:rounded-none tablet:rounded-t-md tablet:border tablet:border-b-0 tablet:border-transparent tablet:bg-transparent tablet:px-4 tablet:text-[18px] tablet:font-medium tablet:text-ink-subtle tablet:data-active:border-ink tablet:data-active:bg-surface tablet:data-active:text-ink desktop:px-6 desktop:text-[20px] flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out data-active:font-bold"
           >
             推薦 QA
-            <span className="bg-owner-strong text-surface font-num tablet:inline-block hidden h-6 min-w-6 rounded-full px-1.5 text-center text-[16px] leading-6 font-semibold">
-              3
-            </span>
           </TabsTrigger>
         </TabsList>
 
@@ -206,7 +203,7 @@ export function OwnerProjectPage() {
                                 )
                               )
                             }
-                            className="border-role bg-surface text-ink hover:bg-role-soft tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
                           >
                             婉拒
                           </button>
