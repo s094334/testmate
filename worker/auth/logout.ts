@@ -19,7 +19,7 @@ export const logoutRoute = createRoute({
 
 // Only this device's session is deleted; other devices stay logged in
 export const logout: RouteHandler<typeof logoutRoute, AuthEnv> = async (c) => {
-  const db = await createDb(c.env)
+  const db = createDb(c.env)
 
   await db
     .delete(sessions)

@@ -15,9 +15,7 @@ export type AuthEnv = {
 // API.md wants 401 before 400.
 export const requireAuth = createMiddleware<AuthEnv>(async (c, next) => {
   const token = getCookie(c, 'session')
-  const user = token
-    ? await findSessionUser(await createDb(c.env), token)
-    : null
+  const user = token ? await findSessionUser(createDb(c.env), token) : null
 
   if (!token || !user) {
     return fail(c, 401, 'UNAUTHENTICATED', '請先登入')

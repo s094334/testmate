@@ -26,7 +26,7 @@ export const getProfileRoute = createRoute({
 export const getProfile: RouteHandler<typeof getProfileRoute, AuthEnv> = async (
   c
 ) => {
-  const profile = await findTesterProfile(await createDb(c.env), c.get('user'))
+  const profile = await findTesterProfile(createDb(c.env), c.get('user'))
 
   if (!profile) {
     return fail(c, 404, 'NOT_FOUND', '還沒建立檔案')
