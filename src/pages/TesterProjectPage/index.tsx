@@ -17,7 +17,7 @@ export function TesterProjectPage() {
     <div className="max-w-page tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
       <Link
         to="/tester"
-        className="inline-flex min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+        className="tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
       >
         <ChevronDownIcon className="rotate-90" />
         上一頁
@@ -36,19 +36,19 @@ export function TesterProjectPage() {
         </span>
       </div>
 
-      <div className="bg-role-soft text-role-text flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-6 py-4">
-        <span className="text-[18px] font-bold">
+      <div className="bg-role-soft text-role-text tablet:px-6 tablet:py-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-4 py-3">
+        <span className="tablet:text-[18px] font-bold">
           簽署保密協議，負責人付款後就能開始
         </span>
         <button
           type="button"
-          className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:block hidden min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
         >
           簽署保密協議
         </button>
       </div>
 
-      <article className="bg-surface border-ink tablet:p-8 flex flex-col gap-8 rounded-md border p-5">
+      <article className="bg-surface border-ink tablet:p-8 flex flex-col gap-8 rounded-md border px-4 py-5">
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">簡介</h2>
           <p className="text-body-large text-ink-muted">{detail.intro}</p>
@@ -115,8 +115,27 @@ export function TesterProjectPage() {
           <LockedNotice>簽署保密協議、負責人付款後開放</LockedNotice>
         </section>
 
-        <LockedNotice>簽署保密協議、負責人付款後開放</LockedNotice>
+        <section className="flex flex-col gap-3">
+          <h2 className="text-section-title">驗收與撥款</h2>
+          <LockedNotice>簽署保密協議、負責人付款後開放</LockedNotice>
+        </section>
       </article>
+
+      <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-wrap gap-2 border-t px-4 py-3">
+        <Link
+          to="/tester"
+          className="border-role bg-surface text-ink hover:bg-role-soft inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        >
+          <ChevronDownIcon className="size-4.5 rotate-90" />
+          上一頁
+        </Link>
+        <button
+          type="button"
+          className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        >
+          簽署保密協議
+        </button>
+      </div>
     </div>
   )
 }
