@@ -41,6 +41,83 @@ export const owner: Company = {
   address: '臺北市信義區松仁路 100 號',
 }
 
+// Testers who applied to or were invited to a recruiting project, by project id.
+// Names stay masked until the owner picks someone.
+// applied: applied by themselves; noreply: invited, no answer yet; declined: the owner declined
+export const recruitCandidates: Record<
+  string,
+  {
+    id: string
+    name: string
+    initial: string
+    rating: number
+    reviews: number
+    city: string
+    years: string
+    devices: string[]
+    languages: string[]
+    interests: string[]
+    status: 'applied' | 'noreply' | 'declined'
+    invitedAt?: string
+  }[]
+> = {
+  o1: [
+    {
+      id: 'c1',
+      name: '陳Ｏ文',
+      initial: '陳',
+      rating: 4.6,
+      reviews: 7,
+      city: '臺北市',
+      years: '1–2 年',
+      devices: ['Pixel 8', 'MacBook Air'],
+      languages: ['中文', '英文', '韓文'],
+      interests: ['Netflix', 'Spotify', '科技 3C'],
+      status: 'applied',
+    },
+    {
+      id: 'c2',
+      name: '王Ｏ明',
+      initial: '王',
+      rating: 4.5,
+      reviews: 12,
+      city: '桃園市',
+      years: '1–2 年',
+      devices: ['iPhone 15', 'Pixel 8'],
+      languages: ['中文', '英文', '日語'],
+      interests: ['手機遊戲', '線上遊戲', '動漫'],
+      status: 'applied',
+    },
+    {
+      id: 'c3',
+      name: '周Ｏ豪',
+      initial: '周',
+      rating: 4.2,
+      reviews: 5,
+      city: '新竹市',
+      years: '1–2 年',
+      devices: ['Windows 筆電'],
+      languages: ['中文', '英文'],
+      interests: ['跑步', '科技 3C'],
+      status: 'noreply',
+      invitedAt: '2026/10/28',
+    },
+    {
+      id: 'c4',
+      name: '吳Ｏ宏',
+      initial: '吳',
+      rating: 4.3,
+      reviews: 4,
+      city: '臺中市',
+      years: '1–2 年',
+      devices: ['Pixel 7'],
+      languages: ['中文', '英文'],
+      interests: ['球類運動', '手機遊戲'],
+      status: 'declined',
+    },
+  ],
+}
+
 export const ownerProjects: OwnerProject[] = [
   {
     id: 'o1',
