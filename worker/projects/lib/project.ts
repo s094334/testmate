@@ -56,8 +56,6 @@ export const projectSchema = z.object({
   end_date: z.iso.date(),
   report_days: z.int(),
   reward: z.int(),
-  how_to_test: z.string(),
-  success_criteria: z.string(),
   special_requirements: z.string().nullable(),
   recruitment_status: z.enum(recruitmentStatuses),
   application_count: z.int(),
@@ -65,6 +63,8 @@ export const projectSchema = z.object({
   viewer: z.object({ applied: z.boolean() }).nullable(),
   confidential: z
     .object({
+      how_to_test: z.string(),
+      success_criteria: z.string(),
       confidential_details: z.string().nullable(),
       environment_info: z.string().nullable(),
       test_items: z.array(
@@ -141,8 +141,6 @@ export async function findProject(
     end_date: project.endDate,
     report_days: project.reportDays,
     reward: project.reward,
-    how_to_test: project.howToTest,
-    success_criteria: project.successCriteria,
     special_requirements: project.specialRequirements,
     recruitment_status: project.recruitmentStatus,
     // Applications do not exist yet, so nobody has applied
@@ -152,6 +150,8 @@ export async function findProject(
     confidential:
       viewer?.id === project.ownerId
         ? {
+            how_to_test: project.howToTest,
+            success_criteria: project.successCriteria,
             confidential_details: project.confidentialDetails,
             environment_info: project.environmentInfo,
             test_items: await db
