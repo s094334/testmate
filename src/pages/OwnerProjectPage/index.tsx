@@ -5,6 +5,7 @@ import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { ClockIcon } from '@/components/icons/ClockIcon'
 import { CrossIcon } from '@/components/icons/CrossIcon'
 import { ExclamationIcon } from '@/components/icons/ExclamationIcon'
+import { HeartIcon } from '@/components/icons/HeartIcon'
 import { InfoIcon } from '@/components/icons/InfoIcon'
 import { SendIcon } from '@/components/icons/SendIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
@@ -55,14 +56,19 @@ export function OwnerProjectPage() {
             邀請與申請
             {chosenId === null &&
               candidates.some(
-                (candidate) => candidate.status === 'applied'
+                (candidate) =>
+                  candidate.status === 'interest' ||
+                  candidate.status === 'applied'
               ) && (
                 <span className="bg-alert text-surface font-num h-6 min-w-6 rounded-full px-1.5 text-center text-[16px] leading-6 font-semibold">
                   {
                     candidates.filter(
-                      (candidate) => candidate.status === 'applied'
+                      (candidate) =>
+                        candidate.status === 'interest' ||
+                        candidate.status === 'applied'
                     ).length
                   }
+                  <span className="sr-only"> 位待處理</span>
                 </span>
               )}
           </TabsTrigger>
@@ -83,8 +89,12 @@ export function OwnerProjectPage() {
                 .filter((candidate) => candidate.id !== chosenId)
                 .sort(
                   (a, b) =>
-                    ['applied', 'noreply', 'declined'].indexOf(a.status) -
-                    ['applied', 'noreply', 'declined'].indexOf(b.status)
+                    ['interest', 'applied', 'noreply', 'declined'].indexOf(
+                      a.status
+                    ) -
+                    ['interest', 'applied', 'noreply', 'declined'].indexOf(
+                      b.status
+                    )
                 )
                 .map((candidate) => (
                   <li
@@ -97,10 +107,10 @@ export function OwnerProjectPage() {
                           {candidate.initial}
                         </span>
                         <div className="flex flex-col">
-                          <b className="text-[20px] leading-[1.4]">
+                          <h3 className="text-[20px] leading-[1.4]">
                             {candidate.name}
-                          </b>
-                          <span className="text-ink-muted inline-flex items-center gap-1">
+                          </h3>
+                          <p className="text-ink-muted inline-flex items-center gap-1">
                             <span className="text-star flex">
                               <StarIcon />
                             </span>
@@ -112,7 +122,7 @@ export function OwnerProjectPage() {
                             >
                               {candidate.reviews} 則評論
                             </button>
-                          </span>
+                          </p>
                         </div>
                       </div>
 
@@ -163,6 +173,12 @@ export function OwnerProjectPage() {
 
                     <div className="tablet:w-auto tablet:max-w-90 tablet:flex-none tablet:items-end flex w-full flex-col items-start gap-2.5">
                       <span className="inline-flex items-center gap-2">
+                        {candidate.status === 'interest' && (
+                          <span className="bg-tester-soft text-tester-text inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
+                            <HeartIcon />
+                            接受邀請
+                          </span>
+                        )}
                         {candidate.status === 'applied' && (
                           <span className="bg-owner-soft text-owner-strong inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
                             <SendIcon />
@@ -181,7 +197,8 @@ export function OwnerProjectPage() {
                             已婉拒
                           </span>
                         )}
-                        {candidate.status === 'applied' &&
+                        {(candidate.status === 'interest' ||
+                          candidate.status === 'applied') &&
                           chosenId === null && (
                             <span className="bg-alert text-surface flex size-5 flex-none items-center justify-center rounded-full">
                               <ExclamationIcon />
@@ -190,42 +207,46 @@ export function OwnerProjectPage() {
                           )}
                       </span>
 
-                      {candidate.status === 'applied' && chosenId === null && (
-                        <div className="tablet:w-auto flex w-full gap-2">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setCandidates(
-                                candidates.map((other) =>
-                                  other.id === candidate.id
-                                    ? { ...other, status: 'declined' }
-                                    : other
+                      {(candidate.status === 'interest' ||
+                        candidate.status === 'applied') &&
+                        chosenId === null && (
+                          <div className="tablet:w-auto flex w-full gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setCandidates(
+                                  candidates.map((other) =>
+                                    other.id === candidate.id
+                                      ? { ...other, status: 'declined' }
+                                      : other
+                                  )
                                 )
-                              )
-                            }
-                            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-                          >
-                            婉拒
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setChosenId(candidate.id)}
-                            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-                          >
-                            選定
-                          </button>
-                        </div>
-                      )}
+                              }
+                              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                            >
+                              婉拒
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setChosenId(candidate.id)}
+                              className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                            >
+                              選定
+                            </button>
+                          </div>
+                        )}
 
-                      {candidate.status === 'applied' && chosenId !== null && (
-                        <span className="text-ink-subtle tablet:text-right">
-                          已選定測試人員，招募已結束
-                        </span>
-                      )}
+                      {(candidate.status === 'interest' ||
+                        candidate.status === 'applied') &&
+                        chosenId !== null && (
+                          <p className="text-ink-subtle tablet:text-right">
+                            已選定測試人員，招募已結束
+                          </p>
+                        )}
                       {candidate.status === 'noreply' && (
-                        <span className="text-ink-subtle tablet:text-right">
+                        <p className="text-ink-subtle tablet:text-right">
                           {candidate.invitedAt} 已邀請
-                        </span>
+                        </p>
                       )}
                     </div>
                   </li>

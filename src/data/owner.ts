@@ -57,11 +57,24 @@ export const recruitCandidates: Record<
     devices: string[]
     languages: string[]
     interests: string[]
-    status: 'applied' | 'noreply' | 'declined'
+    status: 'interest' | 'applied' | 'noreply' | 'declined'
     invitedAt?: string
   }[]
 > = {
   o1: [
+    {
+      id: 'c5',
+      name: '劉Ｏ君',
+      initial: '劉',
+      rating: 4.7,
+      reviews: 15,
+      city: '臺北市',
+      years: '1–2 年',
+      devices: ['iPhone 15', 'Pixel 8'],
+      languages: ['中文', '日文'],
+      interests: ['日韓文化／K-pop', '旅遊', 'Netflix'],
+      status: 'interest',
+    },
     {
       id: 'c1',
       name: '陳Ｏ文',
