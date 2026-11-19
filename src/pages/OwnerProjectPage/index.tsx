@@ -231,39 +231,38 @@ export function OwnerProjectPage() {
                         </div>
 
                         <div className="tablet:w-auto tablet:max-w-90 tablet:flex-none tablet:items-end flex w-full flex-col items-start gap-2.5">
-                          <span className="inline-flex items-center gap-2">
-                            {candidate.status === 'interest' && (
-                              <span className="bg-tester-soft text-tester-text inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
-                                <HeartIcon />
-                                接受邀請
-                              </span>
-                            )}
-                            {candidate.status === 'applied' && (
-                              <span className="bg-owner-soft text-owner-strong inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
-                                <SendIcon />
-                                主動申請
-                              </span>
-                            )}
-                            {candidate.status === 'noreply' && (
-                              <span className="bg-status-progress-bg text-status-progress-text inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
-                                <ClockIcon />
-                                未回覆
-                              </span>
-                            )}
-                            {candidate.status === 'declined' && (
-                              <span className="border-line-input bg-surface text-ink-subtle inline-flex items-center gap-1.5 rounded-[4px] border px-3 py-0.5 font-bold whitespace-nowrap">
-                                <CrossIcon />
-                                已婉拒
-                              </span>
-                            )}
-                            {(candidate.status === 'interest' ||
-                              candidate.status === 'applied') && (
-                              <span className="bg-alert text-surface flex size-5 flex-none items-center justify-center rounded-full">
+                          {candidate.status === 'interest' && (
+                            <span className="bg-tester-soft text-tester-text relative inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
+                              <HeartIcon />
+                              接受邀請
+                              <span className="bg-alert text-surface absolute -top-[9px] -right-[9px] flex size-[18px] items-center justify-center rounded-full shadow-[0_0_0_2px_var(--color-surface)]">
                                 <ExclamationIcon />
                                 <span className="sr-only">需要處理</span>
                               </span>
-                            )}
-                          </span>
+                            </span>
+                          )}
+                          {candidate.status === 'applied' && (
+                            <span className="bg-owner-soft text-owner-strong relative inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
+                              <SendIcon />
+                              主動申請
+                              <span className="bg-alert text-surface absolute -top-[9px] -right-[9px] flex size-[18px] items-center justify-center rounded-full shadow-[0_0_0_2px_var(--color-surface)]">
+                                <ExclamationIcon />
+                                <span className="sr-only">需要處理</span>
+                              </span>
+                            </span>
+                          )}
+                          {candidate.status === 'noreply' && (
+                            <span className="bg-status-progress-bg text-status-progress-text inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
+                              <ClockIcon />
+                              未回覆
+                            </span>
+                          )}
+                          {candidate.status === 'declined' && (
+                            <span className="border-line-input bg-surface text-ink-subtle inline-flex items-center gap-1.5 rounded-[4px] border px-3 py-0.5 font-bold whitespace-nowrap">
+                              <CrossIcon />
+                              已婉拒
+                            </span>
+                          )}
 
                           {(candidate.status === 'interest' ||
                             candidate.status === 'applied') && (
