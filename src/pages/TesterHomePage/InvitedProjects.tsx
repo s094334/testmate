@@ -2,7 +2,6 @@ import { Link } from 'react-router'
 import { StarIcon } from '@/components/icons/StarIcon'
 import { invitedProjects } from '@/data/tester'
 
-// The whole card links to the invite detail page (built in a later step).
 // Desktop: light green on hover. Mobile: no hover.
 export function InvitedProjects() {
   return (

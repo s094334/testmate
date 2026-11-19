@@ -1,10 +1,10 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
-import { inArray } from 'drizzle-orm'
+import { inArray, sql } from 'drizzle-orm'
 import { createDb } from '../db'
-import { tagCategory, tags } from '../db/schema'
+import { tagCategories, tags } from '../db/schema'
 import { ok } from '../http/response'
 
-const category = z.enum(tagCategory.enumValues)
+const category = z.enum(tagCategories)
 
 export const listTagsRoute = createRoute({
   method: 'get',
@@ -55,13 +55,21 @@ export const listTags: RouteHandler<
   { Bindings: Env }
 > = async (c) => {
   const query = c.req.valid('query')
-  const db = await createDb(c.env)
+  const db = createDb(c.env)
 
   const items = await db
     .select({ id: tags.id, category: tags.category, name: tags.name })
     .from(tags)
     .where(query.category ? inArray(tags.category, query.category) : undefined)
-    .orderBy(tags.category, tags.sortOrder)
+    // Categories in the order of tagCategories, as the PostgreSQL enum sorted
+    // them; ordering by the text alone would sort them alphabetically
+    .orderBy(
+      sql`case ${tags.category} ${sql.join(
+        tagCategories.map((value, i) => sql`when ${value} then ${i}`),
+        sql` `
+      )} end`,
+      tags.sortOrder
+    )
 
   return ok(c, { items })
 }

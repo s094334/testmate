@@ -1,54 +1,19 @@
 {
   "version": "7",
-  "dialect": "postgresql",
+  "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "7",
-      "when": 1794888194696,
-      "tag": "0000_stormy_scrambler",
+      "version": "6",
+      "when": 1795058429360,
+      "tag": "0000_create_tables",
       "breakpoints": true
     },
     {
       "idx": 1,
-      "version": "7",
-      "when": 1794898892512,
-      "tag": "0001_add_tags_profiles_companies",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1794898893562,
-      "tag": "0002_seed_industry_tags",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1794904550748,
-      "tag": "0003_add_login_attempts",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1794989634088,
-      "tag": "0004_tester_qa_experience_custom_devices",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1794990439505,
-      "tag": "0005_seed_device_interest_tags",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1794998214410,
-      "tag": "0006_add_projects",
+      "version": "6",
+      "when": 1795058435416,
+      "tag": "0001_seed_tags",
       "breakpoints": true
     }
   ]

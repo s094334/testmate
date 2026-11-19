@@ -1,30 +1,29 @@
 import { sql } from 'drizzle-orm'
 import {
-  boolean,
   check,
   integer,
-  jsonb,
-  pgTable,
   primaryKey,
+  sqliteTable,
   text,
-  timestamp,
-  uuid,
-} from 'drizzle-orm/pg-core'
+} from 'drizzle-orm/sqlite-core'
 import { users } from './accounts'
+import { id, timestamp } from './columns'
 import { tags } from './tags'
 
 // One per tester, created at signup with real_name, phone and city.
 // The rest is filled in later with PUT /api/auth/profile.
-export const testerProfiles = pgTable('tester_profiles', {
-  userId: uuid('user_id')
+export const testerProfiles = sqliteTable('tester_profiles', {
+  userId: text('user_id')
     .primaryKey()
     .references(() => users.id, { onDelete: 'cascade' }),
   realName: text('real_name').notNull(),
   // 10 digits starting with 09, dashes and spaces already removed
   phone: text('phone').notNull(),
   city: text('city').notNull(),
-  hasQaExperience: boolean('has_qa_experience').notNull().default(false),
-  experiences: jsonb('experiences')
+  hasQaExperience: integer('has_qa_experience', { mode: 'boolean' })
+    .notNull()
+    .default(false),
+  experiences: text('experiences', { mode: 'json' })
     .$type<{ company: string; years: number }[]>()
     .notNull()
     .default([]),
@@ -32,28 +31,28 @@ export const testerProfiles = pgTable('tester_profiles', {
   // (match_score in phase 8). Profiles saved before experiences existed keep
   // their old value until the next save.
   qaYears: integer('qa_years').notNull().default(0),
-  languages: jsonb('languages')
+  languages: text('languages', { mode: 'json' })
     .$type<{ name: string; native: boolean }[]>()
     .notNull()
     .default([]),
-  createdAt: timestamp('created_at', { withTimezone: true })
+  createdAt: timestamp('created_at')
     .notNull()
-    .defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .$defaultFn(() => new Date()),
+  updatedAt: timestamp('updated_at')
     .notNull()
-    .defaultNow()
+    .$defaultFn(() => new Date())
     .$onUpdate(() => new Date()),
 })
 
 // A tester's tags (the tag's own category says which). PUT /api/auth/profile
 // now only saves interest tags; industry and audience rows saved earlier are kept.
-export const testerProfileTags = pgTable(
+export const testerProfileTags = sqliteTable(
   'tester_profile_tags',
   {
-    userId: uuid('user_id')
+    userId: text('user_id')
       .notNull()
       .references(() => testerProfiles.userId, { onDelete: 'cascade' }),
-    tagId: uuid('tag_id')
+    tagId: text('tag_id')
       .notNull()
       .references(() => tags.id),
   },
@@ -62,15 +61,15 @@ export const testerProfileTags = pgTable(
 
 // Either a listed device (tag, brand, os_version, model optional) or a custom one
 // (custom_name, os_version optional); the check keeps the two from mixing
-export const testerDevices = pgTable(
+export const testerDevices = sqliteTable(
   'tester_devices',
   {
-    id: uuid('id').primaryKey().defaultRandom(),
-    userId: uuid('user_id')
+    id: id(),
+    userId: text('user_id')
       .notNull()
       .references(() => testerProfiles.userId, { onDelete: 'cascade' }),
     // A tag in the device category
-    deviceTagId: uuid('device_tag_id').references(() => tags.id),
+    deviceTagId: text('device_tag_id').references(() => tags.id),
     brand: text('brand'),
     model: text('model'),
     osVersion: text('os_version'),

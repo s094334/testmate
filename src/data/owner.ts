@@ -147,7 +147,7 @@ export const ownerProjects: OwnerProject[] = [
   {
     id: 'o1',
     name: '多國語系 App 測試',
-    summary: '確認英文、日語、韓文、泰文四種語言的翻譯與排版。',
+    summary: '確認英文、日文、韓文、泰文四種語言的翻譯與排版。',
     details: {
       location: '遠端',
       equipment: '自備手機',
