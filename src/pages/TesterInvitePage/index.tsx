@@ -121,24 +121,13 @@ export function TesterInvitePage() {
           )}
 
           {reply !== 'pending' && (
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <b
-                className={
-                  reply === 'yes' ? 'text-role-text' : 'text-platform-strong'
-                }
-              >
-                {reply === 'yes'
-                  ? '已表達興趣，等專案負責人回覆'
-                  : '已婉拒這個邀請'}
-              </b>
-              <button
-                type="button"
-                onClick={() => setReply('pending')}
-                className="min-h-11 cursor-pointer px-2 underline"
-              >
-                復原
-              </button>
-            </div>
+            <b
+              className={
+                reply === 'yes' ? 'text-role-text' : 'text-platform-strong'
+              }
+            >
+              {reply === 'yes' ? '已回覆有興趣' : '已回覆婉拒'}
+            </b>
           )}
         </div>
       </article>
@@ -169,24 +158,13 @@ export function TesterInvitePage() {
         )}
 
         {reply !== 'pending' && (
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <b
-              className={
-                reply === 'yes' ? 'text-role-text' : 'text-platform-strong'
-              }
-            >
-              {reply === 'yes'
-                ? '已表達興趣，等專案負責人回覆'
-                : '已婉拒這個邀請'}
-            </b>
-            <button
-              type="button"
-              onClick={() => setReply('pending')}
-              className="min-h-11 cursor-pointer px-2 underline"
-            >
-              復原
-            </button>
-          </div>
+          <b
+            className={
+              reply === 'yes' ? 'text-role-text' : 'text-platform-strong'
+            }
+          >
+            {reply === 'yes' ? '已回覆有興趣' : '已回覆婉拒並'}
+          </b>
         )}
       </div>
     </div>
