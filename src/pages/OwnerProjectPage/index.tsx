@@ -278,7 +278,7 @@ export function OwnerProjectPage() {
                                     )
                                   )
                                 }
-                                className="border-role bg-surface text-ink hover:bg-role hover:text-on-role tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                                className="border-role bg-surface text-ink hover:bg-platform-soft tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
                               >
                                 婉拒
                               </button>
