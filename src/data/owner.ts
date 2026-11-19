@@ -209,3 +209,15 @@ export const ownerProjects: OwnerProject[] = [
     needsAttention: false,
   },
 ]
+
+// What 專案資訊 shows on top of ownerProjects, by project id
+export const ownerProjectInfo: Record<
+  string,
+  { platforms: string[]; languages: string[]; pay: string }
+> = {
+  o1: {
+    platforms: ['iOS', 'Android'],
+    languages: ['英文', '日文', '韓文', '泰文'],
+    pay: 'NT$ 1,200',
+  },
+}
