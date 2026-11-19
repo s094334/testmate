@@ -210,12 +210,12 @@ export function OwnerProjectPage() {
                               </dt>
                               <dd>{candidate.languages.join('、')}</dd>
                             </div>
-                            <div className="flex items-start gap-1">
+                            <div className="flex items-start gap-0">
                               <dt className="text-ink-subtle w-18 flex-none pt-0.5">
                                 興趣
                               </dt>
                               <dd>
-                                <ul className="flex flex-wrap gap-1.5">
+                                <ul className="-ml-0.5 flex flex-wrap gap-1.5">
                                   {candidate.interests.map((interest) => (
                                     <li
                                       key={interest}
