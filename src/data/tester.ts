@@ -36,7 +36,7 @@ export const tester = {
   email: 'walile.test@gmail.com',
   city: '臺北市',
   phone: '0912-345-678',
-  languages: ['中文', '英文', '日語'],
+  languages: ['中文', '英文', '日文'],
   // Subset of languages
   nativeLanguages: ['中文'],
   interests: [
