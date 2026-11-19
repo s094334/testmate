@@ -3,7 +3,8 @@ import { InfoPopover } from '@/components/InfoPopover'
 import { StatusTag } from '@/components/StatusTag'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
-import { joinedProjectDetails, joinedProjects } from '@/data/tester'
+import { WarningIcon } from '@/components/icons/WarningIcon'
+import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
 import { LockedNotice } from './LockedNotice'
 
 export function TesterProjectPage() {
@@ -40,12 +41,32 @@ export function TesterProjectPage() {
         <p className="tablet:text-[18px] font-bold">
           簽署保密協議，負責人付款後就能開始
         </p>
-        <button
-          type="button"
-          className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:block hidden min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-        >
-          簽署保密協議
-        </button>
+        {tester.payout && (
+          <button
+            type="button"
+            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:block hidden min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          >
+            簽署保密協議
+          </button>
+        )}
+        {!tester.payout && (
+          <div className="tablet:flex hidden flex-wrap items-center gap-3">
+            <p className="bg-status-pending-bg text-status-pending-text flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md px-3 py-1.5 font-bold">
+              <WarningIcon className="size-5 flex-none" />
+              請先設定收款帳戶
+              <Link to="/tester/profile" className="text-ink py-1 underline">
+                前往設定
+              </Link>
+            </p>
+            <button
+              type="button"
+              disabled
+              className="border-line bg-line text-ink-subtle min-h-12 min-w-40 cursor-not-allowed rounded-full border-2 px-6 font-bold"
+            >
+              簽署保密協議
+            </button>
+          </div>
+        )}
       </div>
 
       <article className="bg-surface border-ink tablet:p-8 flex flex-col gap-8 rounded-md border px-4 py-5">
@@ -122,6 +143,15 @@ export function TesterProjectPage() {
       </article>
 
       <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-wrap gap-2 border-t px-4 py-3">
+        {!tester.payout && (
+          <p className="bg-status-pending-bg text-status-pending-text flex basis-full flex-wrap items-center gap-x-2 gap-y-1 rounded-md px-3 py-2 font-bold">
+            <WarningIcon className="size-5 flex-none" />
+            請先設定收款帳戶
+            <Link to="/tester/profile" className="text-ink py-1 underline">
+              前往設定
+            </Link>
+          </p>
+        )}
         <Link
           to="/tester"
           className="border-role bg-surface text-ink hover:bg-role hover:text-on-role inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
@@ -129,12 +159,23 @@ export function TesterProjectPage() {
           <ChevronDownIcon className="size-4.5 rotate-90" />
           上一頁
         </Link>
-        <button
-          type="button"
-          className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-        >
-          簽署保密協議
-        </button>
+        {tester.payout && (
+          <button
+            type="button"
+            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          >
+            簽署保密協議
+          </button>
+        )}
+        {!tester.payout && (
+          <button
+            type="button"
+            disabled
+            className="border-line bg-line text-ink-subtle min-h-12 flex-1 cursor-not-allowed rounded-full border-2 px-4 font-bold whitespace-nowrap"
+          >
+            簽署保密協議
+          </button>
+        )}
       </div>
     </div>
   )
