@@ -35,7 +35,7 @@ export function TesterInvitePage() {
         </span>
       </div>
 
-      <article className="bg-surface border-ink tablet:p-8 rounded-md border p-5">
+      <article className="bg-surface border-ink tablet:p-8 rounded-md border px-4 py-5">
         <div className="flex flex-col gap-8">
           <section className="flex flex-col gap-2">
             <h2 className="text-section-title">簡介</h2>
@@ -93,7 +93,7 @@ export function TesterInvitePage() {
           </section>
         </div>
 
-        <div className="border-ink mt-8 flex flex-wrap items-center justify-between gap-4 border-t pt-6">
+        <div className="border-ink tablet:flex mt-8 hidden flex-wrap items-center justify-between gap-4 border-t pt-6">
           <div className="flex items-baseline gap-3">
             <span className="text-[20px] font-bold">回覆期限</span>
             <b className="text-section-title leading-[1.3]">
@@ -142,6 +142,53 @@ export function TesterInvitePage() {
           )}
         </div>
       </article>
+
+      <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-col gap-2 border-t px-4 py-3">
+        <div className="flex items-baseline justify-between gap-3">
+          <span className="text-[18px] font-bold">回覆期限</span>
+          <b className="text-section-title leading-[1.3]">{project.replyBy}</b>
+        </div>
+
+        {reply === 'pending' && (
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setReply('no')}
+              className="border-role bg-surface text-ink hover:bg-role-soft min-h-12 flex-1 cursor-pointer rounded-full border-2 px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            >
+              婉拒
+            </button>
+            <button
+              type="button"
+              onClick={() => setReply('yes')}
+              className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 cursor-pointer rounded-full border-2 px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            >
+              我有興趣
+            </button>
+          </div>
+        )}
+
+        {reply !== 'pending' && (
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <b
+              className={
+                reply === 'yes' ? 'text-role-text' : 'text-platform-strong'
+              }
+            >
+              {reply === 'yes'
+                ? '已表達興趣，等專案負責人回覆'
+                : '已婉拒這個邀請'}
+            </b>
+            <button
+              type="button"
+              onClick={() => setReply('pending')}
+              className="min-h-11 cursor-pointer px-2 underline"
+            >
+              復原
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
