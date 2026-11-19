@@ -106,7 +106,7 @@ export function TesterInvitePage() {
               <button
                 type="button"
                 onClick={() => setReply('no')}
-                className="border-role bg-surface text-ink hover:bg-role-soft min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
               >
                 婉拒
               </button>
@@ -154,7 +154,7 @@ export function TesterInvitePage() {
             <button
               type="button"
               onClick={() => setReply('no')}
-              className="border-role bg-surface text-ink hover:bg-role-soft min-h-12 flex-1 cursor-pointer rounded-full border-2 px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 flex-1 cursor-pointer rounded-full border-2 px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
             >
               婉拒
             </button>
