@@ -49,6 +49,8 @@ export const recruitCandidates: Record<
   {
     id: string
     name: string
+    fullName: string
+    email: string
     initial: string
     rating: number
     reviews: number
@@ -65,6 +67,8 @@ export const recruitCandidates: Record<
     {
       id: 'c5',
       name: '劉Ｏ君',
+      fullName: '劉怡君',
+      email: 'yichun.liu@example.com',
       initial: '劉',
       rating: 4.7,
       reviews: 15,
@@ -78,6 +82,8 @@ export const recruitCandidates: Record<
     {
       id: 'c1',
       name: '陳Ｏ文',
+      fullName: '陳大文',
+      email: 'tawen.chen@example.com',
       initial: '陳',
       rating: 4.6,
       reviews: 7,
@@ -91,6 +97,8 @@ export const recruitCandidates: Record<
     {
       id: 'c2',
       name: '王Ｏ明',
+      fullName: '王小明',
+      email: 'hsiaoming.wang@example.com',
       initial: '王',
       rating: 4.5,
       reviews: 12,
@@ -104,6 +112,8 @@ export const recruitCandidates: Record<
     {
       id: 'c3',
       name: '周Ｏ豪',
+      fullName: '周志豪',
+      email: 'chihhao.chou@example.com',
       initial: '周',
       rating: 4.2,
       reviews: 5,
@@ -118,6 +128,8 @@ export const recruitCandidates: Record<
     {
       id: 'c4',
       name: '吳Ｏ宏',
+      fullName: '吳建宏',
+      email: 'chienhung.wu@example.com',
       initial: '吳',
       rating: 4.3,
       reviews: 4,
