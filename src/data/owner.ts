@@ -31,6 +31,24 @@ type OwnerProject = {
   needsAttention: boolean
 }
 
+// applied: applied by themselves; noreply: invited, no answer yet; declined: the owner declined
+export type RecruitCandidate = {
+  id: string
+  name: string
+  fullName: string
+  email: string
+  initial: string
+  rating: number
+  reviews: number
+  city: string
+  years: string
+  devices: string[]
+  languages: string[]
+  interests: string[]
+  status: 'interest' | 'applied' | 'noreply' | 'declined'
+  invitedAt?: string
+}
+
 export const owner: Company = {
   realName: '王大明',
   email: 'daming.wang@example.com',
@@ -43,26 +61,7 @@ export const owner: Company = {
 
 // Testers who applied to or were invited to a recruiting project, by project id.
 // Names stay masked until the owner picks someone.
-// applied: applied by themselves; noreply: invited, no answer yet; declined: the owner declined
-export const recruitCandidates: Record<
-  string,
-  {
-    id: string
-    name: string
-    fullName: string
-    email: string
-    initial: string
-    rating: number
-    reviews: number
-    city: string
-    years: string
-    devices: string[]
-    languages: string[]
-    interests: string[]
-    status: 'interest' | 'applied' | 'noreply' | 'declined'
-    invitedAt?: string
-  }[]
-> = {
+export const recruitCandidates: Record<string, RecruitCandidate[]> = {
   o1: [
     {
       id: 'c5',
