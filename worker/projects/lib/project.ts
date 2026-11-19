@@ -4,20 +4,20 @@ import type { SessionUser } from '../../auth/lib/session'
 import type { Db } from '../../db'
 import {
   companies,
-  minQaYears,
+  minQaYearsOptions,
   projectDevices,
   projectTags,
   projectTestItems,
   projects,
-  recruitmentStatus,
-  tagCategory,
+  recruitmentStatuses,
+  tagCategories,
   tags,
-  testMode,
+  testModes,
 } from '../../db/schema'
 
 const tag = z.object({
   id: z.uuid(),
-  category: z.enum(tagCategory.enumValues),
+  category: z.enum(tagCategories),
   name: z.string(),
 })
 
@@ -49,8 +49,8 @@ export const projectSchema = z.object({
   ),
   interests: z.array(tag),
   qa_experience_required: z.boolean(),
-  min_qa_years: z.enum(minQaYears.enumValues).nullable(),
-  test_mode: z.enum(testMode.enumValues),
+  min_qa_years: z.enum(minQaYearsOptions).nullable(),
+  test_mode: z.enum(testModes),
   test_city: z.string().nullable(),
   start_date: z.iso.date(),
   end_date: z.iso.date(),
@@ -59,7 +59,7 @@ export const projectSchema = z.object({
   how_to_test: z.string(),
   success_criteria: z.string(),
   special_requirements: z.string().nullable(),
-  recruitment_status: z.enum(recruitmentStatus.enumValues),
+  recruitment_status: z.enum(recruitmentStatuses),
   application_count: z.int(),
   created_at: z.iso.datetime(),
   viewer: z.object({ applied: z.boolean() }).nullable(),

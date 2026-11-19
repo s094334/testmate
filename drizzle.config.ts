@@ -1,12 +1,8 @@
 import { defineConfig } from 'drizzle-kit'
 
+// Only writes migration files (npm run db:generate); wrangler applies them to D1
 export default defineConfig({
-  dialect: 'postgresql',
+  dialect: 'sqlite',
   schema: './worker/db/schema/index.ts',
   out: './drizzle',
-  dbCredentials: {
-    url:
-      process.env.DATABASE_URL ??
-      'postgres://testmate:testmate@localhost:5432/testmate',
-  },
 })

@@ -4,11 +4,12 @@
   "compatibility_date": "2026-11-03",
   "main": "./worker/index.ts",
   "compatibility_flags": ["nodejs_compat"],
-  "hyperdrive": [
+  "d1_databases": [
     {
-      "binding": "HYPERDRIVE",
-      "id": "0ede9780219b49fcb0334805d0bdc63c",
-      "localConnectionString": "postgres://testmate:testmate@localhost:5432/testmate",
+      "binding": "DB",
+      "database_name": "testmate",
+      "database_id": "824b73b7-5e83-41a5-8298-40c5d7b7716c",
+      "migrations_dir": "drizzle",
     },
   ],
   "assets": {
@@ -31,11 +32,14 @@
     "dev": {
       "workers_dev": false,
       "preview_urls": false,
-      "hyperdrive": [
+      // Not inherited from the top level. Placeholder id, the same as above:
+      // replace it with the id from `wrangler d1 create testmate-dev`.
+      "d1_databases": [
         {
-          "binding": "HYPERDRIVE",
-          "id": "1a7b559b687d43dbb5afc776505266a4",
-          "localConnectionString": "postgres://testmate:testmate@localhost:5432/testmate",
+          "binding": "DB",
+          "database_name": "testmate-dev",
+          "database_id": "97ee33d9-4b87-4aa1-a87c-6152f2ff12c6",
+          "migrations_dir": "drizzle",
         },
       ],
       "routes": [

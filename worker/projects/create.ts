@@ -1,16 +1,16 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
-import { eq, inArray } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { cities } from '../../shared/cities'
-import { createDb } from '../db'
+import { createDb, insertRows, saveTogether } from '../db'
 import {
   companies,
-  minQaYears,
+  minQaYearsOptions,
   projectDevices,
   projectTags,
   projectTestItems,
   projects,
   tags,
-  testMode,
+  testModes,
 } from '../db/schema'
 import { requireAuth, requireRole, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
@@ -174,9 +174,9 @@ const createProjectBody = z
         .default([]),
       qa_experience_required: z.boolean({ error: '請選擇經驗要求' }),
       min_qa_years: z
-        .enum(minQaYears.enumValues, { error: '請選擇最低年資' })
+        .enum(minQaYearsOptions, { error: '請選擇最低年資' })
         .nullish(),
-      test_mode: z.enum(testMode.enumValues, { error: '請選擇測試方式' }),
+      test_mode: z.enum(testModes, { error: '請選擇測試方式' }),
       test_city: z.enum(cities, { error: '請選擇測試地點' }).nullish(),
       start_date: z.iso.date({ error: '請選擇開始日期' }),
       end_date: z.iso.date({ error: '請選擇結束日期' }),
@@ -336,7 +336,7 @@ export const createProject: RouteHandler<
 > = async (c) => {
   const body = c.req.valid('json')
   const user = c.get('user')
-  const db = await createDb(c.env)
+  const db = createDb(c.env)
 
   const tagFields = [
     ...body.devices.flatMap((device, i) =>
@@ -359,17 +359,13 @@ export const createProject: RouteHandler<
     })),
   ]
 
+  // All of them rather than `id in (...)`: up to 150 sent ids would go over
+  // D1's limit of 100 bound parameters, and the whole list is only 80 rows.
+  // Tags are seed data that no API changes, so nothing read here can change
+  // before the batch below runs.
   const foundTags =
     tagFields.length > 0
-      ? await db
-          .select({ id: tags.id, category: tags.category })
-          .from(tags)
-          .where(
-            inArray(
-              tags.id,
-              tagFields.map((tagField) => tagField.id)
-            )
-          )
+      ? await db.select({ id: tags.id, category: tags.category }).from(tags)
       : []
 
   // A tag id that does not exist, or belongs to another category
@@ -385,7 +381,8 @@ export const createProject: RouteHandler<
     return fail(c, 400, 'VALIDATION_FAILED', wrongTags[0].message, wrongTags)
   }
 
-  // Created at signup, so this only fails for an owner whose company row is missing
+  // Created at signup in the same batch as the account, and no API deletes it,
+  // so this only fails for an owner whose company row was removed by hand
   const [company] = await db
     .select({ userId: companies.userId })
     .from(companies)
@@ -395,71 +392,69 @@ export const createProject: RouteHandler<
     return fail(c, 400, 'COMPANY_REQUIRED', '請先填寫公司資料')
   }
 
-  // The project and everything under it are saved together or not at all
-  const projectId = await db.transaction(async (tx) => {
-    const [project] = await tx
-      .insert(projects)
-      .values({
-        ownerId: user.id,
-        name: body.name,
-        summary: body.summary,
-        languages: body.languages,
-        qaExperienceRequired: body.qa_experience_required,
-        minQaYears: body.min_qa_years ?? null,
-        testMode: body.test_mode,
-        testCity: body.test_city ?? null,
-        startDate: body.start_date,
-        endDate: body.end_date,
-        reportDays: REPORT_DAYS,
-        reward: body.reward,
-        howToTest: body.how_to_test,
-        successCriteria: body.success_criteria,
-        specialRequirements: body.special_requirements,
-        confidentialDetails: body.confidential_details,
-        environmentInfo: body.environment_info,
-      })
-      .returning({ id: projects.id })
+  const projectId = crypto.randomUUID()
 
-    if (body.devices.length > 0) {
-      await tx.insert(projectDevices).values(
-        body.devices.map((device, i) => ({
-          projectId: project.id,
-          deviceTagId: device.device_tag_id ?? null,
-          brand: device.brand ?? null,
-          // An empty model (listed device) or min_os_version (custom device)
-          // means it was left blank
-          model: device.model || null,
-          minOsVersion: device.min_os_version || null,
-          customName: device.custom_name ?? null,
-          sortOrder: i,
-        }))
-      )
-    }
+  // The project and everything under it are saved together or not at all
+  await saveTogether(db, [
+    db.insert(projects).values({
+      id: projectId,
+      ownerId: user.id,
+      name: body.name,
+      summary: body.summary,
+      languages: body.languages,
+      qaExperienceRequired: body.qa_experience_required,
+      minQaYears: body.min_qa_years ?? null,
+      testMode: body.test_mode,
+      testCity: body.test_city ?? null,
+      startDate: body.start_date,
+      endDate: body.end_date,
+      reportDays: REPORT_DAYS,
+      reward: body.reward,
+      howToTest: body.how_to_test,
+      successCriteria: body.success_criteria,
+      specialRequirements: body.special_requirements,
+      confidentialDetails: body.confidential_details,
+      environmentInfo: body.environment_info,
+    }),
+
+    ...insertRows(
+      db,
+      projectDevices,
+      body.devices.map((device, i) => ({
+        projectId,
+        deviceTagId: device.device_tag_id ?? null,
+        brand: device.brand ?? null,
+        // An empty model (listed device) or min_os_version (custom device)
+        // means it was left blank
+        model: device.model || null,
+        minOsVersion: device.min_os_version || null,
+        customName: device.custom_name ?? null,
+        sortOrder: i,
+      }))
+    ),
 
     // The same id sent twice would break the (project_id, tag_id) primary key
-    const interestTagIds = [...new Set(body.interest_tag_ids)]
-    if (interestTagIds.length > 0) {
-      await tx
-        .insert(projectTags)
-        .values(
-          interestTagIds.map((tagId) => ({ projectId: project.id, tagId }))
-        )
-    }
+    ...insertRows(
+      db,
+      projectTags,
+      [...new Set(body.interest_tag_ids)].map((tagId) => ({
+        projectId,
+        tagId,
+      }))
+    ),
 
-    if (body.test_items.length > 0) {
-      await tx.insert(projectTestItems).values(
-        body.test_items.map((item, i) => ({
-          projectId: project.id,
-          title: item.title,
-          steps: item.steps,
-          expected: item.expected,
-          sortOrder: i,
-        }))
-      )
-    }
-
-    return project.id
-  })
+    ...insertRows(
+      db,
+      projectTestItems,
+      body.test_items.map((item, i) => ({
+        projectId,
+        title: item.title,
+        steps: item.steps,
+        expected: item.expected,
+        sortOrder: i,
+      }))
+    ),
+  ])
 
   return ok(c, await findProject(db, projectId, user), 201)
 }

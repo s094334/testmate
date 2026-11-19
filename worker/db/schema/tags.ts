@@ -1,28 +1,33 @@
 import {
+  check,
   integer,
-  pgEnum,
-  pgTable,
+  sqliteTable,
   text,
   unique,
-  uuid,
-} from 'drizzle-orm/pg-core'
+} from 'drizzle-orm/sqlite-core'
+import { id, oneOf } from './columns'
 
-export const tagCategory = pgEnum('tag_category', [
+// GET /api/tags lists the categories in this order
+export const tagCategories = [
   'device',
   'industry',
   'interest',
   'audience',
-])
+] as const
 
-// Fixed list chosen by users, never created by them. Rows come from seed migrations.
-export const tags = pgTable(
+// Fixed list chosen by users, never created by them. Rows come from the seed
+// migration, which gives each one a fixed id.
+export const tags = sqliteTable(
   'tags',
   {
-    id: uuid('id').primaryKey().defaultRandom(),
-    category: tagCategory('category').notNull(),
+    id: id(),
+    category: text('category', { enum: tagCategories }).notNull(),
     name: text('name').notNull(),
     // GET /api/tags returns each category in this order
     sortOrder: integer('sort_order').notNull(),
   },
-  (table) => [unique().on(table.category, table.name)]
+  (table) => [
+    unique().on(table.category, table.name),
+    check('tags_category_values', oneOf(table.category, tagCategories)),
+  ]
 )
