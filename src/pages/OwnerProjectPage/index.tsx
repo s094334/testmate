@@ -131,22 +131,6 @@ export function OwnerProjectPage() {
                 className="bg-page text-ink data-active:bg-role-soft data-active:text-role tablet:flex-none tablet:h-12 tablet:min-h-0 tablet:rounded-none tablet:rounded-t-md tablet:border tablet:border-b-0 tablet:border-transparent tablet:bg-transparent tablet:px-4 tablet:text-[18px] tablet:font-medium tablet:text-ink-subtle tablet:data-active:border-ink tablet:data-active:bg-surface tablet:data-active:text-ink desktop:px-6 desktop:text-[20px] flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out data-active:font-bold"
               >
                 邀請與申請
-                {candidates.some(
-                  (candidate) =>
-                    candidate.status === 'interest' ||
-                    candidate.status === 'applied'
-                ) && (
-                  <span className="bg-alert text-surface font-num h-6 min-w-6 rounded-full px-1.5 text-center text-[16px] leading-6 font-semibold">
-                    {
-                      candidates.filter(
-                        (candidate) =>
-                          candidate.status === 'interest' ||
-                          candidate.status === 'applied'
-                      ).length
-                    }
-                    <span className="sr-only"> 位待處理</span>
-                  </span>
-                )}
               </TabsTrigger>
               <TabsTrigger
                 value="recommended"
