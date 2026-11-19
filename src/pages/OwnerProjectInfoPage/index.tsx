@@ -11,7 +11,16 @@ export function OwnerProjectInfoPage() {
 
   return (
     <div className="max-w-page tablet:px-6 tablet:pt-6 tablet:gap-6 desktop:pt-10 desktop:pb-16 mx-auto flex w-full flex-col gap-5 px-4 pt-4 pb-12">
-      <h1 className="text-subtitle">{project.name}</h1>
+      <div className="flex flex-col gap-1">
+        <Link
+          to={`/owner/projects/${project.id}`}
+          className="tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+        >
+          <ChevronDownIcon className="rotate-90" />
+          上一頁
+        </Link>
+        <h1 className="text-subtitle">{project.name}</h1>
+      </div>
 
       <h2 className="text-section-title">專案資訊</h2>
 
@@ -112,13 +121,15 @@ export function OwnerProjectInfoPage() {
         </dl>
       </section>
 
-      <Link
-        to={`/owner/projects/${project.id}`}
-        className="inline-flex min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
-      >
-        <ChevronDownIcon className="rotate-90" />
-        上一頁
-      </Link>
+      <div className="bg-surface tablet:hidden sticky bottom-0 z-5 -mx-4 -mt-3 -mb-12 flex gap-2 px-4 pt-2.5 pb-4 shadow-[0_-4px_16px_rgb(30_30_28/8%)]">
+        <Link
+          to={`/owner/projects/${project.id}`}
+          className="bg-page text-ink flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        >
+          <ChevronDownIcon className="rotate-90" />
+          上一頁
+        </Link>
+      </div>
     </div>
   )
 }
