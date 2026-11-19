@@ -2,7 +2,6 @@ import { Link } from 'react-router'
 import { StatusTag } from '@/components/StatusTag'
 import { joinedProjects } from '@/data/tester'
 
-// The whole card links to the project page (not built yet).
 // Two columns: text on the left, status on the right.
 // Mobile: status sits next to the title; owner and devices use the full width below.
 // Desktop: status is centered against all three lines, light green on hover.
