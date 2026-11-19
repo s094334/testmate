@@ -163,7 +163,7 @@ export function TesterInvitePage() {
               reply === 'yes' ? 'text-role-text' : 'text-platform-strong'
             }
           >
-            {reply === 'yes' ? '已回覆有興趣' : '已回覆婉拒並'}
+            {reply === 'yes' ? '已回覆有興趣' : '已回覆婉拒'}
           </b>
         )}
       </div>

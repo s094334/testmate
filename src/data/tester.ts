@@ -181,7 +181,7 @@ export const invitedProjects = [
     pay: 'NT$ 1,600',
     replyBy: '2026/12/08',
     startDate: '2026/12/20',
-    endDate: '2027/1/20',
+    endDate: '2027/01/20',
     place: '實地（臺北市）',
     devices: ['iPhone 15'],
     intro:
