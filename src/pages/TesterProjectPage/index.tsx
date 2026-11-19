@@ -26,20 +26,20 @@ export function TesterProjectPage() {
       <div className="flex flex-col items-start gap-3">
         <StatusTag status={project.status} needsAction={false} />
         <h1>{project.name}</h1>
-        <span className="text-ink-subtle flex flex-wrap items-center gap-1.5">
+        <p className="text-ink-subtle flex flex-wrap items-center gap-1.5">
           {project.owner}、
           <span className="text-star flex">
             <StarIcon />
           </span>
           <b className="text-ink">{detail.rating}</b>
           公司評價（{detail.reviews} 則）
-        </span>
+        </p>
       </div>
 
       <div className="bg-role-soft text-role-text tablet:px-6 tablet:py-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-4 py-3">
-        <span className="tablet:text-[18px] font-bold">
+        <p className="tablet:text-[18px] font-bold">
           簽署保密協議，負責人付款後就能開始
-        </span>
+        </p>
         <button
           type="button"
           className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:block hidden min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
@@ -56,16 +56,16 @@ export function TesterProjectPage() {
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">特殊要求</h2>
-          <div className="bg-page border-line flex flex-col gap-3 rounded-md border px-6 py-5">
+          <ul className="bg-page border-line flex flex-col gap-3 rounded-md border px-6 py-5">
             {detail.requirements.map((requirement) => (
-              <p
+              <li
                 key={requirement}
                 className="text-body-large leading-[1.8] whitespace-pre-line"
               >
                 {requirement}
-              </p>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
 
         <section className="flex flex-col gap-3">
