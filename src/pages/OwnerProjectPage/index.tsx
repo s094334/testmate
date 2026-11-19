@@ -210,7 +210,7 @@ export function OwnerProjectPage() {
                               </dt>
                               <dd>{candidate.languages.join('、')}</dd>
                             </div>
-                            <div className="flex items-start gap-2">
+                            <div className="flex items-start gap-1">
                               <dt className="text-ink-subtle w-18 flex-none pt-0.5">
                                 興趣
                               </dt>
