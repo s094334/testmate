@@ -179,9 +179,9 @@ export const invitedProjects = [
     reviews: 12,
     category: '生活服務',
     pay: 'NT$ 1,600',
-    replyBy: '2026/11/03',
-    startDate: '2026/11/01',
-    endDate: '2026/11/20',
+    replyBy: '2026/12/08',
+    startDate: '2026/12/20',
+    endDate: '2027/1/20',
     place: '實地（臺北市）',
     devices: ['iPhone 15'],
     intro:
