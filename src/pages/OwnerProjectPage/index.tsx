@@ -22,35 +22,35 @@ export function OwnerProjectPage() {
   }
 
   return (
-    <div className="max-w-page tablet:px-6 desktop:pt-10 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
-      <div className="flex flex-col gap-1">
+    <div className="max-w-page tablet:px-6 tablet:pt-6 tablet:gap-6 desktop:pt-10 desktop:pb-16 mx-auto flex w-full flex-col gap-5 px-4 pt-4 pb-12">
+      <div className="grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1">
         <Link
           to="/owner"
-          className="inline-flex min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+          className="inline-flex min-h-11 items-center gap-1.5 self-start justify-self-start decoration-2 underline-offset-3 hover:underline"
         >
           <ChevronDownIcon className="rotate-90" />
           專案列表
         </Link>
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-          <h1 className="text-subtitle">{project.name}</h1>
-          <Link
-            to={`/owner/projects/${project.id}/info`}
-            className="text-role group inline-flex min-h-11 items-center gap-1.5 font-bold whitespace-nowrap decoration-2 underline-offset-5 hover:underline"
-          >
-            <InfoIcon className="size-5 flex-none" />
-            專案資訊
-            <ChevronDownIcon className="size-4.5 flex-none -rotate-90 transition-transform duration-150 ease-out group-hover:translate-x-1" />
-          </Link>
-        </div>
+        <h1 className="tablet:text-subtitle tablet:col-span-1 col-span-2 row-start-2 text-[28px]">
+          {project.name}
+        </h1>
+        <Link
+          to={`/owner/projects/${project.id}/info`}
+          className="text-role group tablet:row-start-2 col-start-2 row-start-1 inline-flex min-h-11 items-center gap-1.5 font-bold whitespace-nowrap decoration-2 underline-offset-5 hover:underline"
+        >
+          <InfoIcon className="size-5 flex-none" />
+          專案資訊
+          <ChevronDownIcon className="size-4.5 flex-none -rotate-90 transition-transform duration-150 ease-out group-hover:translate-x-1" />
+        </Link>
       </div>
 
       <h2 className="text-section-title">招募中</h2>
 
       <Tabs value={tab} onValueChange={setTab} className="flex flex-col">
-        <TabsList className="relative z-1 -mb-px flex gap-1">
+        <TabsList className="bg-surface tablet:relative tablet:order-none tablet:z-1 tablet:mx-0 tablet:mt-0 tablet:-mb-px tablet:gap-1 tablet:bg-transparent tablet:p-0 tablet:shadow-none sticky bottom-0 z-5 order-last -mx-4 mt-2 -mb-12 flex gap-2 px-4 pt-2.5 pb-4 shadow-[0_-4px_16px_rgb(30_30_28/8%)]">
           <TabsTrigger
             value="candidates"
-            className="text-ink-subtle data-active:border-ink data-active:bg-surface data-active:text-ink desktop:px-6 desktop:text-[20px] flex h-12 items-center gap-2 rounded-t-md border border-b-0 border-transparent px-4 text-[18px] font-medium transition-colors duration-150 ease-out data-active:font-bold"
+            className="bg-page text-ink data-active:bg-role-soft data-active:text-role tablet:flex-none tablet:h-12 tablet:min-h-0 tablet:rounded-none tablet:rounded-t-md tablet:border tablet:border-b-0 tablet:border-transparent tablet:bg-transparent tablet:px-4 tablet:text-[18px] tablet:font-medium tablet:text-ink-subtle tablet:data-active:border-ink tablet:data-active:bg-surface tablet:data-active:text-ink desktop:px-6 desktop:text-[20px] flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out data-active:font-bold"
           >
             邀請與申請
             {chosenId === null &&
@@ -68,20 +68,20 @@ export function OwnerProjectPage() {
           </TabsTrigger>
           <TabsTrigger
             value="recommended"
-            className="text-ink-subtle data-active:border-ink data-active:bg-surface data-active:text-ink desktop:px-6 desktop:text-[20px] flex h-12 items-center gap-2 rounded-t-md border border-b-0 border-transparent px-4 text-[18px] font-medium transition-colors duration-150 ease-out data-active:font-bold"
+            className="bg-page text-ink data-active:bg-role-soft data-active:text-role tablet:flex-none tablet:h-12 tablet:min-h-0 tablet:rounded-none tablet:rounded-t-md tablet:border tablet:border-b-0 tablet:border-transparent tablet:bg-transparent tablet:px-4 tablet:text-[18px] tablet:font-medium tablet:text-ink-subtle tablet:data-active:border-ink tablet:data-active:bg-surface tablet:data-active:text-ink desktop:px-6 desktop:text-[20px] flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out data-active:font-bold"
           >
             推薦 QA
-            <span className="bg-owner-strong text-surface font-num h-6 min-w-6 rounded-full px-1.5 text-center text-[16px] leading-6 font-semibold">
+            <span className="bg-owner-strong text-surface font-num tablet:inline-block hidden h-6 min-w-6 rounded-full px-1.5 text-center text-[16px] leading-6 font-semibold">
               3
             </span>
           </TabsTrigger>
         </TabsList>
 
         <div
-          className={`bg-surface border-ink overflow-hidden rounded-md border ${tab === 'candidates' ? 'rounded-tl-none' : ''}`}
+          className={`tablet:bg-surface tablet:border-ink tablet:overflow-hidden tablet:rounded-md tablet:border ${tab === 'candidates' ? 'tablet:rounded-tl-none' : ''}`}
         >
           <TabsContent value="candidates">
-            <ul className="flex flex-col">
+            <ul className="tablet:gap-0 flex flex-col gap-3">
               {candidates
                 .filter((candidate) => candidate.id !== chosenId)
                 .sort(
@@ -92,7 +92,7 @@ export function OwnerProjectPage() {
                 .map((candidate) => (
                   <li
                     key={candidate.id}
-                    className="border-line desktop:px-7 desktop:py-6 flex items-start justify-between gap-6 border-t p-4 first:border-t-0"
+                    className="bg-surface tablet:flex-row tablet:items-start tablet:justify-between tablet:gap-6 tablet:rounded-none tablet:border-t tablet:border-line tablet:p-4 tablet:shadow-none tablet:first:border-t-0 desktop:px-7 desktop:py-6 flex flex-col gap-4 rounded-xl px-4 py-5 shadow-[0_2px_12px_rgb(30_30_28/6%)]"
                   >
                     <div className="flex min-w-0 flex-col gap-2.5">
                       <div className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export function OwnerProjectPage() {
                       </dl>
                     </div>
 
-                    <div className="flex max-w-90 flex-none flex-col items-end gap-2.5">
+                    <div className="tablet:w-auto tablet:max-w-90 tablet:flex-none tablet:items-end flex w-full flex-col items-start gap-2.5">
                       <span className="inline-flex items-center gap-2">
                         {candidate.status === 'applied' && (
                           <span className="bg-owner-soft text-owner-strong inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
@@ -194,7 +194,7 @@ export function OwnerProjectPage() {
                       </span>
 
                       {candidate.status === 'applied' && chosenId === null && (
-                        <div className="flex gap-2">
+                        <div className="tablet:w-auto flex w-full gap-2">
                           <button
                             type="button"
                             onClick={() =>
@@ -206,14 +206,14 @@ export function OwnerProjectPage() {
                                 )
                               )
                             }
-                            className="border-role bg-surface text-ink hover:bg-role-soft min-h-12 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                            className="border-role bg-surface text-ink hover:bg-role-soft tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
                           >
                             婉拒
                           </button>
                           <button
                             type="button"
                             onClick={() => setChosenId(candidate.id)}
-                            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
                           >
                             選定
                           </button>
@@ -221,12 +221,12 @@ export function OwnerProjectPage() {
                       )}
 
                       {candidate.status === 'applied' && chosenId !== null && (
-                        <span className="text-ink-subtle text-right">
+                        <span className="text-ink-subtle tablet:text-right">
                           已選定測試人員，招募已結束
                         </span>
                       )}
                       {candidate.status === 'noreply' && (
-                        <span className="text-ink-subtle text-right">
+                        <span className="text-ink-subtle tablet:text-right">
                           {candidate.invitedAt} 已邀請
                         </span>
                       )}
