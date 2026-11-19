@@ -11,16 +11,7 @@ export function OwnerProjectInfoPage() {
 
   return (
     <div className="max-w-page tablet:px-6 tablet:pt-6 tablet:gap-6 desktop:pt-10 desktop:pb-16 mx-auto flex w-full flex-col gap-5 px-4 pt-4 pb-12">
-      <div className="flex flex-col gap-1">
-        <Link
-          to={`/owner/projects/${project.id}`}
-          className="inline-flex min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
-        >
-          <ChevronDownIcon className="rotate-90" />
-          上一頁
-        </Link>
-        <h1 className="text-subtitle">{project.name}</h1>
-      </div>
+      <h1 className="text-subtitle">{project.name}</h1>
 
       <h2 className="text-section-title">專案資訊</h2>
 
@@ -120,6 +111,14 @@ export function OwnerProjectInfoPage() {
           )}
         </dl>
       </section>
+
+      <Link
+        to={`/owner/projects/${project.id}`}
+        className="inline-flex min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+      >
+        <ChevronDownIcon className="rotate-90" />
+        上一頁
+      </Link>
     </div>
   )
 }
