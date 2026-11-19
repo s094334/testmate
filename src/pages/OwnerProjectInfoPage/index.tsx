@@ -25,22 +25,20 @@ export function OwnerProjectInfoPage() {
       <h2 className="text-section-title">專案資訊</h2>
 
       <section className="bg-surface tablet:px-8 tablet:py-7 flex flex-col gap-1 rounded-xl px-4 py-5 shadow-[0_2px_12px_rgb(30_30_28/6%)]">
-        <h3 className="text-[20px] leading-[1.4]">專案說明</h3>
+        <h3 className="text-[20px] leading-[1.4]">簡介</h3>
         <p className="text-ink-muted">{project.summary}</p>
       </section>
 
       <section className="bg-surface tablet:px-8 tablet:py-7 flex flex-col gap-5 rounded-xl px-4 py-5 shadow-[0_2px_12px_rgb(30_30_28/6%)]">
         <h3 className="text-[20px] leading-[1.4]">時程</h3>
         <dl className="flex flex-col gap-4">
-          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-start tablet:gap-6 flex flex-col gap-1">
-            <dt className="text-ink-subtle tablet:pt-1">測試期間</dt>
-            <dd className="text-[18px] font-bold">
-              {project.details.testPeriod}
-            </dd>
+          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+            <dt className="text-ink-subtle pl-0.5 text-[18px]">專案期間</dt>
+            <dd className="text-ink-muted">{project.details.testPeriod}</dd>
           </div>
-          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-start tablet:gap-6 flex flex-col gap-1">
-            <dt className="text-ink-subtle tablet:pt-1">測試人員</dt>
-            <dd className="text-[18px] font-bold">
+          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+            <dt className="text-ink-subtle pl-0.5 text-[18px]">測試人員</dt>
+            <dd className="text-ink-muted">
               {project.engagement?.testerName ?? '尚未選定'}
             </dd>
           </div>
@@ -50,20 +48,18 @@ export function OwnerProjectInfoPage() {
       <section className="bg-surface tablet:px-8 tablet:py-7 flex flex-col gap-5 rounded-xl px-4 py-5 shadow-[0_2px_12px_rgb(30_30_28/6%)]">
         <h3 className="text-[20px] leading-[1.4]">測試範圍</h3>
         <dl className="flex flex-col gap-4">
-          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-start tablet:gap-6 flex flex-col gap-1">
-            <dt className="text-ink-subtle tablet:pt-1">測試方式</dt>
-            <dd className="text-[18px] font-bold">
-              {project.details.location}
-            </dd>
+          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+            <dt className="text-ink-subtle pl-0.5 text-[18px]">測試方式</dt>
+            <dd className="text-ink-muted">{project.details.location}</dd>
           </div>
-          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-start tablet:gap-6 flex flex-col gap-1">
-            <dt className="text-ink-subtle tablet:pt-1">測試平台</dt>
+          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+            <dt className="text-ink-subtle pl-0.5 text-[18px]">目標裝置</dt>
             <dd>
-              <ul className="flex flex-wrap gap-2">
+              <ul className="-ml-2.5 flex flex-wrap gap-1.5">
                 {info.platforms.map((platform) => (
                   <li
                     key={platform}
-                    className="rounded-full bg-[#f0f0ec] px-3 py-1 font-bold"
+                    className="rounded-full bg-[#f0f0ec] px-2.5 py-0.5"
                   >
                     {platform}
                   </li>
@@ -71,14 +67,14 @@ export function OwnerProjectInfoPage() {
               </ul>
             </dd>
           </div>
-          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-start tablet:gap-6 flex flex-col gap-1">
-            <dt className="text-ink-subtle tablet:pt-1">語系</dt>
+          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+            <dt className="text-ink-subtle pl-0.5 text-[18px]">測試語言</dt>
             <dd>
-              <ul className="flex flex-wrap gap-2">
+              <ul className="-ml-2.5 flex flex-wrap gap-1.5">
                 {info.languages.map((language) => (
                   <li
                     key={language}
-                    className="rounded-full bg-[#f0f0ec] px-3 py-1 font-bold"
+                    className="rounded-full bg-[#f0f0ec] px-2.5 py-0.5"
                   >
                     {language}
                   </li>
@@ -92,15 +88,36 @@ export function OwnerProjectInfoPage() {
       <section className="bg-surface tablet:px-8 tablet:py-7 flex flex-col gap-5 rounded-xl px-4 py-5 shadow-[0_2px_12px_rgb(30_30_28/6%)]">
         <h3 className="text-[20px] leading-[1.4]">報酬</h3>
         <dl className="flex flex-col gap-4">
-          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-start tablet:gap-6 flex flex-col gap-1">
-            <dt className="text-ink-subtle tablet:pt-1">報酬</dt>
-            <dd className="text-[18px] font-bold">
-              {info.pay}
-              <span className="text-ink-subtle block text-[16px] font-normal">
-                測試報告驗收通過後一次撥款
-              </span>
+          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+            <dt className="text-ink-subtle pl-0.5 text-[18px]">報酬</dt>
+            <dd className="text-ink-muted">{info.pay}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className="bg-surface tablet:px-8 tablet:py-7 flex flex-col gap-5 rounded-xl px-4 py-5 shadow-[0_2px_12px_rgb(30_30_28/6%)]">
+        <h3 className="text-[20px] leading-[1.4]">測試要求</h3>
+        <dl className="flex flex-col gap-4">
+          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+            <dt className="text-ink-subtle pl-0.5 text-[18px]">如何測試</dt>
+            <dd className="bg-page border-line text-ink-muted tablet:px-6 tablet:py-5 rounded-md border px-4 py-4 whitespace-pre-line">
+              {info.howToTest}
             </dd>
           </div>
+          <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+            <dt className="text-ink-subtle pl-0.5 text-[18px]">成功標準</dt>
+            <dd className="bg-page border-line text-ink-muted tablet:px-6 tablet:py-5 rounded-md border px-4 py-4 whitespace-pre-line">
+              {info.successCriteria}
+            </dd>
+          </div>
+          {info.specialRequirements && (
+            <div className="tablet:grid tablet:grid-cols-[140px_1fr] tablet:items-baseline tablet:gap-6 flex flex-col gap-1">
+              <dt className="text-ink-subtle pl-0.5 text-[18px]">特殊要求</dt>
+              <dd className="bg-page border-line text-ink-muted tablet:px-6 tablet:py-5 rounded-md border px-4 py-4 whitespace-pre-line">
+                {info.specialRequirements}
+              </dd>
+            </div>
+          )}
         </dl>
       </section>
     </div>

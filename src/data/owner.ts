@@ -105,7 +105,7 @@ export const recruitCandidates: Record<
       city: '桃園市',
       years: '1–2 年',
       devices: ['iPhone 15', 'Pixel 8'],
-      languages: ['中文', '英文', '日語'],
+      languages: ['中文', '英文', '日文'],
       interests: ['手機遊戲', '線上遊戲', '動漫'],
       status: 'applied',
     },
@@ -213,11 +213,28 @@ export const ownerProjects: OwnerProject[] = [
 // What 專案資訊 shows on top of ownerProjects, by project id
 export const ownerProjectInfo: Record<
   string,
-  { platforms: string[]; languages: string[]; pay: string }
+  {
+    platforms: string[]
+    languages: string[]
+    pay: string
+    howToTest: string
+    successCriteria: string
+    specialRequirements: string
+  }
 > = {
   o1: {
     platforms: ['iOS', 'Android'],
     languages: ['英文', '日文', '韓文', '泰文'],
     pay: 'NT$ 1,200',
+    howToTest:
+      '1. 下載測試版 App，把手機語系依序切換成英文、日文、韓文、泰文。\n' +
+      '2. 每種語言都走過註冊、首頁、商品頁、購物車與結帳流程。\n' +
+      '3. 遇到翻譯錯誤、文字被截斷或排版跑掉的畫面，截圖並記下所在頁面。',
+    successCriteria:
+      '1. 四種語言都完成從註冊到結帳的完整流程。\n' +
+      '2. 每個問題都附上截圖、所在頁面與裝置型號。\n',
+    specialRequirements:
+      '1. iOS 與 Android 都要測到，每種語言至少用其中一種測過。\n' +
+      '2. 截圖請保留完整畫面，不要裁切。',
   },
 }
