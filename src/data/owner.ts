@@ -76,7 +76,7 @@ export const recruitCandidates: Record<
       years: '1–2 年',
       devices: ['iPhone 15', 'Pixel 8'],
       languages: ['中文', '日文'],
-      interests: ['日韓文化／K-pop', '旅遊', 'Netflix'],
+      interests: ['旅遊', 'Netflix'],
       status: 'interest',
     },
     {
