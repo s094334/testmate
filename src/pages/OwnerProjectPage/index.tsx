@@ -194,7 +194,7 @@ export function OwnerProjectPage() {
                             </div>
                             <div className="flex gap-2">
                               <dt className="text-ink-subtle w-18 flex-none">
-                                QA 年資
+                                年資
                               </dt>
                               <dd>{candidate.years}</dd>
                             </div>
