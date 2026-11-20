@@ -51,9 +51,13 @@ export const tester = {
     hasExperience: 'yes' as 'yes' | 'no',
     jobs: [{ years: '1–2 年', company: '好買股份有限公司' }],
   },
-  // Payout bank account. null = not set yet. Once saved it looks like:
-  // { bankCode: '822', branchCode: '0012', accountNumber: '123456781234', holderName: '哇哩勒' }
-  payout: null as Payout | null,
+  // Payout bank account. null = not set yet
+  payout: {
+    bankCode: '822',
+    branchCode: '0012',
+    accountNumber: '123456781234',
+    holderName: '哇哩勒',
+  } as Payout | null,
 }
 
 // Device type matches the tabs on the profile page: 手機／平板／電視／電腦／自訂
@@ -182,6 +186,7 @@ export const joinedProjectDetails: Record<
     startDate: string
     endDate: string
     pay: string
+    ndaDeadline?: string
   }
 > = {
   p5: {
@@ -197,6 +202,7 @@ export const joinedProjectDetails: Record<
     startDate: '2026/11/10',
     endDate: '2026/11/18',
     pay: 'NT$ 1,200',
+    ndaDeadline: '2026-11-23T23:59:00+08:00',
   },
 }
 
