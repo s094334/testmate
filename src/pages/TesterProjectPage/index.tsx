@@ -42,12 +42,12 @@ export function TesterProjectPage() {
           簽署保密協議，負責人付款後就能開始
         </p>
         {tester.payout && (
-          <button
-            type="button"
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:block hidden min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          <Link
+            to={`/tester/projects/${project.id}/nda`}
+            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:inline-flex hidden min-h-12 min-w-40 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
           >
             簽署保密協議
-          </button>
+          </Link>
         )}
         {!tester.payout && (
           <div className="tablet:flex hidden flex-wrap items-center gap-3">
@@ -160,12 +160,12 @@ export function TesterProjectPage() {
           上一頁
         </Link>
         {tester.payout && (
-          <button
-            type="button"
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          <Link
+            to={`/tester/projects/${project.id}/nda`}
+            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
           >
             簽署保密協議
-          </button>
+          </Link>
         )}
         {!tester.payout && (
           <button

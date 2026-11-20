@@ -1,4 +1,5 @@
-export function CheckIcon() {
+// className is optional: leave it out for the 16px icon
+export function CheckIcon({ className }: { className?: string }) {
   return (
     <svg
       width="16"
@@ -9,6 +10,7 @@ export function CheckIcon() {
       strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
+      className={className}
     >
       <path d="M5 12l5 5 9-10" />
     </svg>

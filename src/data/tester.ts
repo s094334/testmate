@@ -182,6 +182,7 @@ export const joinedProjectDetails: Record<
     startDate: string
     endDate: string
     pay: string
+    ndaDeadline?: string
   }
 > = {
   p5: {
@@ -197,6 +198,7 @@ export const joinedProjectDetails: Record<
     startDate: '2026/11/10',
     endDate: '2026/11/18',
     pay: 'NT$ 1,200',
+    ndaDeadline: '2026/11/23',
   },
 }
 
