@@ -1,3 +1,4 @@
+import { Avatar } from '@/components/Avatar'
 import { InfoPopover } from '@/components/InfoPopover'
 import { RefreshIcon } from '@/components/icons/RefreshIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
@@ -36,9 +37,7 @@ export function Recommended({
           >
             <div className="flex min-w-0 flex-col gap-2.5">
               <div className="flex items-center gap-3">
-                <span className="border-tester bg-tester-soft inline-flex size-12 flex-none items-center justify-center rounded-full border-3 text-[18px] font-bold">
-                  {tester.initial}
-                </span>
+                <Avatar shape={tester.avatarShape} role="tester" size={48} />
                 <div className="flex flex-col">
                   <h3 className="text-[20px] leading-[1.4]">{tester.name}</h3>
                   <p className="text-ink-muted inline-flex items-center gap-1">

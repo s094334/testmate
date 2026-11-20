@@ -1,3 +1,4 @@
+import { Avatar } from '@/components/Avatar'
 import { ClockIcon } from '@/components/icons/ClockIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import type { RecruitCandidate } from '@/data/owner'
@@ -16,9 +17,7 @@ export function Progress({ chosen }: { chosen: RecruitCandidate }) {
       <div className="bg-surface tablet:flex-row tablet:items-start tablet:justify-between tablet:gap-6 tablet:px-7 tablet:py-6 flex flex-col gap-4 rounded-xl px-4 py-5 shadow-[0_2px_12px_rgb(30_30_28/6%)]">
         <div className="flex min-w-0 flex-col gap-2.5">
           <div className="flex items-center gap-3">
-            <span className="border-tester bg-tester-soft inline-flex size-12 flex-none items-center justify-center rounded-full border-3 text-[18px] font-bold">
-              {chosen.initial}
-            </span>
+            <Avatar shape={chosen.avatarShape} role="tester" size={48} />
             <div className="flex flex-col">
               <h3 className="text-[20px] leading-[1.4]">{chosen.fullName}</h3>
               <p className="text-ink-muted inline-flex items-center gap-1">
