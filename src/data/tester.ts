@@ -158,7 +158,7 @@ export const joinedProjects: {
     id: 'p6',
     name: '線上課程網站播放器測試',
     owner: '學無止境',
-    due: '2026/11/20',
+    due: '2026/12/05',
     devices: ['MacBook Air'],
     status: 'PENDING_PAYMENT',
     needsAction: false,
@@ -187,6 +187,8 @@ export const joinedProjectDetails: Record<
     endDate: string
     pay: string
     ndaDeadline?: string
+    // ISO time with the offset; only while waiting for the owner to pay
+    payDeadline?: string
   }
 > = {
   p5: {
@@ -203,6 +205,18 @@ export const joinedProjectDetails: Record<
     endDate: '2026/11/18',
     pay: 'NT$ 1,200',
     ndaDeadline: '2026-11-23T23:59:00+08:00',
+  },
+  p6: {
+    rating: 4.7,
+    reviews: 15,
+    intro:
+      '測試課程影片的播放、暫停、倍速與字幕切換，確認換章節和重新整理後能接著上次的進度播放。',
+    requirements: ['Safari、Chrome 都要測', '平台會提供已購買課程的測試帳號'],
+    place: '遠端',
+    startDate: '2026/11/28',
+    endDate: '2026/12/05',
+    pay: 'NT$ 900',
+    payDeadline: '2026-11-27T23:59:00+08:00',
   },
 }
 

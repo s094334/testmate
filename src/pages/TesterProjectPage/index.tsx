@@ -38,23 +38,33 @@ export function TesterProjectPage() {
       </div>
 
       <div className="bg-role-soft text-role-text tablet:px-6 tablet:py-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-4 py-3">
-        {tester.payout && (
+        {project.status === 'PENDING_NDA' && tester.payout && (
           <p className="tablet:text-[18px] font-bold">請在期限內簽署保密協議</p>
         )}
-        {!tester.payout && (
+        {project.status === 'PENDING_NDA' && !tester.payout && (
           <div className="flex flex-col gap-1">
             <p className="tablet:text-[18px] font-bold">請先設定收款帳戶</p>
             <p>設定完成後，即可簽署保密協議</p>
           </div>
         )}
-        {detail.ndaDeadline && (
+        {project.status === 'PENDING_PAYMENT' && (
+          <p className="tablet:text-[18px] font-bold">已簽署，等負責人付款</p>
+        )}
+        {project.status === 'PENDING_NDA' && detail.ndaDeadline && (
           <Countdown
             label="簽署期限"
             deadline={detail.ndaDeadline}
             className="tablet:flex ml-auto hidden flex-col items-end text-right"
           />
         )}
-        {tester.payout && (
+        {project.status === 'PENDING_PAYMENT' && detail.payDeadline && (
+          <Countdown
+            label="付款期限"
+            deadline={detail.payDeadline}
+            className="tablet:flex ml-auto hidden flex-col items-end text-right"
+          />
+        )}
+        {project.status === 'PENDING_NDA' && tester.payout && (
           <Link
             to={`/tester/projects/${project.id}/nda`}
             className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:inline-flex hidden min-h-12 min-w-40 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
@@ -62,7 +72,7 @@ export function TesterProjectPage() {
             簽署保密協議
           </Link>
         )}
-        {!tester.payout && (
+        {project.status === 'PENDING_NDA' && !tester.payout && (
           <Link
             to="/tester/profile"
             className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:inline-flex hidden min-h-12 min-w-40 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
@@ -130,25 +140,44 @@ export function TesterProjectPage() {
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">聯絡方式</h2>
-          <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
+          <LockedNotice>
+            {project.status === 'PENDING_NDA'
+              ? '待簽署保密協議及負責人付款後開放'
+              : '負責人付款後開放'}
+          </LockedNotice>
         </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">如何測試</h2>
-          <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
+          <LockedNotice>
+            {project.status === 'PENDING_NDA'
+              ? '待簽署保密協議及負責人付款後開放'
+              : '負責人付款後開放'}
+          </LockedNotice>
         </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">驗收與撥款</h2>
-          <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
+          <LockedNotice>
+            {project.status === 'PENDING_NDA'
+              ? '待簽署保密協議及負責人付款後開放'
+              : '負責人付款後開放'}
+          </LockedNotice>
         </section>
       </article>
 
       <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-wrap gap-2 border-t px-4 py-3">
-        {detail.ndaDeadline && (
+        {project.status === 'PENDING_NDA' && detail.ndaDeadline && (
           <Countdown
             label="簽署期限"
             deadline={detail.ndaDeadline}
+            className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
+          />
+        )}
+        {project.status === 'PENDING_PAYMENT' && detail.payDeadline && (
+          <Countdown
+            label="付款期限"
+            deadline={detail.payDeadline}
             className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
           />
         )}
@@ -159,7 +188,7 @@ export function TesterProjectPage() {
           <ChevronDownIcon className="size-4.5 rotate-90" />
           上一頁
         </Link>
-        {tester.payout && (
+        {project.status === 'PENDING_NDA' && tester.payout && (
           <Link
             to={`/tester/projects/${project.id}/nda`}
             className="border-role bg-role text-on-role hover:bg-surface hover:text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
@@ -167,7 +196,7 @@ export function TesterProjectPage() {
             簽署保密協議
           </Link>
         )}
-        {!tester.payout && (
+        {project.status === 'PENDING_NDA' && !tester.payout && (
           <Link
             to="/tester/profile"
             className="border-role bg-role text-on-role hover:bg-surface hover:text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
