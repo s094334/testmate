@@ -3,7 +3,6 @@ import { InfoPopover } from '@/components/InfoPopover'
 import { StatusTag } from '@/components/StatusTag'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
-import { WarningIcon } from '@/components/icons/WarningIcon'
 import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
 import { LockedNotice } from './LockedNotice'
 
@@ -26,7 +25,7 @@ export function TesterProjectPage() {
 
       <div className="flex flex-col items-start gap-3">
         <StatusTag status={project.status} needsAction={false} />
-        <h1>{project.name}</h1>
+        <h1 className="text-subtitle">{project.name}</h1>
         <p className="text-ink-subtle flex flex-wrap items-center gap-1.5">
           {project.owner}、
           <span className="text-star flex">
@@ -38,9 +37,15 @@ export function TesterProjectPage() {
       </div>
 
       <div className="bg-role-soft text-role-text tablet:px-6 tablet:py-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-4 py-3">
-        <p className="tablet:text-[18px] font-bold">
-          簽署保密協議，負責人付款後就能開始
-        </p>
+        {tester.payout && (
+          <p className="tablet:text-[18px] font-bold">請簽署保密協議</p>
+        )}
+        {!tester.payout && (
+          <div className="flex flex-col gap-1">
+            <p className="tablet:text-[18px] font-bold">請先設定收款帳戶</p>
+            <p>設定完成後，即可簽署保密協議</p>
+          </div>
+        )}
         {tester.payout && (
           <Link
             to={`/tester/projects/${project.id}/nda`}
@@ -50,22 +55,12 @@ export function TesterProjectPage() {
           </Link>
         )}
         {!tester.payout && (
-          <div className="tablet:flex hidden flex-wrap items-center gap-3">
-            <p className="bg-status-pending-bg text-status-pending-text flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md px-3 py-1.5 font-bold">
-              <WarningIcon className="size-5 flex-none" />
-              請先設定收款帳戶
-              <Link to="/tester/profile" className="text-ink py-1 underline">
-                前往設定
-              </Link>
-            </p>
-            <button
-              type="button"
-              disabled
-              className="border-line bg-line text-ink-subtle min-h-12 min-w-40 cursor-not-allowed rounded-full border-2 px-6 font-bold"
-            >
-              簽署保密協議
-            </button>
-          </div>
+          <Link
+            to="/tester/profile"
+            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:inline-flex hidden min-h-12 min-w-40 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          >
+            前往設定
+          </Link>
         )}
       </div>
 
@@ -122,36 +117,26 @@ export function TesterProjectPage() {
             <span className="text-role text-[18px] font-bold">
               {detail.pay}
             </span>
-            <span className="text-ink-subtle">尚未付款</span>
           </div>
         </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">聯絡方式</h2>
-          <LockedNotice>簽署保密協議、負責人付款後開放</LockedNotice>
+          <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
         </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">如何測試</h2>
-          <LockedNotice>簽署保密協議、負責人付款後開放</LockedNotice>
+          <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
         </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">驗收與撥款</h2>
-          <LockedNotice>簽署保密協議、負責人付款後開放</LockedNotice>
+          <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
         </section>
       </article>
 
       <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-wrap gap-2 border-t px-4 py-3">
-        {!tester.payout && (
-          <p className="bg-status-pending-bg text-status-pending-text flex basis-full flex-wrap items-center gap-x-2 gap-y-1 rounded-md px-3 py-2 font-bold">
-            <WarningIcon className="size-5 flex-none" />
-            請先設定收款帳戶
-            <Link to="/tester/profile" className="text-ink py-1 underline">
-              前往設定
-            </Link>
-          </p>
-        )}
         <Link
           to="/tester"
           className="border-role bg-surface text-ink hover:bg-role hover:text-on-role inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
@@ -168,13 +153,12 @@ export function TesterProjectPage() {
           </Link>
         )}
         {!tester.payout && (
-          <button
-            type="button"
-            disabled
-            className="border-line bg-line text-ink-subtle min-h-12 flex-1 cursor-not-allowed rounded-full border-2 px-4 font-bold whitespace-nowrap"
+          <Link
+            to="/tester/profile"
+            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
           >
-            簽署保密協議
-          </button>
+            前往設定
+          </Link>
         )}
       </div>
     </div>
