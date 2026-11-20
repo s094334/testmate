@@ -1,6 +1,7 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { and, eq, sql } from 'drizzle-orm'
 import { setCookie } from 'hono/cookie'
+import { avatarShapes } from '../../shared/avatar-shapes'
 import { createDb, saveTogether } from '../db'
 import { companies, loginAttempts, testerProfiles, users } from '../db/schema'
 import { fail, ok } from '../http/response'
@@ -38,6 +39,7 @@ export const loginRoute = createRoute({
               email: z.string(),
               role: z.enum(['owner', 'tester']),
               display_name: z.string(),
+              avatar_shape: z.enum(avatarShapes),
             }),
             error: z.null(),
           }),
@@ -83,6 +85,7 @@ export const login: RouteHandler<typeof loginRoute, { Bindings: Env }> = async (
       id: users.id,
       email: users.email,
       role: users.role,
+      avatarShape: users.avatarShape,
       passwordHash: users.passwordHash,
       passwordSalt: users.passwordSalt,
       passwordIterations: users.passwordIterations,
@@ -162,5 +165,6 @@ export const login: RouteHandler<typeof loginRoute, { Bindings: Env }> = async (
     email: user.email,
     role: user.role,
     display_name: user.displayName,
+    avatar_shape: user.avatarShape,
   })
 }

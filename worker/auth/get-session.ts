@@ -1,4 +1,5 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
+import { avatarShapes } from '../../shared/avatar-shapes'
 import { requireAuth, type AuthEnv } from '../http/auth'
 import { ok } from '../http/response'
 
@@ -17,6 +18,7 @@ export const getSessionRoute = createRoute({
               email: z.string(),
               role: z.enum(['owner', 'tester']),
               display_name: z.string(),
+              avatar_shape: z.enum(avatarShapes),
             }),
             error: z.null(),
           }),

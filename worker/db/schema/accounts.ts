@@ -5,6 +5,7 @@ import {
   sqliteTable,
   text,
 } from 'drizzle-orm/sqlite-core'
+import { avatarShapes } from '../../../shared/avatar-shapes'
 import { id, oneOf, timestamp } from './columns'
 
 export const roles = ['owner', 'tester'] as const
@@ -18,6 +19,12 @@ export const users = sqliteTable(
     passwordSalt: text('password_salt').notNull(),
     passwordIterations: integer('password_iterations').notNull(),
     role: text('role', { enum: roles }).notNull(),
+    // Picked at random at signup. No check constraint: adding one rebuilds the table,
+    // and on D1 dropping the old users table cascades to every profile and session.
+    // The default only fills accounts made before this column existed.
+    avatarShape: text('avatar_shape', { enum: avatarShapes })
+      .notNull()
+      .default('sparkle'),
     createdAt: timestamp('created_at')
       .notNull()
       .$defaultFn(() => new Date()),
