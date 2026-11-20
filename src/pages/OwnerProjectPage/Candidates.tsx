@@ -1,3 +1,4 @@
+import { Avatar } from '@/components/Avatar'
 import { ClockIcon } from '@/components/icons/ClockIcon'
 import { CrossIcon } from '@/components/icons/CrossIcon'
 import { ExclamationIcon } from '@/components/icons/ExclamationIcon'
@@ -30,9 +31,7 @@ export function Candidates({
           >
             <div className="flex min-w-0 flex-col gap-2.5">
               <div className="flex items-center gap-3">
-                <span className="border-tester bg-tester-soft inline-flex size-12 flex-none items-center justify-center rounded-full border-3 text-[18px] font-bold">
-                  {candidate.initial}
-                </span>
+                <Avatar shape={candidate.avatarShape} role="tester" size={48} />
                 <div className="flex flex-col">
                   <h3 className="text-[20px] leading-[1.4]">
                     {candidate.name}

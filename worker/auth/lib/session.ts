@@ -38,6 +38,7 @@ export async function findSessionUser(db: Db, token: string) {
       id: users.id,
       email: users.email,
       role: users.role,
+      avatar_shape: users.avatarShape,
       // A tester has a tester profile, an owner has a company; never both
       display_name: sql<string>`coalesce(${testerProfiles.realName}, ${companies.realName})`,
     })
