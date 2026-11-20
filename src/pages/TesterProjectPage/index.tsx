@@ -48,19 +48,32 @@ export function TesterProjectPage() {
           </div>
         )}
         {project.status === 'PENDING_PAYMENT' && (
-          <p className="tablet:text-[18px] font-bold">已簽署，等負責人付款</p>
+          <div className="flex flex-col gap-1">
+            <p className="tablet:text-[18px] font-bold">
+              已簽署保密協議，待負責人付款
+            </p>
+            {detail.payDeadline && (
+              <p>
+                負責人需在{' '}
+                <time dateTime={detail.payDeadline}>
+                  {new Date(detail.payDeadline).toLocaleString('zh-TW', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                  })}
+                </time>{' '}
+                前付款，如逾期則合作會自動取消。
+              </p>
+            )}
+          </div>
         )}
         {project.status === 'PENDING_NDA' && detail.ndaDeadline && (
           <Countdown
             label="簽署期限"
             deadline={detail.ndaDeadline}
-            className="tablet:flex ml-auto hidden flex-col items-end text-right"
-          />
-        )}
-        {project.status === 'PENDING_PAYMENT' && detail.payDeadline && (
-          <Countdown
-            label="付款期限"
-            deadline={detail.payDeadline}
             className="tablet:flex ml-auto hidden flex-col items-end text-right"
           />
         )}
@@ -171,13 +184,6 @@ export function TesterProjectPage() {
           <Countdown
             label="簽署期限"
             deadline={detail.ndaDeadline}
-            className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
-          />
-        )}
-        {project.status === 'PENDING_PAYMENT' && detail.payDeadline && (
-          <Countdown
-            label="付款期限"
-            deadline={detail.payDeadline}
             className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
           />
         )}
