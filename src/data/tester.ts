@@ -51,15 +51,13 @@ export const tester = {
     hasExperience: 'yes' as 'yes' | 'no',
     jobs: [{ years: '1–2 年', company: '好買股份有限公司' }],
   },
-  // Payout bank account. null = not set yet. Once saved it looks like:
-  // { bankCode: '822', branchCode: '0012', accountNumber: '123456781234', holderName: '哇哩勒' }
+  // Payout bank account. null = not set yet
   payout: {
     bankCode: '822',
     branchCode: '0012',
     accountNumber: '123456781234',
     holderName: '哇哩勒',
-  },
-  // null as Payout | null,
+  } as Payout | null,
 }
 
 // Device type matches the tabs on the profile page: 手機／平板／電視／電腦／自訂
