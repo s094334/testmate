@@ -36,7 +36,7 @@ export const tester = {
   email: 'walile.test@gmail.com',
   city: '臺北市',
   phone: '0912-345-678',
-  languages: ['中文', '英文', '日語'],
+  languages: ['中文', '英文', '日文'],
   // Subset of languages
   nativeLanguages: ['中文'],
   interests: [
@@ -209,9 +209,9 @@ export const invitedProjects = [
     reviews: 12,
     category: '生活服務',
     pay: 'NT$ 1,600',
-    replyBy: '2026/11/03',
-    startDate: '2026/11/01',
-    endDate: '2026/11/20',
+    replyBy: '2026/12/08',
+    startDate: '2026/12/20',
+    endDate: '2027/01/20',
     place: '實地（臺北市）',
     devices: ['iPhone 15'],
     intro:

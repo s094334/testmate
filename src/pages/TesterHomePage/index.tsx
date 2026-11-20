@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { invitedProjects, joinedProjects } from '@/data/tester'
 import { InvitedProjects } from './InvitedProjects'
@@ -7,7 +8,8 @@ import { MyDevices } from './MyDevices'
 import { MyDevicesMobile } from './MyDevicesMobile'
 
 export function TesterHomePage() {
-  const [tab, setTab] = useState('joined')
+  const { state } = useLocation()
+  const [tab, setTab] = useState(state?.tab ?? 'joined')
 
   return (
     <div className="max-w-page desktop:min-h-128 desktop:flex-1 desktop:flex-row tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">

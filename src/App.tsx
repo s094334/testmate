@@ -12,7 +12,10 @@ import { SignupPage } from '@/pages/AuthPages/SignupPage'
 import { OwnerCompanyPage } from '@/pages/OwnerCompanyPage'
 import { OwnerHomePage } from '@/pages/OwnerHomePage'
 import { OwnerProjectNewPage } from '@/pages/OwnerProjectNewPage'
+import { OwnerProjectInfoPage } from '@/pages/OwnerProjectInfoPage'
+import { OwnerProjectPage } from '@/pages/OwnerProjectPage'
 import { TesterHomePage } from '@/pages/TesterHomePage'
+import { TesterInvitePage } from '@/pages/TesterInvitePage'
 import { TesterProfilePage } from '@/pages/TesterProfilePage'
 import { TesterProjectPage } from '@/pages/TesterProjectPage'
 import { TesterProjectsPage } from '@/pages/TesterProjectsPage'
@@ -33,6 +36,7 @@ function App() {
         </Route>
         <Route path="tester" element={<TesterLayout />}>
           <Route index element={<TesterHomePage />} />
+          <Route path="invites/:id" element={<TesterInvitePage />} />
           <Route path="profile" element={<TesterProfilePage />} />
           <Route path="projects" element={<TesterProjectsPage />} />
           <Route path="projects/:id" element={<TesterProjectPage />} />
@@ -41,6 +45,8 @@ function App() {
           <Route index element={<OwnerHomePage />} />
           <Route path="company" element={<OwnerCompanyPage />} />
           <Route path="projects/new" element={<OwnerProjectNewPage />} />
+          <Route path="projects/:id" element={<OwnerProjectPage />} />
+          <Route path="projects/:id/info" element={<OwnerProjectInfoPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

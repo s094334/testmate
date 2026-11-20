@@ -46,7 +46,7 @@ export async function request<T>(
     body: options.body === undefined ? undefined : JSON.stringify(options.body),
   })
 
-  // A 204 (logout) has no body
+  // A 204 has no body
   if (response.status === 204) {
     return undefined as T
   }

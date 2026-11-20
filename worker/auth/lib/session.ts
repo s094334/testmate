@@ -1,5 +1,5 @@
 import { and, eq, gt, sql } from 'drizzle-orm'
-import type { Db, Tx } from '../../db'
+import type { Db } from '../../db'
 import { companies, sessions, testerProfiles, users } from '../../db/schema'
 
 const toHex = (bytes: Uint8Array) =>
@@ -15,17 +15,19 @@ export async function hashToken(token: string) {
   return toHex(new Uint8Array(digest))
 }
 
-// Saves a new 7-day session and returns the token to put in the `session` cookie
-export async function createSession(db: Db | Tx, userId: string) {
+// A new 7-day session: `token` goes in the `session` cookie, and `insert` is the
+// statement that saves it, not yet run, so signup can batch it with the account
+export async function newSession(db: Db, userId: string) {
   const token = toHex(crypto.getRandomValues(new Uint8Array(32)))
 
-  await db.insert(sessions).values({
-    userId,
-    tokenHash: await hashToken(token),
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-  })
-
-  return token
+  return {
+    token,
+    insert: db.insert(sessions).values({
+      userId,
+      tokenHash: await hashToken(token),
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    }),
+  }
 }
 
 // Finds who a `session` cookie belongs to, shaped as API.md `User`.

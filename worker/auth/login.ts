@@ -1,11 +1,11 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { and, eq, sql } from 'drizzle-orm'
 import { setCookie } from 'hono/cookie'
-import { createDb } from '../db'
+import { createDb, saveTogether } from '../db'
 import { companies, loginAttempts, testerProfiles, users } from '../db/schema'
 import { fail, ok } from '../http/response'
 import { hashPassword, verifyPassword } from './lib/password'
-import { createSession } from './lib/session'
+import { newSession } from './lib/session'
 
 const loginBody = z.object({
   email: z
@@ -55,7 +55,7 @@ export const login: RouteHandler<typeof loginRoute, { Bindings: Env }> = async (
   c
 ) => {
   const body = c.req.valid('json')
-  const db = await createDb(c.env)
+  const db = createDb(c.env)
   // Cloudflare always sets this header; local wrangler dev may not
   const ip = c.req.header('CF-Connecting-IP') ?? 'local'
 
@@ -139,11 +139,17 @@ export const login: RouteHandler<typeof loginRoute, { Bindings: Env }> = async (
 
   // Right password: forget the failures and start a new session.
   // Sessions on other devices are left as they are.
-  await db
-    .delete(loginAttempts)
-    .where(and(eq(loginAttempts.email, body.email), eq(loginAttempts.ip, ip)))
+  const session = await newSession(db, user.id)
+  await saveTogether(db, [
+    db
+      .delete(loginAttempts)
+      .where(
+        and(eq(loginAttempts.email, body.email), eq(loginAttempts.ip, ip))
+      ),
+    session.insert,
+  ])
 
-  setCookie(c, 'session', await createSession(db, user.id), {
+  setCookie(c, 'session', session.token, {
     httpOnly: true,
     secure: true,
     sameSite: 'Lax',
