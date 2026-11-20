@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router'
 import { useLogout, useSession } from '@/api/session'
 import logo from '@/assets/logo.png'
+import { Avatar } from '@/components/Avatar'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { LogoutIcon } from '@/components/icons/LogoutIcon'
 import {
@@ -44,9 +45,9 @@ export function OwnerHeader() {
 
         <DropdownMenu>
           <DropdownMenuTrigger className="tablet:gap-3 tablet:pl-0 inline-flex min-h-12 flex-none items-center gap-2 rounded-md px-2">
-            <span className="border-owner bg-owner-soft tablet:size-11 tablet:text-[18px] inline-flex size-10 items-center justify-center rounded-full border-3 font-bold">
-              {user?.display_name[0]}
-            </span>
+            {user && (
+              <Avatar shape={user.avatar_shape} role="owner" size={40} />
+            )}
             <b>{user?.display_name}</b>
             <ChevronDownIcon />
           </DropdownMenuTrigger>

@@ -1,5 +1,6 @@
 // Written by hand from API.md「資料格式」. When the backend changes a field,
 // change it here too: nothing checks that the two still match.
+import type { AvatarShape } from '../../shared/avatar-shapes'
 
 // API.md `User`: the person logged in, from GET /api/auth/session,
 // POST /api/auth/login and POST /api/auth/register
@@ -8,6 +9,7 @@ export type User = {
   email: string
   role: 'owner' | 'tester'
   display_name: string
+  avatar_shape: AvatarShape
 }
 
 // API.md `RegisterBody`, sent to POST /api/auth/register

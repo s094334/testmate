@@ -1,6 +1,7 @@
 // Mock data shaped like the API (GET /api/auth/company and GET /api/auth/projects)
 
 import { type ProjectStatus } from '@/data/tester'
+import type { AvatarShape } from '../../shared/avatar-shapes'
 
 type Company = {
   realName: string
@@ -37,7 +38,7 @@ export type RecruitCandidate = {
   name: string
   fullName: string
   email: string
-  initial: string
+  avatarShape: AvatarShape
   rating: number
   reviews: number
   city: string
@@ -68,7 +69,7 @@ export const recruitCandidates: Record<string, RecruitCandidate[]> = {
       name: '劉Ｏ君',
       fullName: '劉怡君',
       email: 'yichun.liu@example.com',
-      initial: '劉',
+      avatarShape: 'petals',
       rating: 4.7,
       reviews: 15,
       city: '臺北市',
@@ -83,7 +84,7 @@ export const recruitCandidates: Record<string, RecruitCandidate[]> = {
       name: '陳Ｏ文',
       fullName: '陳大文',
       email: 'tawen.chen@example.com',
-      initial: '陳',
+      avatarShape: 'clover',
       rating: 4.6,
       reviews: 7,
       city: '臺北市',
@@ -98,7 +99,7 @@ export const recruitCandidates: Record<string, RecruitCandidate[]> = {
       name: '王Ｏ明',
       fullName: '王小明',
       email: 'hsiaoming.wang@example.com',
-      initial: '王',
+      avatarShape: 'burst',
       rating: 4.5,
       reviews: 12,
       city: '桃園市',
@@ -113,7 +114,7 @@ export const recruitCandidates: Record<string, RecruitCandidate[]> = {
       name: '周Ｏ豪',
       fullName: '周志豪',
       email: 'chihhao.chou@example.com',
-      initial: '周',
+      avatarShape: 'leaf',
       rating: 4.2,
       reviews: 5,
       city: '新竹市',
@@ -129,7 +130,7 @@ export const recruitCandidates: Record<string, RecruitCandidate[]> = {
       name: '吳Ｏ宏',
       fullName: '吳建宏',
       email: 'chienhung.wu@example.com',
-      initial: '吳',
+      avatarShape: 'seal',
       rating: 4.3,
       reviews: 4,
       city: '臺中市',
@@ -151,7 +152,7 @@ export const recommendedTesters: Record<
     name: string
     fullName: string
     email: string
-    initial: string
+    avatarShape: AvatarShape
     rating: number
     reviews: number
     city: string
@@ -167,7 +168,7 @@ export const recommendedTesters: Record<
       name: '許Ｏ明',
       fullName: '許志明',
       email: 'chihming.hsu@example.com',
-      initial: '許',
+      avatarShape: 'octastar',
       rating: 5.0,
       reviews: 27,
       city: '新北市',
@@ -181,7 +182,7 @@ export const recommendedTesters: Record<
       name: '蔡Ｏ珊',
       fullName: '蔡佩珊',
       email: 'peishan.tsai@example.com',
-      initial: '蔡',
+      avatarShape: 'scallop',
       rating: 4.6,
       reviews: 11,
       city: '高雄市',

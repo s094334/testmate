@@ -1,6 +1,7 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { eq } from 'drizzle-orm'
 import { setCookie } from 'hono/cookie'
+import { avatarShapes } from '../../shared/avatar-shapes'
 import { cities } from '../../shared/cities'
 import { createDb, isUniqueViolation, saveTogether } from '../db'
 import {
@@ -111,6 +112,7 @@ export const registerRoute = createRoute({
               email: z.string(),
               role: z.enum(['owner', 'tester']),
               display_name: z.string(),
+              avatar_shape: z.enum(avatarShapes),
             }),
             error: z.null(),
           }),
@@ -147,6 +149,8 @@ export const register: RouteHandler<
 
   const password = await hashPassword(body.password)
   const userId = crypto.randomUUID()
+  const avatarShape =
+    avatarShapes[Math.floor(Math.random() * avatarShapes.length)]
   const session = await newSession(db, userId)
 
   try {
@@ -161,6 +165,7 @@ export const register: RouteHandler<
         passwordSalt: password.salt,
         passwordIterations: password.iterations,
         role: body.role,
+        avatarShape,
       }),
       body.role === 'tester'
         ? db.insert(testerProfiles).values({
@@ -197,6 +202,7 @@ export const register: RouteHandler<
         email: body.email,
         role: body.role,
         display_name: body.profile.real_name,
+        avatar_shape: avatarShape,
       },
       201
     )
