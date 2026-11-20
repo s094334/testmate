@@ -168,8 +168,7 @@ export function NdaText({
           </span>
           <p>
             <b>準據法。</b>
-            本協議以中華民國法律為準據法；因本協議涉訟時，雙方同意以臺灣
-            <b className="text-status-revise-text">【臺北】</b>
+            本協議以中華民國法律為準據法；因本協議涉訟時，雙方同意以臺灣臺北
             地方法院為第一審管轄法院。
           </p>
         </li>

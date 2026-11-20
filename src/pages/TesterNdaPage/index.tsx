@@ -46,21 +46,25 @@ export function TesterNdaPage() {
     <div className="tablet:px-6 tablet:gap-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full max-w-[1040px] flex-col gap-5 px-4 pt-6 pb-12">
       <Link
         to={`/tester/projects/${id}`}
-        className="inline-flex min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+        className="tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
       >
         <ChevronDownIcon className="rotate-90" />
         上一頁
       </Link>
 
       <div className="flex flex-col gap-2">
-        <h1 className="tablet:text-[40px]">簽署保密協議</h1>
+        <h1 className="text-subtitle">簽署保密協議</h1>
         <p className="text-ink-muted">
           {project.name}、{project.owner}
           {detail.ndaDeadline && (
             <>
               、請於{' '}
               <b className="font-num text-num-heading text-ink">
-                {detail.ndaDeadline}
+                {new Date(detail.ndaDeadline).toLocaleDateString('zh-TW', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                })}
               </b>{' '}
               前簽署
             </>
@@ -101,8 +105,7 @@ export function TesterNdaPage() {
               {step === 1 ? '受測者同意書' : '保密協議'}
             </b>
             <span className="text-ink-subtle whitespace-nowrap">
-              第 <b className="font-num text-num-heading text-ink">{step}</b>{' '}
-              步，共 2 步
+              第 <b>{step}</b> 步，共 2 步
             </span>
           </p>
           <div className="flex gap-2">
@@ -188,7 +191,7 @@ export function TesterNdaPage() {
           <button
             type="button"
             onClick={() => (agreedConsent ? goToStep(2) : setTried(true))}
-            className={`min-h-12 min-w-50 rounded-lg border-2 px-6 font-bold transition-colors duration-150 ease-out ${agreedConsent ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-status-progress-bg bg-status-progress-bg text-ink-subtle cursor-not-allowed'}`}
+            className={`min-h-12 min-w-50 rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out ${agreedConsent ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-disabled-bg bg-disabled-bg text-disabled-fg cursor-not-allowed'}`}
           >
             下一步
           </button>
@@ -207,7 +210,7 @@ export function TesterNdaPage() {
           <button
             type="button"
             onClick={sign}
-            className={`min-h-12 min-w-50 rounded-lg border-2 px-6 font-bold transition-colors duration-150 ease-out ${agreedNda ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-status-progress-bg bg-status-progress-bg text-ink-subtle cursor-not-allowed'}`}
+            className={`min-h-12 min-w-50 rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out ${agreedNda ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-disabled-bg bg-disabled-bg text-disabled-fg cursor-not-allowed'}`}
           >
             同意並簽署
           </button>
@@ -222,13 +225,22 @@ export function TesterNdaPage() {
             </p>
           )}
           {step === 1 && (
-            <button
-              type="button"
-              onClick={() => (agreedConsent ? goToStep(2) : setTried(true))}
-              className={`min-h-12 rounded-lg border-2 px-6 font-bold transition-colors duration-150 ease-out ${agreedConsent ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-status-progress-bg bg-status-progress-bg text-ink-subtle cursor-not-allowed'}`}
-            >
-              下一步
-            </button>
+            <div className="flex gap-2">
+              <Link
+                to={`/tester/projects/${id}`}
+                className="border-role bg-surface text-ink hover:bg-role hover:text-on-role inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+              >
+                <ChevronDownIcon className="size-4.5 rotate-90" />
+                上一頁
+              </Link>
+              <button
+                type="button"
+                onClick={() => (agreedConsent ? goToStep(2) : setTried(true))}
+                className={`min-h-12 flex-1 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out ${agreedConsent ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-disabled-bg bg-disabled-bg text-disabled-fg cursor-not-allowed'}`}
+              >
+                下一步
+              </button>
+            </div>
           )}
           {step === 2 && (
             <div className="flex gap-2">
@@ -242,7 +254,7 @@ export function TesterNdaPage() {
               <button
                 type="button"
                 onClick={sign}
-                className={`min-h-12 flex-1 rounded-lg border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out ${agreedNda ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-status-progress-bg bg-status-progress-bg text-ink-subtle cursor-not-allowed'}`}
+                className={`min-h-12 flex-1 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out ${agreedNda ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-disabled-bg bg-disabled-bg text-disabled-fg cursor-not-allowed'}`}
               >
                 同意並簽署
               </button>

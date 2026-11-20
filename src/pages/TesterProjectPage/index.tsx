@@ -4,6 +4,7 @@ import { StatusTag } from '@/components/StatusTag'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
+import { Countdown } from './Countdown'
 import { LockedNotice } from './LockedNotice'
 
 export function TesterProjectPage() {
@@ -38,13 +39,20 @@ export function TesterProjectPage() {
 
       <div className="bg-role-soft text-role-text tablet:px-6 tablet:py-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-4 py-3">
         {tester.payout && (
-          <p className="tablet:text-[18px] font-bold">請簽署保密協議</p>
+          <p className="tablet:text-[18px] font-bold">請在期限內簽署保密協議</p>
         )}
         {!tester.payout && (
           <div className="flex flex-col gap-1">
             <p className="tablet:text-[18px] font-bold">請先設定收款帳戶</p>
             <p>設定完成後，即可簽署保密協議</p>
           </div>
+        )}
+        {detail.ndaDeadline && (
+          <Countdown
+            label="簽署期限"
+            deadline={detail.ndaDeadline}
+            className="tablet:flex ml-auto hidden flex-col items-end text-right"
+          />
         )}
         {tester.payout && (
           <Link
@@ -137,6 +145,13 @@ export function TesterProjectPage() {
       </article>
 
       <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-wrap gap-2 border-t px-4 py-3">
+        {detail.ndaDeadline && (
+          <Countdown
+            label="簽署期限"
+            deadline={detail.ndaDeadline}
+            className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
+          />
+        )}
         <Link
           to="/tester"
           className="border-role bg-surface text-ink hover:bg-role hover:text-on-role inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"

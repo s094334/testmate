@@ -34,10 +34,15 @@ export function ConsentText({ company }: { company: string }) {
       </p>
       <ul className="flex list-disc flex-col gap-1.5 pl-6">
         <li>
-          您可隨時撤回對處理您個人資料的同意。請注意，若您撤回同意，您將不再是測試週期的參與者，且可能無法獲得報酬。您的個人資料將儲存於
-          <b className="text-status-revise-text">
-            【雲端服務名稱，例如 Cloudflare】
-          </b>
+          您可隨時撤回對處理您個人資料的同意。請注意，若您撤回同意，您將不再是測試週期的參與者，且可能無法獲得報酬。您的個人資料將儲存於{' '}
+          <a
+            href="https://www.cloudflare.com/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+          >
+            Cloudflare
+          </a>
           ，其主機可能位於臺灣以外地區。
         </li>
         <li>
@@ -45,8 +50,14 @@ export function ConsentText({ company }: { company: string }) {
         </li>
         <li>
           您可依個人資料保護法第 3
-          條，請求查詢、閱覽、製給複製本、補充或更正、停止蒐集處理利用或刪除您的個人資料。如需行使上述權利或有任何問題，請來信
-          <b className="text-status-revise-text">【聯絡信箱】</b>。
+          條，請求查詢、閱覽、製給複製本、補充或更正、停止蒐集處理利用或刪除您的個人資料。如需行使上述權利或有任何問題，請來信{' '}
+          <a
+            href="mailto:support@xin-ping.com"
+            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+          >
+            support@xin-ping.com
+          </a>
+          。
         </li>
       </ul>
 
