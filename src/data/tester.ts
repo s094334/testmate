@@ -170,6 +170,36 @@ export const joinedProjects: {
   },
 ]
 
+// Project page details for joined projects, by project id
+export const joinedProjectDetails: Record<
+  string,
+  {
+    rating: number
+    reviews: number
+    intro: string
+    requirements: string[]
+    place: string
+    startDate: string
+    endDate: string
+    pay: string
+  }
+> = {
+  p5: {
+    rating: 4.3,
+    reviews: 6,
+    intro:
+      '測試搜尋飯店、篩選日期與人數、查看房型到加入收藏的流程，確認搜尋結果正確、操作順暢。',
+    requirements: [
+      '每一項都要附上螢幕截圖',
+      '不需要真的訂房，測試到付款頁前即可',
+    ],
+    place: '遠端',
+    startDate: '2026/11/10',
+    endDate: '2026/11/18',
+    pay: 'NT$ 1,200',
+  },
+}
+
 export const invitedProjects = [
   {
     id: 'i1',

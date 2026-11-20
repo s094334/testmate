@@ -17,6 +17,7 @@ import { OwnerProjectPage } from '@/pages/OwnerProjectPage'
 import { TesterHomePage } from '@/pages/TesterHomePage'
 import { TesterInvitePage } from '@/pages/TesterInvitePage'
 import { TesterProfilePage } from '@/pages/TesterProfilePage'
+import { TesterProjectPage } from '@/pages/TesterProjectPage'
 import { TesterProjectsPage } from '@/pages/TesterProjectsPage'
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route path="invites/:id" element={<TesterInvitePage />} />
           <Route path="profile" element={<TesterProfilePage />} />
           <Route path="projects" element={<TesterProjectsPage />} />
+          <Route path="projects/:id" element={<TesterProjectPage />} />
         </Route>
         <Route path="owner" element={<OwnerLayout />}>
           <Route index element={<OwnerHomePage />} />
