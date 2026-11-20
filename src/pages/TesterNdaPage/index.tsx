@@ -54,22 +54,6 @@ export function TesterNdaPage() {
 
       <div className="flex flex-col gap-2">
         <h1 className="text-subtitle">簽署保密協議</h1>
-        <p className="text-ink-muted">
-          {project.name}、{project.owner}
-          {detail.ndaDeadline && (
-            <>
-              、請於{' '}
-              <b className="font-num text-num-heading text-ink">
-                {new Date(detail.ndaDeadline).toLocaleDateString('zh-TW', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                })}
-              </b>{' '}
-              前簽署
-            </>
-          )}
-        </p>
       </div>
 
       {signedAt && (
@@ -82,12 +66,6 @@ export function TesterNdaPage() {
             <time>{signedAt}</time> 簽署，等負責人付款後就能開始測試。
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <button
-              type="button"
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-            >
-              下載 PDF
-            </button>
             <Link
               to={`/tester/projects/${id}`}
               className="border-role bg-role text-on-role hover:bg-surface hover:text-ink inline-flex min-h-12 items-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
@@ -119,7 +97,7 @@ export function TesterNdaPage() {
 
       {!signedAt && step === 1 && (
         <section className="bg-surface border-ink overflow-hidden rounded-lg border">
-          <h2 className="border-ink text-subheading tablet:px-8 tablet:py-5 tablet:text-subtitle border-b p-4">
+          <h2 className="border-ink text-subheading tablet:px-8 tablet:py-5 tablet:text-[28px] tablet:leading-[1.4] border-b p-4">
             受測者同意書及資料保護聲明
           </h2>
           <div
@@ -147,7 +125,7 @@ export function TesterNdaPage() {
 
       {!signedAt && step === 2 && (
         <section className="bg-surface border-ink overflow-hidden rounded-lg border">
-          <h2 className="border-ink text-subheading tablet:px-8 tablet:py-5 tablet:text-subtitle border-b p-4">
+          <h2 className="border-ink text-subheading tablet:px-8 tablet:py-5 tablet:text-[28px] tablet:leading-[1.4] border-b p-4">
             2026 受測者保密協議
           </h2>
           <div
