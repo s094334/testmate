@@ -189,8 +189,33 @@ export const joinedProjectDetails: Record<
     ndaDeadline?: string
     // ISO time with the offset; only while waiting for the owner to pay
     payDeadline?: string
+    // Only after the owner has paid
+    ownerEmail?: string
+    testItems?: string[]
   }
 > = {
+  p1: {
+    rating: 4.5,
+    reviews: 8,
+    intro:
+      '新版結帳流程上線前的回歸測試，確認加入購物車、優惠券、付款到訂單通知都正常。',
+    requirements: [
+      '每一項都要附上螢幕截圖',
+      '使用平台提供的測試卡號，不需要真的付款',
+    ],
+    place: '遠端',
+    startDate: '2026/11/01',
+    endDate: '2026/11/05',
+    pay: 'NT$ 1,200',
+    ownerEmail: 'owner@haomai.example.com',
+    testItems: [
+      '加入購物車與修改數量',
+      '套用優惠券後金額正確',
+      '信用卡付款（測試卡號）',
+      '訂單成立推播與 Email',
+      '申請退貨流程',
+    ],
+  },
   p5: {
     rating: 4.3,
     reviews: 6,

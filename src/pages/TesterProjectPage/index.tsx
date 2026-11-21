@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 import { InfoPopover } from '@/components/InfoPopover'
 import { StatusTag } from '@/components/StatusTag'
@@ -6,11 +7,13 @@ import { StarIcon } from '@/components/icons/StarIcon'
 import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
 import { Countdown } from './Countdown'
 import { LockedNotice } from './LockedNotice'
+import { ReceivedEnvDialog } from './ReceivedEnvDialog'
 
 export function TesterProjectPage() {
   const { id = '' } = useParams()
   const project = joinedProjects.find((joined) => joined.id === id)
   const detail = joinedProjectDetails[id]
+  const [envDialogOpen, setEnvDialogOpen] = useState(false)
 
   if (!project || !detail) return <Navigate to="/tester" replace />
 
@@ -70,6 +73,11 @@ export function TesterProjectPage() {
             )}
           </div>
         )}
+        {project.status === 'FUNDED' && (
+          <p className="tablet:text-[18px] font-bold">
+            報酬已由平台代管，收到測試環境後就能開始測試
+          </p>
+        )}
         {project.status === 'PENDING_NDA' && detail.ndaDeadline && (
           <Countdown
             label="簽署期限"
@@ -92,6 +100,15 @@ export function TesterProjectPage() {
           >
             前往設定
           </Link>
+        )}
+        {project.status === 'FUNDED' && (
+          <button
+            type="button"
+            onClick={() => setEnvDialogOpen(true)}
+            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:block hidden min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          >
+            開始測試
+          </button>
         )}
       </div>
 
@@ -153,29 +170,61 @@ export function TesterProjectPage() {
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">聯絡方式</h2>
-          <LockedNotice>
-            {project.status === 'PENDING_NDA'
-              ? '待簽署保密協議及負責人付款後開放'
-              : '負責人付款後開放'}
-          </LockedNotice>
+          {project.status === 'PENDING_NDA' && (
+            <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
+          )}
+          {project.status === 'PENDING_PAYMENT' && (
+            <LockedNotice>負責人付款後開放</LockedNotice>
+          )}
+          {project.status === 'FUNDED' && (
+            <div className="flex flex-col gap-0.5">
+              <span className="text-ink-subtle">公司信箱</span>
+              <a
+                href={`mailto:${detail.ownerEmail}`}
+                className="text-role text-body-large font-bold wrap-anywhere decoration-2 underline-offset-3 hover:underline"
+              >
+                {detail.ownerEmail}
+              </a>
+            </div>
+          )}
         </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">如何測試</h2>
-          <LockedNotice>
-            {project.status === 'PENDING_NDA'
-              ? '待簽署保密協議及負責人付款後開放'
-              : '負責人付款後開放'}
-          </LockedNotice>
+          {project.status === 'PENDING_NDA' && (
+            <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
+          )}
+          {project.status === 'PENDING_PAYMENT' && (
+            <LockedNotice>負責人付款後開放</LockedNotice>
+          )}
+          {project.status === 'FUNDED' && (
+            <ol>
+              {detail.testItems?.map((item, index) => (
+                <li
+                  key={item}
+                  className="border-line flex min-h-12 items-center gap-3 border-t py-3 first:border-t-0"
+                >
+                  <span className="font-num text-num-heading text-ink-subtle">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className="tablet:text-body-large">{item}</span>
+                </li>
+              ))}
+            </ol>
+          )}
         </section>
 
         <section className="flex flex-col gap-3">
           <h2 className="text-section-title">驗收與撥款</h2>
-          <LockedNotice>
-            {project.status === 'PENDING_NDA'
-              ? '待簽署保密協議及負責人付款後開放'
-              : '負責人付款後開放'}
-          </LockedNotice>
+          {project.status === 'PENDING_NDA' && (
+            <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
+          )}
+          {project.status === 'PENDING_PAYMENT' && (
+            <LockedNotice>負責人付款後開放</LockedNotice>
+          )}
+          {project.status === 'FUNDED' && (
+            <LockedNotice>測試開始後開放</LockedNotice>
+          )}
         </section>
       </article>
 
@@ -204,7 +253,24 @@ export function TesterProjectPage() {
             前往設定
           </Link>
         )}
+        {project.status === 'FUNDED' && (
+          <button
+            type="button"
+            onClick={() => setEnvDialogOpen(true)}
+            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          >
+            開始測試
+          </button>
+        )}
       </div>
+
+      {detail.ownerEmail && (
+        <ReceivedEnvDialog
+          open={envDialogOpen}
+          onOpenChange={setEnvDialogOpen}
+          ownerEmail={detail.ownerEmail}
+        />
+      )}
     </div>
   )
 }
