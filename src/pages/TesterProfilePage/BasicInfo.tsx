@@ -46,23 +46,7 @@ export function BasicInfo() {
 
   return (
     <section className="desktop:gap-6 desktop:p-8 flex flex-col gap-5 px-4 py-5">
-      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-        <h2 className="text-section-title">基本資料與語言</h2>
-
-        <div className="desktop:flex hidden items-center gap-3">
-          <span className="text-ink-subtle">
-            {saved && '已儲存'}
-            {!saved && (errors.name || errors.phone) && '還有必填欄位沒填'}
-          </span>
-          <button
-            type="button"
-            onClick={save}
-            className="btn btn-secondary px-8"
-          >
-            儲存
-          </button>
-        </div>
-      </div>
+      <h2 className="text-section-title">基本資料與語言</h2>
 
       <div className="desktop:grid-cols-2 grid max-w-220 gap-x-6 gap-y-5">
         <div className="flex flex-col gap-1.5">
@@ -162,6 +146,16 @@ export function BasicInfo() {
         setValue={setValue}
         onChange={() => setSaved(false)}
       />
+
+      <div className="desktop:flex hidden items-center justify-end gap-3">
+        <span className="text-ink-subtle">
+          {saved && '已儲存'}
+          {!saved && (errors.name || errors.phone) && '還有必填欄位沒填'}
+        </span>
+        <button type="button" onClick={save} className="btn btn-secondary px-8">
+          儲存
+        </button>
+      </div>
 
       {/* Mobile save bar: sticks to the bottom of the screen until you scroll down to it.
           It sits just before 收款帳戶, so from there on it scrolls away and

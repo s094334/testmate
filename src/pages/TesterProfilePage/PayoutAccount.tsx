@@ -27,25 +27,11 @@ export function PayoutAccount() {
 
   return (
     <div className="border-line flex flex-col gap-6 border-t pt-6">
-      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-subheading">收款帳戶</h3>
-          <p className="text-ink-subtle">
-            簽署保密協議前需要設定收款帳戶，後續報酬會匯入帳戶中。
-          </p>
-        </div>
-
-        {/* Desktop only: on mobile, 儲存帳戶 is in the bar at the bottom.
-            Sits outside the <form> below; form="payout-form" still makes it submit that form */}
-        {(!account || editing) && (
-          <button
-            type="submit"
-            form="payout-form"
-            className="btn btn-secondary desktop:block hidden px-8"
-          >
-            儲存帳戶
-          </button>
-        )}
+      <div className="flex flex-col gap-1">
+        <h3 className="text-subheading">收款帳戶</h3>
+        <p className="text-ink-subtle">
+          簽署保密協議前需要設定收款帳戶，後續報酬會匯入帳戶中。
+        </p>
       </div>
 
       {!account && (
@@ -140,6 +126,14 @@ export function PayoutAccount() {
               </div>
             ))}
           </div>
+
+          {/* Desktop only: on mobile, 儲存帳戶 is in the bar at the bottom */}
+          <button
+            type="submit"
+            className="btn btn-secondary desktop:inline-flex hidden self-end px-8"
+          >
+            儲存帳戶
+          </button>
         </form>
       )}
 
