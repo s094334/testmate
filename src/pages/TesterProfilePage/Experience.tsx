@@ -35,27 +35,9 @@ export function Experience() {
 
   return (
     <section className="desktop:gap-6 desktop:p-8 flex flex-col gap-5 px-4 py-5">
-      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-section-title">經歷</h2>
-        </div>
+      <h2 className="text-section-title">經歷</h2>
 
-        <div className="desktop:flex hidden items-center gap-3">
-          <span className="text-ink-subtle">
-            {saved && '已儲存'}
-            {!saved && errors.jobs && '還有必填欄位沒填'}
-          </span>
-          <button
-            type="button"
-            onClick={save}
-            className="btn btn-secondary px-8"
-          >
-            儲存
-          </button>
-        </div>
-      </div>
-
-      <fieldset className="flex max-w-160 flex-col gap-3">
+      <fieldset className="flex max-w-220 flex-col gap-6">
         <legend className="mb-3 text-[18px] font-bold">有沒有做過測試？</legend>
 
         <div className="flex flex-wrap gap-3">
@@ -95,12 +77,9 @@ export function Experience() {
         </div>
 
         {hasExperience === 'yes' && (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-6">
             {fields.map((field, index) => (
-              <div
-                key={field.id}
-                className="border-line flex flex-col gap-3 rounded-md border p-4"
-              >
+              <div key={field.id} className="flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-3">
                   <b className="text-[18px]">經歷 {index + 1}</b>
                   {fields.length > 1 && (
@@ -118,7 +97,7 @@ export function Experience() {
                   )}
                 </div>
 
-                <div className="desktop:grid-cols-2 grid gap-3">
+                <div className="desktop:grid-cols-2 grid gap-x-6 gap-y-5">
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor={`years-${index}`} className="text-label">
                       年資
@@ -183,6 +162,16 @@ export function Experience() {
           </div>
         )}
       </fieldset>
+
+      <div className="border-line desktop:flex hidden items-center justify-end gap-3 border-t pt-6">
+        <span className="text-ink-subtle">
+          {saved && '已儲存'}
+          {!saved && errors.jobs && '還有必填欄位沒填'}
+        </span>
+        <button type="button" onClick={save} className="btn btn-secondary px-8">
+          儲存
+        </button>
+      </div>
 
       <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 flex flex-col gap-2 rounded-b-md border-t px-4 py-3">
         {saved && <span className="text-tester-text">已儲存</span>}
