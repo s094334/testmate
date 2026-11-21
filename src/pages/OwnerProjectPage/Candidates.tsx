@@ -41,12 +41,8 @@ export function Candidates({
                       <StarIcon />
                     </span>
                     <b className="text-ink">{candidate.rating}</b>
-                    ／5、
-                    <button
-                      type="button"
-                      className="min-h-8 cursor-pointer underline underline-offset-3"
-                    >
-                      {candidate.reviews} 則評論
+                    <button type="button" className="min-h-8 cursor-pointer">
+                      （{candidate.reviews} 則評論）
                     </button>
                   </p>
                 </div>
