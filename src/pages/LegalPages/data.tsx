@@ -30,7 +30,7 @@ export const copyrightSections = [
         如有任何問題，歡迎來信：
         <a
           href="mailto:no-reply@xin-ping.com"
-          className="text-platform-strong font-bold decoration-2 underline-offset-3 hover:underline"
+          className="link text-platform-strong font-bold"
         >
           no-reply@xin-ping.com
         </a>
@@ -94,7 +94,7 @@ export const privacySections = [
           href="https://www.cloudflare.com/privacypolicy/"
           target="_blank"
           rel="noreferrer"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+          className="link text-role font-bold"
         >
           Cloudflare 的隱私政策
         </a>
@@ -134,7 +134,7 @@ export const privacySections = [
         如有任何問題，歡迎來信：
         <a
           href="mailto:no-reply@xin-ping.com"
-          className="text-platform-strong font-bold decoration-2 underline-offset-3 hover:underline"
+          className="link text-platform-strong font-bold"
         >
           no-reply@xin-ping.com
         </a>

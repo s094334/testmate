@@ -153,7 +153,7 @@ export function DisputeTerms() {
             對流程有疑問，請寫信到{' '}
             <a
               href="mailto:support@xin-ping.com"
-              className="text-platform-strong font-bold decoration-2 underline-offset-3 hover:underline"
+              className="link text-platform-strong font-bold"
             >
               support@xin-ping.com
             </a>

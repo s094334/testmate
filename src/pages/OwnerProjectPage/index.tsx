@@ -20,7 +20,7 @@ export function OwnerProjectPage() {
       <div className="grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1">
         <Link
           to="/owner"
-          className="inline-flex min-h-11 items-center gap-1.5 self-start justify-self-start decoration-2 underline-offset-3 hover:underline"
+          className="link inline-flex min-h-11 items-center gap-1.5 self-start justify-self-start"
         >
           <ChevronDownIcon className="rotate-90" />
           專案列表
@@ -30,7 +30,7 @@ export function OwnerProjectPage() {
         </h1>
         <Link
           to={`/owner/projects/${project.id}/info`}
-          className="text-role group tablet:row-start-2 col-start-2 row-start-1 inline-flex min-h-11 items-center gap-1.5 font-bold whitespace-nowrap decoration-2 underline-offset-5 hover:underline"
+          className="link underline-offset-5 text-role group tablet:row-start-2 col-start-2 row-start-1 inline-flex min-h-11 items-center gap-1.5 font-bold whitespace-nowrap"
         >
           <InfoIcon className="size-5 flex-none" />
           專案資訊

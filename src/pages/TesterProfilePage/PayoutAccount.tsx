@@ -27,25 +27,11 @@ export function PayoutAccount() {
 
   return (
     <div className="border-line flex flex-col gap-6 border-t pt-6">
-      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-subheading">收款帳戶</h3>
-          <p className="text-ink-subtle">
-            簽署保密協議前需要設定收款帳戶，後續報酬會匯入帳戶中。
-          </p>
-        </div>
-
-        {/* Desktop only: on mobile, 儲存帳戶 is in the bar at the bottom.
-            Sits outside the <form> below; form="payout-form" still makes it submit that form */}
-        {(!account || editing) && (
-          <button
-            type="submit"
-            form="payout-form"
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role desktop:block hidden min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-          >
-            儲存帳戶
-          </button>
-        )}
+      <div className="flex flex-col gap-1">
+        <h3 className="text-subheading">收款帳戶</h3>
+        <p className="text-ink-subtle">
+          簽署保密協議前需要設定收款帳戶，後續報酬會匯入帳戶中。
+        </p>
       </div>
 
       {!account && (
@@ -81,7 +67,7 @@ export function PayoutAccount() {
               reset(account)
               setEditing(true)
             }}
-            className="border-role bg-surface hover:bg-role-soft min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-secondary px-8"
           >
             修改
           </button>
@@ -140,6 +126,14 @@ export function PayoutAccount() {
               </div>
             ))}
           </div>
+
+          {/* Desktop only: on mobile, 儲存帳戶 is in the bar at the bottom */}
+          <button
+            type="submit"
+            className="btn btn-secondary desktop:inline-flex hidden self-end px-8"
+          >
+            儲存帳戶
+          </button>
         </form>
       )}
 
@@ -150,7 +144,7 @@ export function PayoutAccount() {
           <button
             type="submit"
             form="payout-form"
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 w-full rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-secondary w-full px-4"
           >
             儲存帳戶
           </button>

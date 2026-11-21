@@ -132,7 +132,7 @@ export function OwnerProjectNewPage() {
         {step === 1 && (
           <Link
             to="/owner"
-            className="desktop:inline-flex hidden min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+            className="link desktop:inline-flex hidden min-h-11 items-center gap-1.5 self-start"
           >
             <ChevronDownIcon className="rotate-90" />
             上一頁
@@ -145,7 +145,7 @@ export function OwnerProjectNewPage() {
               setStep(step === 3 ? 2 : 1)
               window.scrollTo({ top: 0 })
             }}
-            className="desktop:inline-flex hidden min-h-11 cursor-pointer items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+            className="link desktop:inline-flex hidden min-h-11 cursor-pointer items-center gap-1.5 self-start"
           >
             <ChevronDownIcon className="rotate-90" />
             上一頁
@@ -206,7 +206,7 @@ export function OwnerProjectNewPage() {
                   window.scrollTo({ top: 0 })
                 }
               }}
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+              className="btn btn-secondary min-w-40 px-8"
             >
               下一步
             </button>
@@ -222,7 +222,7 @@ export function OwnerProjectNewPage() {
                   window.scrollTo({ top: 0 })
                 }
               }}
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+              className="btn btn-secondary min-w-40 px-8"
             >
               下一步
             </button>
@@ -234,7 +234,7 @@ export function OwnerProjectNewPage() {
               type="button"
               disabled={publish.isPending}
               onClick={submit}
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+              className="btn btn-secondary min-w-40 px-8"
             >
               發布
             </button>
@@ -243,10 +243,7 @@ export function OwnerProjectNewPage() {
 
         <div className="border-line bg-surface desktop:hidden tablet:-mx-6 sticky bottom-0 z-2 -mx-4 flex gap-3 border-t px-4 py-3">
           {step === 1 && (
-            <Link
-              to="/owner"
-              className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold active:translate-y-px motion-reduce:active:translate-y-0"
-            >
+            <Link to="/owner" className="btn btn-secondary flex-1 gap-1.5 px-4">
               <ChevronDownIcon className="rotate-90" />
               上一頁
             </Link>
@@ -258,7 +255,7 @@ export function OwnerProjectNewPage() {
                 setStep(step === 3 ? 2 : 1)
                 window.scrollTo({ top: 0 })
               }}
-              className="border-ink text-ink inline-flex min-h-12 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold active:translate-y-px motion-reduce:active:translate-y-0"
+              className="btn btn-secondary flex-1 gap-1.5 px-4"
             >
               <ChevronDownIcon className="rotate-90" />
               上一頁
@@ -275,7 +272,7 @@ export function OwnerProjectNewPage() {
                 window.scrollTo({ top: 0 })
               }
             }}
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-secondary flex-1 px-4"
           >
             {step === 3 ? '發布' : '下一步'}
           </button>

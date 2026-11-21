@@ -8,13 +8,13 @@ export function Footer() {
         <div className="flex gap-x-6">
           <Link
             to="/privacy"
-            className="hover:text-ink py-2 underline transition-colors duration-150 ease-out"
+            className="link text-ink-subtle hover:text-ink py-2"
           >
             隱私權聲明
           </Link>
           <Link
             to="/copyright"
-            className="hover:text-ink py-2 underline transition-colors duration-150 ease-out"
+            className="link text-ink-subtle hover:text-ink py-2"
           >
             版權聲明
           </Link>
