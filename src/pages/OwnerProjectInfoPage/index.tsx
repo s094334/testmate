@@ -14,7 +14,7 @@ export function OwnerProjectInfoPage() {
       <div className="flex flex-col gap-1">
         <Link
           to={`/owner/projects/${project.id}`}
-          className="tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+          className="link tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start"
         >
           <ChevronDownIcon className="rotate-90" />
           上一頁

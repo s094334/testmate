@@ -125,7 +125,7 @@ export function PickDeviceForm({
             setVersion('')
             setMessage(`已加入：${name}`)
           }}
-          className="border-role bg-surface text-ink enabled:hover:bg-role enabled:hover:text-on-role max-desktop:basis-full inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out enabled:active:translate-y-px disabled:cursor-not-allowed disabled:border-dashed disabled:border-[#b5b4ae] disabled:text-line-input motion-reduce:active:translate-y-0"
+          className="btn btn-secondary max-desktop:basis-full disabled:cursor-not-allowed disabled:border-dashed disabled:border-[#b5b4ae] disabled:bg-surface disabled:text-line-input"
         >
           <PlusIcon />
           加入裝置

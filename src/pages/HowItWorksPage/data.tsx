@@ -6,10 +6,7 @@ export const ownerSteps = [
     description: (
       <>
         還沒註冊嗎？
-        <Link
-          to="/signup"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
+        <Link to="/signup" className="link text-role font-bold">
           這裡可以註冊
         </Link>
         。
@@ -21,10 +18,7 @@ export const ownerSteps = [
     description: (
       <>
         設定產業、目標裝置、專案時間、測試範圍與成功標準，也可以使用我們
-        <a
-          href="#"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
+        <a href="#" className="link text-role font-bold">
           提供的小工具
         </a>
         快速發布需求。
@@ -36,10 +30,7 @@ export const ownerSteps = [
     description: (
       <>
         每個專案配對一位測試人員。依據裝置和經驗推薦，看看
-        <a
-          href="#"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
+        <a href="#" className="link text-role font-bold">
           誰來應徵
         </a>
         。
@@ -67,10 +58,7 @@ export const testerSteps = [
     description: (
       <>
         還沒註冊嗎？
-        <Link
-          to="/signup"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
+        <Link to="/signup" className="link text-role font-bold">
           這裡可以註冊
         </Link>
         。
@@ -81,10 +69,7 @@ export const testerSteps = [
     title: '建立個人檔案',
     description: (
       <>
-        <a
-          href="#"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
+        <a href="#" className="link text-role font-bold">
           建立個人檔案
         </a>
         ，包含裝置、過去經驗、興趣與語言，平台會推薦適合的專案。
@@ -96,10 +81,7 @@ export const testerSteps = [
     description: (
       <>
         接受邀請，或
-        <a
-          href="#"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
+        <a href="#" className="link text-role font-bold">
           主動應徵
         </a>
         有興趣的專案。

@@ -30,7 +30,7 @@ export function Devices({
           <button
             type="button"
             onClick={() => setSaved(true)}
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-secondary px-8"
           >
             儲存
           </button>
@@ -114,7 +114,7 @@ export function Devices({
         <button
           type="button"
           onClick={() => setSaved(true)}
-          className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          className="btn btn-secondary px-4"
         >
           儲存
         </button>

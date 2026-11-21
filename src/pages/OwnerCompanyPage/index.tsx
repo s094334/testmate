@@ -55,10 +55,7 @@ export function OwnerCompanyPage() {
                   errors.address) &&
                 '還有必填欄位沒填'}
             </span>
-            <button
-              type="submit"
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-            >
+            <button type="submit" className="btn btn-secondary px-8">
               儲存
             </button>
           </div>
@@ -142,10 +139,7 @@ export function OwnerCompanyPage() {
               errors.address) && (
               <span className="text-status-dispute-text">還有必填欄位沒填</span>
             )}
-          <button
-            type="submit"
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-          >
+          <button type="submit" className="btn btn-secondary px-4">
             儲存
           </button>
         </div>

@@ -41,7 +41,7 @@ export function PayoutAccount() {
           <button
             type="submit"
             form="payout-form"
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role desktop:block hidden min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-secondary desktop:block hidden px-8"
           >
             儲存帳戶
           </button>
@@ -81,7 +81,7 @@ export function PayoutAccount() {
               reset(account)
               setEditing(true)
             }}
-            className="border-role bg-surface hover:bg-role-soft min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-secondary px-8"
           >
             修改
           </button>
@@ -150,7 +150,7 @@ export function PayoutAccount() {
           <button
             type="submit"
             form="payout-form"
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 w-full rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-secondary w-full px-4"
           >
             儲存帳戶
           </button>

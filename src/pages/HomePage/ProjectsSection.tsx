@@ -75,7 +75,7 @@ export function ProjectsSection() {
                 </span>
                 <a
                   href="#"
-                  className="group/case inline-flex min-h-11 items-center gap-2 font-bold whitespace-nowrap decoration-2 underline-offset-5 hover:underline"
+                  className="link underline-offset-5 group/case inline-flex min-h-11 items-center gap-2 font-bold whitespace-nowrap"
                 >
                   查看案件
                   <span className="transition-transform duration-150 ease-out group-hover/case:translate-x-1">

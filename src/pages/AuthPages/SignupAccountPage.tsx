@@ -53,23 +53,17 @@ export function SignupAccountPage({
         <button
           type="button"
           onClick={() => onBack(getValues())}
-          className="border-ink text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0 cursor-pointer"
+          className="btn btn-secondary btn-ink flex-1"
         >
           上一步
         </button>
-        <button
-          type="submit"
-          className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:cursor-pointer enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:enabled:hover:translate-y-0 motion-reduce:enabled:active:translate-y-0"
-        >
+        <button type="submit" className="btn btn-primary btn-ink flex-1">
           下一步
         </button>
       </div>
       <p className="text-ink-muted text-center">
         已經有帳號？
-        <Link
-          to="/login"
-          className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-        >
+        <Link to="/login" className="link text-role font-bold">
           登入
         </Link>
       </p>

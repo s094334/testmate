@@ -67,6 +67,10 @@
   --color-role-soft: var(--color-platform-soft);
   /* Text in the role color (selected tags, hints): -text of the role */
   --color-role-text: var(--color-ink);
+  /* Primary button fill: one step darker than -strong, lighter on hover, darker when pressed */
+  --color-role-button: var(--color-ink);
+  --color-role-button-hover: #40403e;
+  --color-role-button-active: #000000;
 
   /* ── Color: status (deliberately avoids role colors; always pair with an icon) ── */
   /* In progress: funded, testing */
@@ -223,11 +227,17 @@
   --color-role: var(--color-owner-strong);
   --color-role-soft: var(--color-owner-soft);
   --color-role-text: var(--color-owner-text);
+  --color-role-button: #0c6975;
+  --color-role-button-hover: var(--color-owner-strong);
+  --color-role-button-active: #0a5761;
 }
 [data-role='tester'] {
   --color-role: var(--color-tester-strong);
   --color-role-soft: var(--color-tester-soft);
   --color-role-text: var(--color-tester-text);
+  --color-role-button: #366c1d;
+  --color-role-button-hover: var(--color-tester-strong);
+  --color-role-button-active: #2c5918;
 }
 
 /* Desktop sizes from 768px up (line height and weight stay the same) */
