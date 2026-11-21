@@ -124,7 +124,7 @@ export function OwnerProjectInfoPage() {
       <div className="bg-surface tablet:hidden sticky bottom-0 z-5 -mx-4 -mt-3 -mb-12 flex gap-2 px-4 pt-2.5 pb-4 shadow-[0_-4px_16px_rgb(30_30_28/8%)]">
         <Link
           to={`/owner/projects/${project.id}`}
-          className="bg-page text-ink flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          className="bg-page text-ink flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out"
         >
           <ChevronDownIcon className="rotate-90" />
           上一頁

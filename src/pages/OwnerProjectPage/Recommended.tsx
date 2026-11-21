@@ -20,7 +20,7 @@ export function Recommended({
         <div className="flex items-center gap-1">
           <button
             type="button"
-            className="bg-surface text-ink hover:bg-platform-soft inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xl px-3.5 font-bold shadow-[0_2px_12px_rgb(30_30_28/6%)] transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="bg-surface text-ink hover:bg-platform-soft inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xl px-3.5 font-bold shadow-[0_2px_12px_rgb(30_30_28/6%)] transition-colors duration-150 ease-out"
           >
             <RefreshIcon />
             換一批

@@ -194,21 +194,12 @@
     border-color 150ms ease-out,
     box-shadow 150ms ease-out;
 
-  &:active {
-    translate: 0 1px;
-  }
   &:disabled {
     border-color: var(--color-disabled-bg);
     background-color: var(--color-disabled-bg);
     color: var(--color-disabled-fg);
     box-shadow: none;
     cursor: not-allowed;
-    translate: none;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    &:active {
-      translate: none;
-    }
   }
 }
 
@@ -257,10 +248,6 @@
   background-color: var(--color-disabled-bg);
   color: var(--color-disabled-fg);
   cursor: not-allowed;
-
-  &:active {
-    translate: none;
-  }
 }
 
 /* Logged-out buttons stay ink even inside a [data-role] signup step */
