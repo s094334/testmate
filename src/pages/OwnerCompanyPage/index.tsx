@@ -40,26 +40,7 @@ export function OwnerCompanyPage() {
         onChange={() => setSaved(false)}
         className="desktop:gap-6 mx-auto flex w-full max-w-200 flex-col gap-5"
       >
-        <div className="flex min-h-12 items-center justify-between gap-4">
-          <h1 className="text-subtitle">公司資料</h1>
-
-          <div className="desktop:flex hidden items-center gap-3">
-            <span className="text-ink-subtle">
-              {saved && '已儲存'}
-              {!saved &&
-                (errors.name ||
-                  errors.phone ||
-                  errors.company ||
-                  errors.taxId ||
-                  errors.industry ||
-                  errors.address) &&
-                '還有必填欄位沒填'}
-            </span>
-            <button type="submit" className="btn btn-secondary px-8">
-              儲存
-            </button>
-          </div>
-        </div>
+        <h1 className="text-subtitle">公司資料</h1>
 
         <section className="bg-surface border-ink desktop:px-8 desktop:py-7 flex flex-col gap-5 rounded-md border px-4 py-5">
           <h2 className="text-subheading desktop:text-heading">帳號</h2>
@@ -127,6 +108,23 @@ export function OwnerCompanyPage() {
             </div>
           </div>
         </section>
+
+        <div className="desktop:flex hidden items-center justify-end gap-3">
+          <span className="text-ink-subtle">
+            {saved && '已儲存'}
+            {!saved &&
+              (errors.name ||
+                errors.phone ||
+                errors.company ||
+                errors.taxId ||
+                errors.industry ||
+                errors.address) &&
+              '還有必填欄位沒填'}
+          </span>
+          <button type="submit" className="btn btn-secondary px-8">
+            儲存
+          </button>
+        </div>
 
         <div className="border-line bg-surface desktop:hidden tablet:-mx-6 sticky bottom-0 -mx-4 flex flex-col gap-2 border-t px-4 py-3">
           {saved && <span className="text-owner-text">已儲存</span>}
