@@ -30,7 +30,7 @@ export function MyDevices() {
 
       <Link
         to="/tester/profile?tab=devices"
-        className="border-ink bg-surface hover:border-role hover:bg-role hover:text-on-role mt-auto flex min-h-12 items-center justify-center gap-2 rounded-md border font-bold transition-colors duration-150 ease-out"
+        className="border-ink bg-surface mt-auto flex min-h-12 items-center justify-center gap-2 rounded-md border font-bold transition-shadow duration-150 ease-out hover:shadow-[inset_0_0_0_1px_var(--color-ink)]"
       >
         <PlusIcon />
         新增裝置

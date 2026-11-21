@@ -55,7 +55,10 @@ export function DisputeTermsDialog({
               <input
                 type="checkbox"
                 checked={agreed}
-                onChange={(e) => onAgreedChange(e.target.checked)}
+                onChange={(e) => {
+                  onAgreedChange(e.target.checked)
+                  if (e.target.checked) onOpenChange(false)
+                }}
                 className="accent-ink mt-0.5 size-5.5 flex-none"
               />
               <span className="font-bold">我已閱讀並同意爭議處理流程</span>

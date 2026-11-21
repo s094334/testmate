@@ -13,10 +13,7 @@ export function OwnerHomePage() {
         <div className="flex min-h-12 items-center justify-between gap-4">
           <h1 className="text-subtitle">專案列表</h1>
           {ownerProjects.length > 0 && (
-            <Link
-              to="/owner/projects/new"
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role inline-flex min-h-12 items-center gap-2 rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-            >
+            <Link to="/owner/projects/new" className="btn btn-secondary">
               <PlusIcon />
               發布專案
             </Link>
@@ -29,10 +26,7 @@ export function OwnerHomePage() {
               <FilePlusIcon />
             </div>
             <h2 className="text-subheading mt-1">還沒有任何專案唷</h2>
-            <Link
-              to="/owner/projects/new"
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role mt-2 inline-flex min-h-12 items-center gap-2 rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-            >
+            <Link to="/owner/projects/new" className="btn btn-secondary mt-2">
               <PlusIcon />
               發布專案
             </Link>

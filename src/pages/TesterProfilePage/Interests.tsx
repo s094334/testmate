@@ -14,22 +14,7 @@ export function Interests({
 
   return (
     <section className="desktop:gap-6 desktop:p-8 flex flex-col gap-5 px-4 py-5">
-      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-section-title">興趣</h2>
-        </div>
-
-        <div className="desktop:flex hidden items-center gap-3">
-          <span className="text-ink-subtle">{saved && '已儲存'}</span>
-          <button
-            type="button"
-            onClick={() => setSaved(true)}
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-8 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-          >
-            儲存
-          </button>
-        </div>
-      </div>
+      <h2 className="text-section-title">興趣</h2>
 
       <ul className="border-line rounded-md border">
         {interestCategories.map((category) => {
@@ -106,12 +91,23 @@ export function Interests({
         })}
       </ul>
 
+      <div className="desktop:flex hidden items-center justify-end gap-3">
+        <span className="text-ink-subtle">{saved && '已儲存'}</span>
+        <button
+          type="button"
+          onClick={() => setSaved(true)}
+          className="btn btn-secondary px-8"
+        >
+          儲存
+        </button>
+      </div>
+
       <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 flex flex-col gap-2 rounded-b-md border-t px-4 py-3">
         {saved && <span className="text-tester-text">已儲存</span>}
         <button
           type="button"
           onClick={() => setSaved(true)}
-          className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 rounded-full border-2 px-4 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+          className="btn btn-secondary px-4"
         >
           儲存
         </button>

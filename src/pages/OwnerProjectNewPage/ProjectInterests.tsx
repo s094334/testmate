@@ -113,7 +113,7 @@ export function ProjectInterests({
       <button
         type="button"
         onClick={() => setShowInterests(!showInterests)}
-        className="border-role bg-surface text-role-text hover:bg-role hover:text-on-role inline-flex min-h-12 items-center gap-2 self-start rounded-full border border-dashed px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+        className="border-role bg-surface text-role-text hover:bg-role hover:text-on-role inline-flex min-h-12 items-center gap-2 self-start rounded-full border border-dashed px-5 font-bold transition-colors duration-150 ease-out"
       >
         {showInterests ? <MinusIcon /> : <PlusIcon />}
         {showInterests

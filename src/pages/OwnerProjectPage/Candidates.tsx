@@ -41,12 +41,8 @@ export function Candidates({
                       <StarIcon />
                     </span>
                     <b className="text-ink">{candidate.rating}</b>
-                    ／5、
-                    <button
-                      type="button"
-                      className="min-h-8 cursor-pointer underline underline-offset-3"
-                    >
-                      {candidate.reviews} 則評論
+                    <button type="button" className="min-h-8 cursor-pointer">
+                      （{candidate.reviews} 則評論）
                     </button>
                   </p>
                 </div>
@@ -129,7 +125,7 @@ export function Candidates({
                   <button
                     type="button"
                     onClick={() => onDecline(candidate)}
-                    className="border-role bg-surface text-ink hover:bg-platform-soft tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                    className="btn border-role bg-surface text-ink tablet:flex-none flex-1"
                   >
                     婉拒
                   </button>
@@ -139,7 +135,7 @@ export function Candidates({
                       onChoose(candidate)
                       window.scrollTo(0, 0)
                     }}
-                    className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:flex-none min-h-12 flex-1 cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                    className="btn btn-primary tablet:flex-none flex-1"
                   >
                     選定
                   </button>

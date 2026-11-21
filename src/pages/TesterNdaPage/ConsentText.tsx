@@ -39,7 +39,7 @@ export function ConsentText({ company }: { company: string }) {
             href="https://www.cloudflare.com/"
             target="_blank"
             rel="noreferrer"
-            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+            className="link text-role font-bold"
           >
             Cloudflare
           </a>
@@ -53,7 +53,7 @@ export function ConsentText({ company }: { company: string }) {
           條，請求查詢、閱覽、製給複製本、補充或更正、停止蒐集處理利用或刪除您的個人資料。如需行使上述權利或有任何問題，請來信{' '}
           <a
             href="mailto:support@xin-ping.com"
-            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+            className="link text-role font-bold"
           >
             support@xin-ping.com
           </a>

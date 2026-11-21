@@ -46,7 +46,7 @@ export function TesterNdaPage() {
     <div className="tablet:px-6 tablet:gap-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full max-w-[1040px] flex-col gap-5 px-4 pt-6 pb-12">
       <Link
         to={`/tester/projects/${id}`}
-        className="tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+        className="link tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start"
       >
         <ChevronDownIcon className="rotate-90" />
         上一頁
@@ -66,10 +66,7 @@ export function TesterNdaPage() {
             <time>{signedAt}</time> 簽署，等負責人付款後就能開始測試。
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <Link
-              to={`/tester/projects/${id}`}
-              className="border-role bg-role text-on-role hover:bg-surface hover:text-ink inline-flex min-h-12 items-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-            >
+            <Link to={`/tester/projects/${id}`} className="btn btn-primary">
               回到專案
             </Link>
           </div>
@@ -169,7 +166,7 @@ export function TesterNdaPage() {
           <button
             type="button"
             onClick={() => (agreedConsent ? goToStep(2) : setTried(true))}
-            className={`min-h-12 min-w-50 rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out ${agreedConsent ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-disabled-bg bg-disabled-bg text-disabled-fg cursor-not-allowed'}`}
+            className={`btn min-w-50 ${agreedConsent ? 'btn-primary' : 'btn-inactive'}`}
           >
             下一步
           </button>
@@ -181,14 +178,14 @@ export function TesterNdaPage() {
           <button
             type="button"
             onClick={() => goToStep(1)}
-            className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-secondary"
           >
             上一步
           </button>
           <button
             type="button"
             onClick={sign}
-            className={`min-h-12 min-w-50 rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out ${agreedNda ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-disabled-bg bg-disabled-bg text-disabled-fg cursor-not-allowed'}`}
+            className={`btn min-w-50 ${agreedNda ? 'btn-primary' : 'btn-inactive'}`}
           >
             同意並簽署
           </button>
@@ -206,7 +203,7 @@ export function TesterNdaPage() {
             <div className="flex gap-2">
               <Link
                 to={`/tester/projects/${id}`}
-                className="border-role bg-surface text-ink hover:bg-role hover:text-on-role inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                className="btn btn-secondary flex-1 gap-1.5 px-4"
               >
                 <ChevronDownIcon className="size-4.5 rotate-90" />
                 上一頁
@@ -214,7 +211,7 @@ export function TesterNdaPage() {
               <button
                 type="button"
                 onClick={() => (agreedConsent ? goToStep(2) : setTried(true))}
-                className={`min-h-12 flex-1 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out ${agreedConsent ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-disabled-bg bg-disabled-bg text-disabled-fg cursor-not-allowed'}`}
+                className={`btn flex-1 px-4 ${agreedConsent ? 'btn-primary' : 'btn-inactive'}`}
               >
                 下一步
               </button>
@@ -225,14 +222,14 @@ export function TesterNdaPage() {
               <button
                 type="button"
                 onClick={() => goToStep(1)}
-                className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                className="btn btn-secondary flex-1 px-4"
               >
                 上一步
               </button>
               <button
                 type="button"
                 onClick={sign}
-                className={`min-h-12 flex-1 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out ${agreedNda ? 'border-role bg-role text-on-role hover:bg-surface hover:text-ink cursor-pointer active:translate-y-px motion-reduce:active:translate-y-0' : 'border-disabled-bg bg-disabled-bg text-disabled-fg cursor-not-allowed'}`}
+                className={`btn flex-1 px-4 ${agreedNda ? 'btn-primary' : 'btn-inactive'}`}
               >
                 同意並簽署
               </button>

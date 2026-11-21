@@ -1,5 +1,4 @@
 import { Avatar } from '@/components/Avatar'
-import { InfoPopover } from '@/components/InfoPopover'
 import { RefreshIcon } from '@/components/icons/RefreshIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import type { RecruitCandidate, recommendedTesters } from '@/data/owner'
@@ -16,16 +15,17 @@ export function Recommended({
   return (
     <>
       <div className="tablet:border-b tablet:border-line tablet:px-4 tablet:py-3 desktop:px-7 mb-3 flex flex-wrap items-center justify-between gap-3 tablet:mb-0">
-        <p className="text-ink-muted">依專案需要的裝置與語言推薦</p>
+        <p className="text-ink-muted">
+          以下測試人員依據你的專案需要的裝置、語言及興趣需求進行推薦
+        </p>
         <div className="flex items-center gap-1">
           <button
             type="button"
-            className="bg-surface text-ink hover:bg-platform-soft inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xl px-3.5 font-bold shadow-[0_2px_12px_rgb(30_30_28/6%)] transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="border-ink bg-surface text-ink inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md border px-3.5 font-bold transition-shadow duration-150 ease-out hover:shadow-[inset_0_0_0_1px_var(--color-ink)]"
           >
             <RefreshIcon />
             換一批
           </button>
-          <InfoPopover label="推薦說明">依專案需要的裝置與語言推薦</InfoPopover>
         </div>
       </div>
 
@@ -45,12 +45,8 @@ export function Recommended({
                       <StarIcon />
                     </span>
                     <b className="text-ink">{tester.rating}</b>
-                    ／5、
-                    <button
-                      type="button"
-                      className="min-h-8 cursor-pointer underline underline-offset-3"
-                    >
-                      {tester.reviews} 則評論
+                    <button type="button" className="min-h-8 cursor-pointer">
+                      （{tester.reviews} 則評論）
                     </button>
                   </p>
                 </div>
@@ -103,7 +99,7 @@ export function Recommended({
                 <button
                   type="button"
                   onClick={() => onInvite(tester)}
-                  className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:w-auto min-h-12 w-full cursor-pointer rounded-full border-2 px-6 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                  className="btn btn-primary tablet:w-auto w-full"
                 >
                   邀請
                 </button>

@@ -173,3 +173,101 @@
     }
   }
 }
+
+/* Buttons and links, from the design canvas "05 · STATES" (2026/11/20).
+ * Layout classes (flex-1, w-full, hidden, px-4) go next to these in the JSX. */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding-inline: 24px;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 150ms ease-out,
+    background-color 150ms ease-out,
+    border-color 150ms ease-out,
+    box-shadow 150ms ease-out;
+
+  &:disabled {
+    border-color: var(--color-disabled-bg);
+    background-color: var(--color-disabled-bg);
+    color: var(--color-disabled-fg);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+/* Solid fill: lighter on hover, darker when pressed */
+@utility btn-primary {
+  border-color: var(--color-role-button);
+  background-color: var(--color-role-button);
+  color: var(--color-on-role);
+
+  @media (hover: hover) {
+    &:hover:enabled,
+    a&:hover {
+      border-color: var(--color-role-button-hover);
+      background-color: var(--color-role-button-hover);
+    }
+  }
+  &:active:enabled,
+  a&:active {
+    border-color: var(--color-role-button-active);
+    background-color: var(--color-role-button-active);
+  }
+}
+
+/* White with a 2px role border: on hover the border looks 1px thicker, no fill */
+@utility btn-secondary {
+  border-color: var(--color-role);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+
+  @media (hover: hover) {
+    &:hover:enabled,
+    a&:hover {
+      box-shadow: inset 0 0 0 1px var(--color-role);
+    }
+  }
+  &:active:enabled,
+  a&:active {
+    border-color: var(--color-role-button-active);
+    box-shadow: inset 0 0 0 1px var(--color-role-button-active);
+  }
+}
+
+/* Looks disabled but stays clickable, for buttons that explain why on click */
+@utility btn-inactive {
+  border-color: var(--color-disabled-bg);
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-fg);
+  cursor: not-allowed;
+}
+
+/* Logged-out buttons stay ink even inside a [data-role] signup step */
+@utility btn-ink {
+  --color-role: var(--color-ink);
+  --color-role-button: var(--color-ink);
+  --color-role-button-hover: #40403e;
+  --color-role-button-active: #000000;
+}
+
+/* Every text link: no underline until hover, then 2px, 3px below the text */
+@utility link {
+  text-decoration-line: none;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: color 150ms ease-out;
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+}

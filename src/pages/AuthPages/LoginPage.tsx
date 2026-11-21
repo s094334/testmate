@@ -52,17 +52,14 @@ export function LoginPage() {
       <button
         type="submit"
         disabled={login.isPending}
-        className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 w-full rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:cursor-pointer enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:enabled:hover:translate-y-0 motion-reduce:enabled:active:translate-y-0"
+        className="btn btn-primary btn-ink w-full"
       >
         登入
       </button>
       <div className="flex flex-col gap-1">
         <p className="text-ink-muted text-center">
           還沒有帳號？
-          <Link
-            to="/signup"
-            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
-          >
+          <Link to="/signup" className="link text-role font-bold">
             註冊
           </Link>
         </p>

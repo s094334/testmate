@@ -17,7 +17,7 @@ export function TesterInvitePage() {
       <Link
         to="/tester"
         state={{ tab: 'invited' }}
-        className="inline-flex min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+        className="link inline-flex min-h-11 items-center gap-1.5 self-start"
       >
         <ChevronDownIcon className="rotate-90" />
         上一頁
@@ -106,14 +106,14 @@ export function TesterInvitePage() {
               <button
                 type="button"
                 onClick={() => setReply('no')}
-                className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                className="btn border-role bg-surface text-ink min-w-40"
               >
                 婉拒
               </button>
               <button
                 type="button"
                 onClick={() => setReply('yes')}
-                className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+                className="btn btn-primary min-w-40"
               >
                 我有興趣
               </button>
@@ -143,14 +143,14 @@ export function TesterInvitePage() {
             <button
               type="button"
               onClick={() => setReply('no')}
-              className="border-role bg-surface text-ink hover:bg-role hover:text-on-role min-h-12 flex-1 cursor-pointer rounded-full border-2 px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+              className="btn border-role bg-surface text-ink flex-1 px-5"
             >
               婉拒
             </button>
             <button
               type="button"
               onClick={() => setReply('yes')}
-              className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 cursor-pointer rounded-full border-2 px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+              className="btn btn-primary flex-1 px-5"
             >
               我有興趣
             </button>

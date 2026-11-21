@@ -60,20 +60,23 @@ export function SignupAgreementPage({
                 </li>
               ))}
             </ol>
-            <div className="flex flex-col gap-2">
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="border-ink bg-surface text-ink min-h-13 w-full cursor-pointer rounded-full border-2 px-6 text-[18px] font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
-              >
-                查看完整流程
-              </button>
-              {!agreed && (
-                <span className="text-ink-muted">
-                  請點選查看完整流程，並在文件最下方勾選同意，才能完成註冊。
-                </span>
-              )}
-            </div>
+            {!agreed && (
+              <p className="text-ink-muted">
+                請點選查看完整流程，並在文件最下方勾選同意，繼續完成註冊。
+              </p>
+            )}
+            {agreed && (
+              <p className="text-ink-muted">
+                已同意爭議處理流程，
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  className="link text-role cursor-pointer font-bold"
+                >
+                  再看一次爭議處理流程
+                </button>
+              </p>
+            )}
           </div>
         </section>
         {errorMessage && (
@@ -86,18 +89,29 @@ export function SignupAgreementPage({
           <button
             type="button"
             onClick={() => onBack(agreed)}
-            className="border-ink text-ink inline-flex min-h-12 flex-1 cursor-pointer items-center justify-center rounded-full border-2 px-6 font-bold transition duration-150 ease-out hover:-translate-y-px active:translate-y-px motion-reduce:hover:translate-y-0 motion-reduce:active:translate-y-0"
+            className="btn btn-secondary btn-ink flex-1"
           >
             上一步
           </button>
-          <button
-            type="submit"
-            // Also off while sending, so a double click cannot register twice
-            disabled={!agreed || submitting}
-            className="border-ink bg-ink text-surface disabled:border-disabled-bg disabled:bg-disabled-bg disabled:text-disabled-fg min-h-12 flex-1 rounded-full border-2 px-6 font-bold transition duration-150 ease-out enabled:cursor-pointer enabled:hover:-translate-y-px enabled:active:translate-y-px motion-reduce:enabled:hover:translate-y-0 motion-reduce:enabled:active:translate-y-0"
-          >
-            完成註冊
-          </button>
+          {!agreed && (
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="btn btn-primary btn-ink flex-1"
+            >
+              查看完整流程
+            </button>
+          )}
+          {agreed && (
+            <button
+              type="submit"
+              // Also off while sending, so a double click cannot register twice
+              disabled={submitting}
+              className="btn btn-primary btn-ink flex-1"
+            >
+              完成註冊
+            </button>
+          )}
         </div>
         <p className="text-ink-muted text-center">
           註冊即表示同意
@@ -105,7 +119,7 @@ export function SignupAgreementPage({
             to="/copyright"
             target="_blank"
             rel="noreferrer"
-            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+            className="link text-role font-bold"
           >
             版權聲明
           </Link>
@@ -114,7 +128,7 @@ export function SignupAgreementPage({
             to="/privacy"
             target="_blank"
             rel="noreferrer"
-            className="text-role font-bold decoration-2 underline-offset-3 hover:underline"
+            className="link text-role font-bold"
           >
             隱私權聲明
           </Link>

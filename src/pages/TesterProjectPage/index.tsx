@@ -18,7 +18,7 @@ export function TesterProjectPage() {
     <div className="max-w-page tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
       <Link
         to="/tester"
-        className="tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start decoration-2 underline-offset-3 hover:underline"
+        className="link tablet:inline-flex hidden min-h-11 items-center gap-1.5 self-start"
       >
         <ChevronDownIcon className="rotate-90" />
         上一頁
@@ -80,7 +80,7 @@ export function TesterProjectPage() {
         {project.status === 'PENDING_NDA' && tester.payout && (
           <Link
             to={`/tester/projects/${project.id}/nda`}
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:inline-flex hidden min-h-12 min-w-40 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-primary tablet:inline-flex hidden min-w-40"
           >
             簽署保密協議
           </Link>
@@ -88,7 +88,7 @@ export function TesterProjectPage() {
         {project.status === 'PENDING_NDA' && !tester.payout && (
           <Link
             to="/tester/profile"
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:inline-flex hidden min-h-12 min-w-40 items-center justify-center rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-primary tablet:inline-flex hidden min-w-40"
           >
             前往設定
           </Link>
@@ -187,26 +187,20 @@ export function TesterProjectPage() {
             className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
           />
         )}
-        <Link
-          to="/tester"
-          className="border-role bg-surface text-ink hover:bg-role hover:text-on-role inline-flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-        >
+        <Link to="/tester" className="btn btn-secondary flex-1 gap-1.5 px-4">
           <ChevronDownIcon className="size-4.5 rotate-90" />
           上一頁
         </Link>
         {project.status === 'PENDING_NDA' && tester.payout && (
           <Link
             to={`/tester/projects/${project.id}/nda`}
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-primary flex-1 px-4"
           >
             簽署保密協議
           </Link>
         )}
         {project.status === 'PENDING_NDA' && !tester.payout && (
-          <Link
-            to="/tester/profile"
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink inline-flex min-h-12 flex-1 items-center justify-center rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
-          >
+          <Link to="/tester/profile" className="btn btn-primary flex-1 px-4">
             前往設定
           </Link>
         )}

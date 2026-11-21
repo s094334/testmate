@@ -25,12 +25,8 @@ export function Progress({ chosen }: { chosen: RecruitCandidate }) {
                   <StarIcon />
                 </span>
                 <b className="text-ink">{chosen.rating}</b>
-                ／5、
-                <button
-                  type="button"
-                  className="min-h-8 cursor-pointer underline underline-offset-3"
-                >
-                  {chosen.reviews} 則評論
+                <button type="button" className="min-h-8 cursor-pointer">
+                  （{chosen.reviews} 則評論）
                 </button>
               </p>
             </div>
