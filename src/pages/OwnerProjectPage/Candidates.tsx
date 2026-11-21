@@ -129,7 +129,7 @@ export function Candidates({
                   <button
                     type="button"
                     onClick={() => onDecline(candidate)}
-                    className="btn btn-secondary tablet:flex-none flex-1"
+                    className="btn border-role bg-surface text-ink tablet:flex-none flex-1"
                   >
                     婉拒
                   </button>

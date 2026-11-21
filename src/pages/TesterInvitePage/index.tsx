@@ -106,7 +106,7 @@ export function TesterInvitePage() {
               <button
                 type="button"
                 onClick={() => setReply('no')}
-                className="btn btn-secondary min-w-40"
+                className="btn border-role bg-surface text-ink min-w-40"
               >
                 婉拒
               </button>
@@ -143,7 +143,7 @@ export function TesterInvitePage() {
             <button
               type="button"
               onClick={() => setReply('no')}
-              className="btn btn-secondary flex-1 px-5"
+              className="btn border-role bg-surface text-ink flex-1 px-5"
             >
               婉拒
             </button>
