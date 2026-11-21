@@ -175,7 +175,7 @@ export function Experience() {
                 append({ years: '未滿 1 年', company: '' })
                 setSaved(false)
               }}
-              className="border-role bg-surface text-tester-text hover:bg-platform-soft inline-flex min-h-12 items-center gap-2 self-start rounded-full border border-dashed px-5 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+              className="btn btn-secondary self-start"
             >
               <PlusIcon />
               新增經歷
