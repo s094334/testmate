@@ -36,7 +36,10 @@ export function ReceivedEnvDialog({
             寄送測試版下載方式、測試帳號等資料。還沒收到前請先不要點選開始測試，以免測到錯的版本。沒收到時，可以聯絡負責人：
             <b className="text-ink wrap-anywhere">{ownerEmail}</b>
           </DialogDescription>
-          <div className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3">
+          <div
+            data-role="tester"
+            className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3"
+          >
             <DialogClose className="btn btn-secondary">
               還沒收到，再等等
             </DialogClose>
