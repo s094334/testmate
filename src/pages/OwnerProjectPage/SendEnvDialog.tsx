@@ -33,11 +33,11 @@ export function SendEnvDialog({
 
 感謝參與「${projectName}」，以下是測試環境與內容：
 
-1. 測試版下載：（TestFlight、APK 連結）
-2. 測試帳號：（帳號、密碼）
-3. App 版本：（例：1.2.0）
-4. 測試期間：${testPeriod}
-5. 測試說明文件：（連結）
+• 測試版下載：（TestFlight、APK 連結）
+• 測試帳號：（帳號、密碼）
+• App 版本：（例：1.2.0）
+• 測試期間：${testPeriod}
+• 測試說明文件：（連結）
 
 有任何問題可以直接回信給我。
 
@@ -73,30 +73,33 @@ ${owner.name} ${owner.realName}`
             <p>對方收到後才能開始測試。信裡建議包含：</p>
             <ul className="flex flex-col gap-1">
               <li className="flex gap-2">
-                <CheckIcon className="text-role mt-1 size-4.5 flex-none" />
-                測試版下載方式（TestFlight、APK 或測試網址）
+                <span className="bg-role mt-2.5 size-1.5 flex-none rounded-full" />
+                測試版本的下載方式（TestFlight、APK 或測試網址）
               </li>
               <li className="flex gap-2">
-                <CheckIcon className="text-role mt-1 size-4.5 flex-none" />
+                <span className="bg-role mt-2.5 size-1.5 flex-none rounded-full" />
                 測試帳號與密碼
               </li>
               <li className="flex gap-2">
-                <CheckIcon className="text-role mt-1 size-4.5 flex-none" />
+                <span className="bg-role mt-2.5 size-1.5 flex-none rounded-full" />
                 App 或網站版本號
               </li>
               <li className="flex gap-2">
-                <CheckIcon className="text-role mt-1 size-4.5 flex-none" />
-                測試說明文件或注意事項
+                <span className="bg-role mt-2.5 size-1.5 flex-none rounded-full" />
+                測試相關說明文件及其注意事項
               </li>
               <li className="flex gap-2">
-                <CheckIcon className="text-role mt-1 size-4.5 flex-none" />
-                有問題時的聯絡窗口
+                <span className="bg-role mt-2.5 size-1.5 flex-none rounded-full" />
+                有問題時的聯絡資訊
               </li>
             </ul>
           </section>
 
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between gap-3">
+            <div
+              data-role="owner"
+              className="flex items-center justify-between gap-3"
+            >
               <h3 className="text-base">信件範本</h3>
               <button
                 type="button"
@@ -114,19 +117,17 @@ ${owner.name} ${owner.realName}`
             </div>
           </div>
 
-          <div className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3">
-            <DialogClose className="btn btn-secondary">稍後再寄</DialogClose>
+          <div data-role="owner" className="tablet:justify-end flex gap-3">
+            <DialogClose className="btn btn-secondary tablet:min-w-40 flex-1 px-2 tablet:flex-none">
+              稍後再寄
+            </DialogClose>
             <a
               href={`mailto:${testerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`}
-              className="btn btn-primary"
+              className="btn btn-primary tablet:min-w-40 flex-1 px-2 tablet:flex-none"
             >
-              <MailIcon className="size-4.5" />用 Email 寄給{testerName}
+              <MailIcon className="size-4.5" />用 Email 寄出
             </a>
           </div>
-
-          <p className="text-ink-subtle">
-            之後也可以在測試進度按「寄送測試環境」重新開啟。
-          </p>
         </DialogPopup>
       </DialogPortal>
     </Dialog>
