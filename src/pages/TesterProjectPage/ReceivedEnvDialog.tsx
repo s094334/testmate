@@ -37,10 +37,10 @@ export function ReceivedEnvDialog({
             <b className="text-ink wrap-anywhere">{ownerEmail}</b>
           </DialogDescription>
           <div className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3">
-            <DialogClose className="border-role bg-surface hover:bg-role-soft min-h-12 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0">
+            <DialogClose className="btn btn-secondary">
               還沒收到，再等等
             </DialogClose>
-            <DialogClose className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0">
+            <DialogClose className="btn btn-primary">
               已收到，開始測試
             </DialogClose>
           </div>

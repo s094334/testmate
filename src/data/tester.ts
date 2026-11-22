@@ -172,6 +172,33 @@ export const joinedProjects: {
     status: 'TESTING',
     needsAction: true,
   },
+  {
+    id: 'p8',
+    name: '寵物用品電商退貨流程測試',
+    owner: '毛孩生活',
+    due: '2026/11/15',
+    devices: ['iPhone 15'],
+    status: 'DISPUTED',
+    needsAction: true,
+  },
+  {
+    id: 'p9',
+    name: '美食外送平台優惠券測試',
+    owner: '飽飽外送',
+    due: '2026/11/10',
+    devices: ['Pixel 8'],
+    status: 'CANCELLED',
+    needsAction: false,
+  },
+  {
+    id: 'p10',
+    name: '智慧家電 App 配對測試',
+    owner: '家居智聯',
+    due: '2026/10/25',
+    devices: ['iPad Air'],
+    status: 'REFUNDED',
+    needsAction: false,
+  },
 ]
 
 // Project page details for joined projects, by project id
@@ -190,8 +217,17 @@ export const joinedProjectDetails: Record<
     // ISO time with the offset; only while waiting for the owner to pay
     payDeadline?: string
     // Only after the owner has paid
+    ownerName?: string
     ownerEmail?: string
     testItems?: string[]
+    // ISO times with the offset, each only in its own status:
+    // TESTING, DISPUTED, COMPLETED (before the first rating)
+    submitDeadline?: string
+    disputeDeadline?: string
+    rateDeadline?: string
+    // SUBMITTED, COMPLETED
+    submittedAt?: string
+    paidAt?: string
   }
 > = {
   p1: {
@@ -207,6 +243,7 @@ export const joinedProjectDetails: Record<
     startDate: '2026/11/01',
     endDate: '2026/11/05',
     pay: 'NT$ 1,200',
+    ownerName: '王大明',
     ownerEmail: 'owner@haomai.example.com',
     testItems: [
       '加入購物車與修改數量',
@@ -215,6 +252,128 @@ export const joinedProjectDetails: Record<
       '訂單成立推播與 Email',
       '申請退貨流程',
     ],
+  },
+  p2: {
+    rating: 4.8,
+    reviews: 21,
+    intro:
+      '會員中心改版後的易用性測試，看第一次使用的人能不能順利找到訂單、修改個人資料和查看點數。',
+    requirements: ['每項任務都要錄下操作畫面', '邊操作邊說出心裡的想法'],
+    place: '遠端',
+    startDate: '2026/11/01',
+    endDate: '2026/11/08',
+    pay: 'NT$ 1,500',
+    ownerName: '林怡君',
+    ownerEmail: 'ux@lohas.example.com',
+    testItems: [
+      '找到最近一筆訂單的物流狀態',
+      '修改收件地址',
+      '查看點數到期日',
+      '綁定 LINE 帳號',
+    ],
+    submitDeadline: '2026-11-08T23:59:00+08:00',
+  },
+  p3: {
+    rating: 4.1,
+    reviews: 9,
+    intro:
+      '確認保費試算網頁在不同瀏覽器的顯示與計算結果一致，包含表單驗證和 PDF 下載。',
+    requirements: ['每個瀏覽器都要截圖', '發現計算差異時寫下輸入的條件'],
+    place: '遠端',
+    startDate: '2026/10/24',
+    endDate: '2026/10/30',
+    pay: 'NT$ 800',
+    ownerName: '陳志豪',
+    ownerEmail: 'web@anxin.example.com',
+    testItems: [
+      '填寫試算表單並送出',
+      '欄位未填時的錯誤提示',
+      '試算結果金額',
+      '下載試算結果 PDF',
+    ],
+    submittedAt: '2026/10/30',
+  },
+  p4: {
+    rating: 4.6,
+    reviews: 14,
+    intro:
+      '從安裝到完成新手教學的第一次體驗，看教學說明是否清楚、會不會在哪一步卡住。',
+    requirements: ['用全新帳號開始', '每個卡住的地方都要截圖並說明'],
+    place: '遠端',
+    startDate: '2026/10/14',
+    endDate: '2026/10/20',
+    pay: 'NT$ 1,000',
+    ownerName: '張雅婷',
+    ownerEmail: 'qa@starsand.example.com',
+    testItems: [
+      '下載並安裝遊戲',
+      '建立角色',
+      '完成新手教學第一章',
+      '領取新手禮包',
+    ],
+    rateDeadline: '2026-11-27T23:59:00+08:00',
+    paidAt: '2026/11/20',
+  },
+  p7: {
+    rating: 4.4,
+    reviews: 11,
+    intro:
+      '測試課程搜尋、預約與取消預約的流程，確認額滿、候補和提醒通知都正常。',
+    requirements: ['預約與取消都要截圖', '平台會提供測試用的會員帳號'],
+    place: '遠端',
+    startDate: '2026/11/20',
+    endDate: '2026/11/30',
+    pay: 'NT$ 1,100',
+    ownerName: '黃建宏',
+    ownerEmail: 'app@powerfit.example.com',
+    testItems: [
+      '依日期與地點搜尋課程',
+      '預約一堂課',
+      '額滿課程加入候補',
+      '取消預約',
+      '上課前一小時的提醒通知',
+    ],
+    submitDeadline: '2026-11-30T23:59:00+08:00',
+  },
+  p8: {
+    rating: 3.9,
+    reviews: 7,
+    intro:
+      '測試退貨申請、上傳照片到退款進度通知的流程，確認每一步都能順利完成。',
+    requirements: ['每一項都要附上螢幕截圖', '不需要真的寄回商品'],
+    place: '遠端',
+    startDate: '2026/11/08',
+    endDate: '2026/11/15',
+    pay: 'NT$ 1,300',
+    ownerName: '李美玲',
+    ownerEmail: 'service@maohai.example.com',
+    testItems: [
+      '從訂單申請退貨',
+      '上傳商品照片',
+      '選擇退款方式',
+      '退款進度通知',
+    ],
+    disputeDeadline: '2026-11-28T23:59:00+08:00',
+  },
+  p9: {
+    rating: 4.0,
+    reviews: 4,
+    intro: '測試領取、套用優惠券和結帳金額，確認不同店家的優惠規則都正確。',
+    requirements: ['使用平台提供的測試卡號，不需要真的付款'],
+    place: '遠端',
+    startDate: '2026/11/05',
+    endDate: '2026/11/10',
+    pay: 'NT$ 700',
+  },
+  p10: {
+    rating: 3.6,
+    reviews: 5,
+    intro: '測試智慧插座與 App 的配對、定時開關和離線重新連線。',
+    requirements: ['需要家中有 2.4GHz Wi-Fi', '平台會寄送測試用的智慧插座'],
+    place: '遠端',
+    startDate: '2026/10/18',
+    endDate: '2026/10/25',
+    pay: 'NT$ 1,400',
   },
   p5: {
     rating: 4.3,

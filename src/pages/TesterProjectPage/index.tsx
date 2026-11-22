@@ -6,7 +6,9 @@ import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
 import { Countdown } from './Countdown'
+import { DisputeDialog } from './DisputeDialog'
 import { LockedNotice } from './LockedNotice'
+import { RateDialog, type Rating } from './RateDialog'
 import { ReceivedEnvDialog } from './ReceivedEnvDialog'
 
 export function TesterProjectPage() {
@@ -14,6 +16,9 @@ export function TesterProjectPage() {
   const project = joinedProjects.find((joined) => joined.id === id)
   const detail = joinedProjectDetails[id]
   const [envDialogOpen, setEnvDialogOpen] = useState(false)
+  const [disputeDialogOpen, setDisputeDialogOpen] = useState(false)
+  const [rateDialogOpen, setRateDialogOpen] = useState(false)
+  const [rating, setRating] = useState<Rating | null>(null)
 
   if (!project || !detail) return <Navigate to="/tester" replace />
 
@@ -40,7 +45,21 @@ export function TesterProjectPage() {
         </p>
       </div>
 
-      <div className="bg-role-soft text-role-text tablet:px-6 tablet:py-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-4 py-3">
+      <div
+        className={`tablet:px-6 tablet:py-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-4 py-3 ${
+          {
+            PENDING_NDA: 'bg-role-soft text-role-text',
+            PENDING_PAYMENT: 'bg-role-soft text-role-text',
+            FUNDED: 'bg-role-soft text-role-text',
+            TESTING: 'bg-role-soft text-role-text',
+            SUBMITTED: 'bg-role-soft text-role-text',
+            DISPUTED: 'bg-status-dispute-bg text-status-dispute-text',
+            COMPLETED: 'bg-role-soft text-role-text',
+            CANCELLED: 'bg-status-progress-bg text-ink-muted',
+            REFUNDED: 'bg-status-progress-bg text-ink-muted',
+          }[project.status]
+        }`}
+      >
         {project.status === 'PENDING_NDA' && tester.payout && (
           <p className="tablet:text-[18px] font-bold">請在期限內簽署保密協議</p>
         )}
@@ -78,6 +97,33 @@ export function TesterProjectPage() {
             報酬已由平台代管，收到測試環境後就能開始測試
           </p>
         )}
+        {project.status === 'TESTING' && (
+          <p className="tablet:text-[18px] font-bold">
+            依測試說明進行測試，完成後提交測試報告
+          </p>
+        )}
+        {project.status === 'SUBMITTED' && (
+          <p className="tablet:text-[18px] font-bold">已送出，等負責人驗收</p>
+        )}
+        {project.status === 'DISPUTED' && (
+          <p className="tablet:text-[18px] font-bold">
+            驗收結果有爭議，平台正在協調
+          </p>
+        )}
+        {project.status === 'COMPLETED' && (
+          <p className="tablet:text-[18px] font-bold">
+            驗收通過，報酬已撥款給你
+          </p>
+        )}
+        {project.status === 'CANCELLED' && (
+          <p className="tablet:text-[18px] font-bold">這筆媒合已取消</p>
+        )}
+        {project.status === 'REFUNDED' && (
+          <p className="tablet:text-[18px] font-bold">
+            未完成，代管款已退回負責人
+          </p>
+        )}
+
         {project.status === 'PENDING_NDA' && detail.ndaDeadline && (
           <Countdown
             label="簽署期限"
@@ -85,6 +131,36 @@ export function TesterProjectPage() {
             className="tablet:flex ml-auto hidden flex-col items-end text-right"
           />
         )}
+        {project.status === 'TESTING' && detail.submitDeadline && (
+          <Countdown
+            label="提交期限"
+            deadline={detail.submitDeadline}
+            className="tablet:flex ml-auto hidden flex-col items-end text-right"
+          />
+        )}
+        {project.status === 'DISPUTED' && detail.disputeDeadline && (
+          <Countdown
+            label="選擇期限"
+            deadline={detail.disputeDeadline}
+            urgent
+            className="tablet:flex ml-auto hidden flex-col items-end text-right"
+          />
+        )}
+        {project.status === 'COMPLETED' && !rating && detail.rateDeadline && (
+          <Countdown
+            label="評價期限"
+            deadline={detail.rateDeadline}
+            className="tablet:flex ml-auto hidden flex-col items-end text-right"
+          />
+        )}
+        {project.status === 'COMPLETED' && rating && (
+          <Countdown
+            label="可修改至"
+            deadline={rating.editableUntil}
+            className="tablet:flex ml-auto hidden flex-col items-end text-right"
+          />
+        )}
+
         {project.status === 'PENDING_NDA' && tester.payout && (
           <Link
             to={`/tester/projects/${project.id}/nda`}
@@ -105,9 +181,35 @@ export function TesterProjectPage() {
           <button
             type="button"
             onClick={() => setEnvDialogOpen(true)}
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink tablet:block hidden min-h-12 min-w-40 cursor-pointer rounded-full border-2 px-6 font-bold transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-primary tablet:inline-flex hidden min-w-40"
           >
             開始測試
+          </button>
+        )}
+        {project.status === 'TESTING' && (
+          <button
+            type="button"
+            className="btn btn-primary tablet:inline-flex hidden min-w-40"
+          >
+            提交報告
+          </button>
+        )}
+        {project.status === 'DISPUTED' && (
+          <button
+            type="button"
+            onClick={() => setDisputeDialogOpen(true)}
+            className="btn border-status-dispute-text bg-status-dispute-text text-surface tablet:inline-flex hidden min-w-40"
+          >
+            爭議處理
+          </button>
+        )}
+        {project.status === 'COMPLETED' && (
+          <button
+            type="button"
+            onClick={() => setRateDialogOpen(true)}
+            className="btn btn-primary tablet:inline-flex hidden min-w-40"
+          >
+            {rating ? '編輯評價' : '評價'}
           </button>
         )}
       </div>
@@ -176,12 +278,18 @@ export function TesterProjectPage() {
           {project.status === 'PENDING_PAYMENT' && (
             <LockedNotice>負責人付款後開放</LockedNotice>
           )}
-          {project.status === 'FUNDED' && (
+          {(project.status === 'CANCELLED' ||
+            project.status === 'REFUNDED') && (
+            <LockedNotice>專案已結束</LockedNotice>
+          )}
+          {['FUNDED', 'TESTING', 'SUBMITTED', 'DISPUTED', 'COMPLETED'].includes(
+            project.status
+          ) && (
             <div className="flex flex-col gap-0.5">
               <span className="text-ink-subtle">公司信箱</span>
               <a
                 href={`mailto:${detail.ownerEmail}`}
-                className="text-role text-body-large font-bold wrap-anywhere decoration-2 underline-offset-3 hover:underline"
+                className="link text-role text-body-large self-start font-bold wrap-anywhere"
               >
                 {detail.ownerEmail}
               </a>
@@ -197,7 +305,13 @@ export function TesterProjectPage() {
           {project.status === 'PENDING_PAYMENT' && (
             <LockedNotice>負責人付款後開放</LockedNotice>
           )}
-          {project.status === 'FUNDED' && (
+          {(project.status === 'CANCELLED' ||
+            project.status === 'REFUNDED') && (
+            <LockedNotice>專案已結束</LockedNotice>
+          )}
+          {['FUNDED', 'TESTING', 'SUBMITTED', 'DISPUTED', 'COMPLETED'].includes(
+            project.status
+          ) && (
             <ol>
               {detail.testItems?.map((item, index) => (
                 <li
@@ -225,6 +339,30 @@ export function TesterProjectPage() {
           {project.status === 'FUNDED' && (
             <LockedNotice>測試開始後開放</LockedNotice>
           )}
+          {(project.status === 'CANCELLED' ||
+            project.status === 'REFUNDED') && (
+            <LockedNotice>專案已結束</LockedNotice>
+          )}
+          {project.status === 'TESTING' && (
+            <p className="bg-status-progress-bg tablet:px-6 tablet:py-5 rounded-md p-4 font-bold">
+              測試進行中，完成後提交測試報告
+            </p>
+          )}
+          {project.status === 'SUBMITTED' && (
+            <p className="bg-status-pending-bg text-status-pending-text tablet:px-6 tablet:py-5 rounded-md p-4 font-bold">
+              {detail.submittedAt} 送出，負責人逐項確認中
+            </p>
+          )}
+          {project.status === 'DISPUTED' && (
+            <p className="bg-status-dispute-bg text-status-dispute-text tablet:px-6 tablet:py-5 rounded-md p-4 font-bold">
+              驗收結果有爭議，平台會在 3 個工作天內回覆
+            </p>
+          )}
+          {project.status === 'COMPLETED' && (
+            <p className="border-line tablet:px-6 tablet:py-5 rounded-md border p-4 font-bold">
+              {detail.paidAt} 已撥款 {detail.pay}
+            </p>
+          )}
         </section>
       </article>
 
@@ -233,6 +371,35 @@ export function TesterProjectPage() {
           <Countdown
             label="簽署期限"
             deadline={detail.ndaDeadline}
+            className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
+          />
+        )}
+        {project.status === 'TESTING' && detail.submitDeadline && (
+          <Countdown
+            label="提交期限"
+            deadline={detail.submitDeadline}
+            className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
+          />
+        )}
+        {project.status === 'DISPUTED' && detail.disputeDeadline && (
+          <Countdown
+            label="選擇期限"
+            deadline={detail.disputeDeadline}
+            urgent
+            className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
+          />
+        )}
+        {project.status === 'COMPLETED' && !rating && detail.rateDeadline && (
+          <Countdown
+            label="評價期限"
+            deadline={detail.rateDeadline}
+            className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
+          />
+        )}
+        {project.status === 'COMPLETED' && rating && (
+          <Countdown
+            label="可修改至"
+            deadline={rating.editableUntil}
             className="text-ink-subtle flex basis-full flex-wrap items-baseline justify-between gap-x-2"
           />
         )}
@@ -257,9 +424,32 @@ export function TesterProjectPage() {
           <button
             type="button"
             onClick={() => setEnvDialogOpen(true)}
-            className="border-role bg-role text-on-role hover:bg-surface hover:text-ink min-h-12 flex-1 cursor-pointer rounded-full border-2 px-4 font-bold whitespace-nowrap transition-colors duration-150 ease-out active:translate-y-px motion-reduce:active:translate-y-0"
+            className="btn btn-primary flex-1 px-4"
           >
             開始測試
+          </button>
+        )}
+        {project.status === 'TESTING' && (
+          <button type="button" className="btn btn-primary flex-1 px-4">
+            提交報告
+          </button>
+        )}
+        {project.status === 'DISPUTED' && (
+          <button
+            type="button"
+            onClick={() => setDisputeDialogOpen(true)}
+            className="btn border-status-dispute-text bg-status-dispute-text text-surface flex-1 px-4"
+          >
+            爭議處理
+          </button>
+        )}
+        {project.status === 'COMPLETED' && (
+          <button
+            type="button"
+            onClick={() => setRateDialogOpen(true)}
+            className="btn btn-primary flex-1 px-4"
+          >
+            {rating ? '編輯評價' : '評價'}
           </button>
         )}
       </div>
@@ -271,6 +461,31 @@ export function TesterProjectPage() {
           ownerEmail={detail.ownerEmail}
         />
       )}
+      {detail.ownerName && detail.ownerEmail && detail.disputeDeadline && (
+        <DisputeDialog
+          open={disputeDialogOpen}
+          onOpenChange={setDisputeDialogOpen}
+          ownerName={detail.ownerName}
+          company={project.owner}
+          ownerEmail={detail.ownerEmail}
+          pay={detail.pay}
+          deadline={detail.disputeDeadline}
+        />
+      )}
+      {rateDialogOpen &&
+        detail.ownerName &&
+        detail.ownerEmail &&
+        detail.rateDeadline && (
+          <RateDialog
+            onClose={() => setRateDialogOpen(false)}
+            ownerName={detail.ownerName}
+            company={project.owner}
+            ownerEmail={detail.ownerEmail}
+            rateDeadline={detail.rateDeadline}
+            saved={rating}
+            onSave={setRating}
+          />
+        )}
     </div>
   )
 }
