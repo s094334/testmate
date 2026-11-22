@@ -16,7 +16,6 @@ export function DisputeDialog({
   ownerName,
   company,
   ownerEmail,
-  pay,
   deadline,
 }: {
   open: boolean
@@ -24,7 +23,6 @@ export function DisputeDialog({
   ownerName: string
   company: string
   ownerEmail: string
-  pay: string
   deadline: string
 }) {
   const [choice, setChoice] = useState<'continue' | 'accept' | 'end' | null>(
@@ -104,7 +102,7 @@ export function DisputeDialog({
                 <span className="flex flex-col">
                   <b className="text-[18px]">已完成</b>
                   <span className="text-ink-muted">
-                    負責人接受目前的報告，撥款 {pay} 給你
+                    負責人接受目前的報告，撥款給你
                   </span>
                 </span>
               </label>
@@ -121,7 +119,7 @@ export function DisputeDialog({
                 <span className="flex flex-col">
                   <b className="text-[18px]">結束專案</b>
                   <span className="text-ink-muted">
-                    不再繼續，報酬 {pay} 全額退回負責人
+                    不再繼續，報酬全額退回負責人
                   </span>
                 </span>
               </label>
@@ -135,8 +133,8 @@ export function DisputeDialog({
               {String(end.getDate()).padStart(2, '0')} 前選擇（剩{' '}
               {Math.max(0, Math.ceil((end.getTime() - now) / 86400000))} 天）。
             </b>
-            雙方選擇相同就照該結果處理；不同或期限內沒選，平台會在 3
-            個工作天內判斷。負責人的選擇會在雙方都選完後公開，送出後不能修改。
+            雙方選擇相同就照該結果處理；不同或期限內沒選，視為結果未達成一致。扣除平台抽成
+            15% 後，剩下的報酬由測試人員和負責人各拿一半，專案變成「已退款」。
           </p>
 
           <div className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3">

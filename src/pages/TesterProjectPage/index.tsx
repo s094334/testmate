@@ -312,55 +312,29 @@ export function TesterProjectPage() {
           {['FUNDED', 'TESTING', 'SUBMITTED', 'DISPUTED', 'COMPLETED'].includes(
             project.status
           ) && (
-            <ol>
-              {detail.testItems?.map((item, index) => (
-                <li
-                  key={item}
-                  className="border-line flex min-h-12 items-center gap-3 border-t py-3 first:border-t-0"
-                >
-                  <span className="font-num text-num-heading text-ink-subtle">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="tablet:text-body-large">{item}</span>
-                </li>
-              ))}
-            </ol>
+            <p className="bg-page border-line text-body-large rounded-md border px-6 py-5 leading-[1.8] whitespace-pre-line">
+              {detail.howToTest}
+            </p>
           )}
         </section>
 
         <section className="flex flex-col gap-3">
-          <h2 className="text-section-title">驗收與撥款</h2>
+          <h2 className="text-section-title">成功標準</h2>
           {project.status === 'PENDING_NDA' && (
             <LockedNotice>待簽署保密協議及負責人付款後開放</LockedNotice>
           )}
           {project.status === 'PENDING_PAYMENT' && (
             <LockedNotice>負責人付款後開放</LockedNotice>
           )}
-          {project.status === 'FUNDED' && (
-            <LockedNotice>測試開始後開放</LockedNotice>
-          )}
           {(project.status === 'CANCELLED' ||
             project.status === 'REFUNDED') && (
             <LockedNotice>專案已結束</LockedNotice>
           )}
-          {project.status === 'TESTING' && (
-            <p className="bg-status-progress-bg tablet:px-6 tablet:py-5 rounded-md p-4 font-bold">
-              測試進行中，完成後提交測試報告
-            </p>
-          )}
-          {project.status === 'SUBMITTED' && (
-            <p className="bg-status-pending-bg text-status-pending-text tablet:px-6 tablet:py-5 rounded-md p-4 font-bold">
-              {detail.submittedAt} 送出，負責人逐項確認中
-            </p>
-          )}
-          {project.status === 'DISPUTED' && (
-            <p className="bg-status-dispute-bg text-status-dispute-text tablet:px-6 tablet:py-5 rounded-md p-4 font-bold">
-              驗收結果有爭議，平台會在 3 個工作天內回覆
-            </p>
-          )}
-          {project.status === 'COMPLETED' && (
-            <p className="border-line tablet:px-6 tablet:py-5 rounded-md border p-4 font-bold">
-              {detail.paidAt} 已撥款 {detail.pay}
+          {['FUNDED', 'TESTING', 'SUBMITTED', 'DISPUTED', 'COMPLETED'].includes(
+            project.status
+          ) && (
+            <p className="bg-page border-line text-body-large rounded-md border px-6 py-5 leading-[1.8] whitespace-pre-line">
+              {detail.successCriteria}
             </p>
           )}
         </section>
@@ -468,7 +442,6 @@ export function TesterProjectPage() {
           ownerName={detail.ownerName}
           company={project.owner}
           ownerEmail={detail.ownerEmail}
-          pay={detail.pay}
           deadline={detail.disputeDeadline}
         />
       )}
