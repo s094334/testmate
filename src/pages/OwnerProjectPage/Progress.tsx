@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Avatar } from '@/components/Avatar'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { ClockIcon } from '@/components/icons/ClockIcon'
-import { ExclamationIcon } from '@/components/icons/ExclamationIcon'
 import { MailIcon } from '@/components/icons/MailIcon'
 import { MinusCircleIcon } from '@/components/icons/MinusCircleIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
@@ -39,46 +38,33 @@ export function Progress({
     <>
       <div className="tablet:justify-between tablet:gap-4 flex flex-wrap items-center gap-x-3 gap-y-2">
         <h2 className="text-section-title">測試進度</h2>
-        <span className="inline-flex items-center gap-2">
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap ${
-              overdue
-                ? 'bg-status-dispute-bg text-status-dispute-text'
-                : {
-                    FUNDED: 'bg-platform-soft text-platform-strong',
-                    TESTING: 'bg-status-progress-bg text-status-progress-text',
-                    SUBMITTED: 'bg-status-pending-bg text-status-pending-text',
-                    PENDING_NDA:
-                      'bg-status-pending-bg text-status-pending-text',
-                    PENDING_PAYMENT:
-                      'bg-status-pending-bg text-status-pending-text',
-                    DISPUTED: 'bg-status-dispute-bg text-status-dispute-text',
-                    COMPLETED: 'border-ink bg-surface text-ink border',
-                    CANCELLED: 'border-ink bg-surface text-ink border',
-                    REFUNDED: 'border-ink bg-surface text-ink border',
-                  }[status]
-            }`}
-          >
-            {(status === 'PENDING_NDA' ||
-              status === 'PENDING_PAYMENT' ||
-              status === 'SUBMITTED') && <ClockIcon />}
-            {(status === 'FUNDED' || (status === 'TESTING' && !overdue)) && (
-              <MinusCircleIcon className="size-4" />
-            )}
-            {(overdue || status === 'DISPUTED') && <WarningIcon />}
-            {status === 'COMPLETED' && <CheckIcon />}
-            {overdue ? '報告逾期' : statusLabels[status]}
-          </span>
-          {(overdue ||
+        <span
+          className={`inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap ${
+            overdue
+              ? 'bg-status-dispute-bg text-status-dispute-text'
+              : {
+                  FUNDED: 'bg-platform-soft text-platform-strong',
+                  TESTING: 'bg-status-progress-bg text-status-progress-text',
+                  SUBMITTED: 'bg-status-pending-bg text-status-pending-text',
+                  PENDING_NDA: 'bg-status-pending-bg text-status-pending-text',
+                  PENDING_PAYMENT:
+                    'bg-status-pending-bg text-status-pending-text',
+                  DISPUTED: 'bg-status-dispute-bg text-status-dispute-text',
+                  COMPLETED: 'border-ink bg-surface text-ink border',
+                  CANCELLED: 'border-ink bg-surface text-ink border',
+                  REFUNDED: 'border-ink bg-surface text-ink border',
+                }[status]
+          }`}
+        >
+          {(status === 'PENDING_NDA' ||
             status === 'PENDING_PAYMENT' ||
-            status === 'FUNDED' ||
-            status === 'SUBMITTED' ||
-            status === 'DISPUTED') && (
-            <span className="bg-alert text-surface flex size-5 flex-none items-center justify-center rounded-full">
-              <ExclamationIcon />
-              <span className="sr-only">需要處理</span>
-            </span>
+            status === 'SUBMITTED') && <ClockIcon />}
+          {(status === 'FUNDED' || (status === 'TESTING' && !overdue)) && (
+            <MinusCircleIcon className="size-4" />
           )}
+          {(overdue || status === 'DISPUTED') && <WarningIcon />}
+          {status === 'COMPLETED' && <CheckIcon />}
+          {overdue ? '報告逾期' : statusLabels[status]}
         </span>
       </div>
 

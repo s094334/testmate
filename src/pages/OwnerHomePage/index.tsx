@@ -47,25 +47,16 @@ export function OwnerHomePage() {
                   </h2>
                   <div className="desktop:mt-1 mt-0.5 flex flex-none">
                     {project.engagement !== null && (
-                      <StatusTag
-                        status={project.engagement.status}
-                        needsAction={project.needsAttention}
-                      />
+                      <StatusTag status={project.engagement.status} />
                     )}
                     {project.engagement === null &&
                       project.recruitmentStatus === 'recruiting' && (
-                        <OwnerStatusTag
-                          status="recruiting"
-                          needsAttention={project.needsAttention}
-                        />
+                        <OwnerStatusTag status="recruiting" />
                       )}
                     {/* Closed or cancelled with no tester. assumption: not decided yet */}
                     {project.engagement === null &&
                       project.recruitmentStatus !== 'recruiting' && (
-                        <OwnerStatusTag
-                          status="ended"
-                          needsAttention={project.needsAttention}
-                        />
+                        <OwnerStatusTag status="ended" />
                       )}
                   </div>
                 </div>

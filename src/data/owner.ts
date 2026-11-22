@@ -29,7 +29,6 @@ export type OwnerProject = {
     testerName: string
   } | null
   createdAt: string
-  needsAttention: boolean
 }
 
 // applied: applied by themselves; noreply: invited, no answer yet; declined: the owner declined
@@ -223,7 +222,6 @@ export const ownerProjects: OwnerProject[] = [
     endsAt: '2026-11-19T15:59:59.000Z',
     engagement: null,
     createdAt: '2026-11-09T02:00:00.000Z',
-    needsAttention: true,
   },
   {
     id: 'o5',
@@ -239,7 +237,6 @@ export const ownerProjects: OwnerProject[] = [
     endsAt: '2026-11-20T15:59:59.000Z',
     engagement: { id: 'e5', status: 'PENDING_PAYMENT', testerName: '哇哩勒' },
     createdAt: '2026-11-10T02:00:00.000Z',
-    needsAttention: true,
   },
   {
     id: 'o2',
@@ -255,7 +252,6 @@ export const ownerProjects: OwnerProject[] = [
     endsAt: '2026-10-25T15:59:59.000Z',
     engagement: { id: 'e2', status: 'FUNDED', testerName: '哇哩勒' },
     createdAt: '2026-10-15T02:00:00.000Z',
-    needsAttention: true,
   },
   {
     id: 'o4',
@@ -271,7 +267,6 @@ export const ownerProjects: OwnerProject[] = [
     endsAt: '2026-10-25T15:59:59.000Z',
     engagement: { id: 'e4', status: 'TESTING', testerName: '哇哩勒' },
     createdAt: '2026-10-12T02:00:00.000Z',
-    needsAttention: true,
   },
   {
     id: 'o6',
@@ -287,7 +282,6 @@ export const ownerProjects: OwnerProject[] = [
     endsAt: '2026-10-18T15:59:59.000Z',
     engagement: { id: 'e6', status: 'SUBMITTED', testerName: '哇哩勒' },
     createdAt: '2026-10-05T02:00:00.000Z',
-    needsAttention: true,
   },
   {
     id: 'o3',
@@ -303,7 +297,6 @@ export const ownerProjects: OwnerProject[] = [
     endsAt: '2026-08-31T15:59:59.000Z',
     engagement: { id: 'e3', status: 'COMPLETED', testerName: '林小美' },
     createdAt: '2026-08-15T02:00:00.000Z',
-    needsAttention: false,
   },
 ]
 
