@@ -9,6 +9,7 @@ import { StarIcon } from '@/components/icons/StarIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
 import type { EngagementDetails, OwnerProject } from '@/data/owner'
 import { statusLabels, type ProjectStatus } from '@/data/tester'
+import { OverdueDialog } from './OverdueDialog'
 import { SendEnvDialog } from './SendEnvDialog'
 
 export function Progress({
@@ -21,6 +22,7 @@ export function Progress({
   details: EngagementDetails
 }) {
   const [envDialogOpen, setEnvDialogOpen] = useState(false)
+  const [overdueDialogOpen, setOverdueDialogOpen] = useState(false)
   const [now] = useState(() => Date.now())
   const { tester } = details
   const deadline = details.submitDeadline
@@ -97,7 +99,7 @@ export function Progress({
               {String(deadline.getMonth() + 1).padStart(2, '0')}/
               {String(deadline.getDate()).padStart(2, '0')}）
             </b>
-            請決定延後並設定新期限，或不延後、直接全額退款。
+            請決定是否延後 3 天，或選擇不延後取消專案。
           </p>
         </div>
       )}
@@ -170,6 +172,7 @@ export function Progress({
           {overdue && (
             <button
               type="button"
+              onClick={() => setOverdueDialogOpen(true)}
               className="btn border-status-dispute-text bg-status-dispute-text text-surface"
             >
               處理逾期
@@ -212,6 +215,15 @@ export function Progress({
           testerEmail={tester.email}
           projectName={project.name}
           testPeriod={project.details.testPeriod}
+        />
+      )}
+
+      {overdue && deadline && (
+        <OverdueDialog
+          open={overdueDialogOpen}
+          onOpenChange={setOverdueDialogOpen}
+          testerName={tester.fullName}
+          deadline={deadline}
         />
       )}
     </>
