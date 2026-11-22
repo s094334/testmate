@@ -84,9 +84,12 @@ export function MobileActionBar({
         </button>
       )}
       {project.status === 'TESTING' && (
-        <button type="button" className="btn btn-primary flex-1 px-4">
+        <Link
+          to={`/tester/projects/${project.id}/report`}
+          className="btn btn-primary flex-1 px-4"
+        >
           提交報告
-        </button>
+        </Link>
       )}
       {project.status === 'DISPUTED' && (
         <button

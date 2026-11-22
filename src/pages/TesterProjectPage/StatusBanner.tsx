@@ -159,12 +159,12 @@ export function StatusBanner({
         </button>
       )}
       {project.status === 'TESTING' && (
-        <button
-          type="button"
+        <Link
+          to={`/tester/projects/${project.id}/report`}
           className="btn btn-primary tablet:inline-flex hidden min-w-40"
         >
           提交報告
-        </button>
+        </Link>
       )}
       {project.status === 'DISPUTED' && (
         <button
