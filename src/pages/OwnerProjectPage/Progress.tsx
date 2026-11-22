@@ -9,7 +9,9 @@ import { StarIcon } from '@/components/icons/StarIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
 import type { EngagementDetails, OwnerProject } from '@/data/owner'
 import { statusLabels, type ProjectStatus } from '@/data/tester'
+import { Countdown } from '@/pages/TesterProjectPage/Countdown'
 import { OverdueDialog } from './OverdueDialog'
+import { RateDialog, type Rating } from './RateDialog'
 import { SendEnvDialog } from './SendEnvDialog'
 
 export function Progress({
@@ -23,6 +25,8 @@ export function Progress({
 }) {
   const [envDialogOpen, setEnvDialogOpen] = useState(false)
   const [overdueDialogOpen, setOverdueDialogOpen] = useState(false)
+  const [rateDialogOpen, setRateDialogOpen] = useState(false)
+  const [rating, setRating] = useState<Rating | null>(null)
   const [now] = useState(() => Date.now())
   const { tester } = details
   const deadline = details.submitDeadline
@@ -183,6 +187,15 @@ export function Progress({
               查看報告
             </button>
           )}
+          {status === 'COMPLETED' && (
+            <button
+              type="button"
+              onClick={() => setRateDialogOpen(true)}
+              className="btn btn-primary"
+            >
+              {rating ? '編輯評價' : '評價'}
+            </button>
+          )}
 
           {status === 'PENDING_NDA' && (
             <p className="text-ink-subtle tablet:text-right">
@@ -204,6 +217,20 @@ export function Progress({
               {details.submittedAt} 已提交報告
             </p>
           )}
+          {status === 'COMPLETED' && !rating && details.rateDeadline && (
+            <Countdown
+              label="評價期限"
+              deadline={details.rateDeadline}
+              className="text-ink-subtle tablet:items-end tablet:text-right flex flex-col"
+            />
+          )}
+          {status === 'COMPLETED' && rating && (
+            <Countdown
+              label="可修改至"
+              deadline={rating.editableUntil}
+              className="text-ink-subtle tablet:items-end tablet:text-right flex flex-col"
+            />
+          )}
         </div>
       </div>
 
@@ -224,6 +251,17 @@ export function Progress({
           onOpenChange={setOverdueDialogOpen}
           testerName={tester.fullName}
           deadline={deadline}
+        />
+      )}
+
+      {rateDialogOpen && details.rateDeadline && (
+        <RateDialog
+          onClose={() => setRateDialogOpen(false)}
+          testerName={tester.fullName}
+          testerEmail={tester.email}
+          rateDeadline={details.rateDeadline}
+          saved={rating}
+          onSave={setRating}
         />
       )}
     </>

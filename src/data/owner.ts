@@ -316,6 +316,8 @@ export type EngagementDetails = {
   submitDeadline?: string
   // SUBMITTED
   submittedAt?: string
+  // COMPLETED (before the first rating). ISO time with the offset
+  rateDeadline?: string
 }
 
 // What 測試進度 shows for a project with an engagement, by project id.
@@ -389,6 +391,7 @@ export const ownerEngagementDetails: Record<string, EngagementDetails> = {
       devices: ['iPhone 13'],
       languages: ['中文', '英文'],
     },
+    rateDeadline: '2026-11-27T23:59:00+08:00',
   },
 }
 
