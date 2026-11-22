@@ -102,20 +102,15 @@ export function RateDialog({
                   </label>
                 ))}
               </div>
-              <span className="text-ink-muted">
-                {stars
-                  ? `${stars} 顆星、${['很差', '不太好', '普通', '很好', '非常好'][stars - 1]}`
-                  : '請選擇 1 到 5 顆星'}
-              </span>
             </div>
           </fieldset>
 
           {stars > 0 && (
             <fieldset>
               <legend className="mb-2 font-bold">
-                {stars >= 4 ? '做得好的地方' : '可以改進的地方'}
+                {stars >= 4 ? '讚一個' : '選取一個或多個問題'}
               </legend>
-              <div className="flex flex-wrap gap-2">
+              <div data-role="tester" className="flex flex-wrap gap-2">
                 {(stars >= 4
                   ? [
                       '需求說明清楚',
@@ -126,7 +121,7 @@ export function RateDialog({
                     ]
                   : [
                       '需求說明不清楚',
-                      '測試環境給太晚',
+                      '測試環境給得不明確',
                       '回覆很慢',
                       '驗收標準不一致',
                       '要求超出範圍',
@@ -164,7 +159,7 @@ export function RateDialog({
               rows={3}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="可以只勾選原因，也可以再補充。"
+              placeholder="這邊可以再補充說明唷。"
               className="bg-surface border-line-input min-h-12 resize-y rounded-md border px-3 py-2.5"
             />
           </div>
@@ -189,13 +184,13 @@ export function RateDialog({
                   hour: '2-digit',
                   minute: '2-digit',
                   hour12: false,
-                })} 前送出。送出後 7 天內都可以修改；修改期限結束後才會公開。`}
+                })} 前送出。修改期限結束後會公開評論。`}
           </p>
 
-          <div className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3">
-            <DialogClose className="btn btn-secondary">
-              {saved ? '取消' : '稍後再評'}
-            </DialogClose>
+          <div
+            data-role="tester"
+            className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3"
+          >
             <button
               type="button"
               disabled={stars === 0}
