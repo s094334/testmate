@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { InfoIcon } from '@/components/icons/InfoIcon'
-import { ownerProjects, type RecruitCandidate } from '@/data/owner'
+import {
+  ownerEngagementDetails,
+  ownerProjects,
+  type RecruitCandidate,
+} from '@/data/owner'
 import { Progress } from './Progress'
 import { Recruiting } from './Recruiting'
 
@@ -10,8 +14,9 @@ export function OwnerProjectPage() {
   const { id = '' } = useParams()
   const [chosen, setChosen] = useState<RecruitCandidate | null>(null)
   const project = ownerProjects.find((owned) => owned.id === id)
+  const details = ownerEngagementDetails[id]
 
-  if (!project || project.recruitmentStatus !== 'recruiting') {
+  if (!project || (project.recruitmentStatus !== 'recruiting' && !details)) {
     return <Navigate to="/owner" replace />
   }
 
@@ -38,9 +43,25 @@ export function OwnerProjectPage() {
         </Link>
       </div>
 
-      {chosen && <Progress chosen={chosen} />}
+      {project.engagement && details && (
+        <Progress
+          project={project}
+          status={project.engagement.status}
+          details={details}
+        />
+      )}
 
-      {!chosen && <Recruiting projectId={id} onChoose={setChosen} />}
+      {!project.engagement && chosen && (
+        <Progress
+          project={project}
+          status="PENDING_NDA"
+          details={{ tester: chosen }}
+        />
+      )}
+
+      {!project.engagement && !chosen && (
+        <Recruiting projectId={id} onChoose={setChosen} />
+      )}
     </div>
   )
 }

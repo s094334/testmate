@@ -19,10 +19,7 @@ export function JoinedProjects() {
           </h3>
 
           <div className="desktop:row-span-3 desktop:self-center flex">
-            <StatusTag
-              status={project.status}
-              needsAction={project.needsAction}
-            />
+            <StatusTag status={project.status} />
           </div>
 
           <p className="text-ink-muted desktop:col-span-1 col-span-2">
