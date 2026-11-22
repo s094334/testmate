@@ -1,7 +1,7 @@
+import { useState } from 'react'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { CloseIcon } from '@/components/icons/CloseIcon'
 import { CopyIcon } from '@/components/icons/CopyIcon'
-import { MailIcon } from '@/components/icons/MailIcon'
 import {
   Dialog,
   DialogBackdrop,
@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { owner } from '@/data/owner'
+import { ConfirmEnvDialog } from './ConfirmEnvDialog'
 
 export function SendEnvDialog({
   open,
@@ -20,6 +21,7 @@ export function SendEnvDialog({
   testerEmail,
   projectName,
   testPeriod,
+  onProvided,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -27,7 +29,9 @@ export function SendEnvDialog({
   testerEmail: string
   projectName: string
   testPeriod: string
+  onProvided: () => void
 }) {
+  const [confirmOpen, setConfirmOpen] = useState(false)
   const subject = `【測試咖】${projectName}｜測試環境與說明`
   const body = `${testerName} 您好：
 
@@ -121,13 +125,21 @@ ${owner.name} ${owner.realName}`
             <DialogClose className="btn btn-secondary tablet:min-w-40 flex-1 px-2 tablet:flex-none">
               稍後再寄
             </DialogClose>
-            <a
-              href={`mailto:${testerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`}
+            <button
+              type="button"
+              onClick={() => setConfirmOpen(true)}
               className="btn btn-primary tablet:min-w-40 flex-1 px-2 tablet:flex-none"
             >
-              <MailIcon className="size-4.5" />用 Email 寄出
-            </a>
+              已提供環境
+            </button>
           </div>
+
+          <ConfirmEnvDialog
+            open={confirmOpen}
+            onOpenChange={setConfirmOpen}
+            testerName={testerName}
+            onConfirm={onProvided}
+          />
         </DialogPopup>
       </DialogPortal>
     </Dialog>

@@ -23,6 +23,7 @@ export function Progress({
   details: EngagementDetails
 }) {
   const [envDialogOpen, setEnvDialogOpen] = useState(false)
+  const [envProvided, setEnvProvided] = useState(false)
   const [overdueDialogOpen, setOverdueDialogOpen] = useState(false)
   const [rateDialogOpen, setRateDialogOpen] = useState(false)
   const [rating, setRating] = useState<Rating | null>(null)
@@ -68,7 +69,16 @@ export function Progress({
         </span>
       </div>
 
-      {status === 'FUNDED' && (
+      {status === 'FUNDED' && envProvided && (
+        <div className="bg-status-progress-bg flex gap-2.5 rounded-md px-5 py-4">
+          <CheckIcon className="text-status-progress-text mt-[3px] size-5 flex-none" />
+          <p className="flex flex-col">
+            <b>已提供測試環境</b>等{tester.fullName}確認收到後就會開始測試。
+          </p>
+        </div>
+      )}
+
+      {status === 'FUNDED' && !envProvided && (
         <div className="bg-status-pending-bg flex gap-2.5 rounded-md px-5 py-4">
           <WarningIcon className="text-status-pending-text mt-[3px] size-5 flex-none" />
           <p className="flex flex-col">
@@ -228,6 +238,10 @@ export function Progress({
           testerEmail={tester.email}
           projectName={project.name}
           testPeriod={project.details.testPeriod}
+          onProvided={() => {
+            setEnvProvided(true)
+            setEnvDialogOpen(false)
+          }}
         />
       )}
 
