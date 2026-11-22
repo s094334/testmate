@@ -4,10 +4,13 @@ export function Countdown({
   label,
   deadline,
   className,
+  urgent = false,
 }: {
   label: string
   deadline: string
   className: string
+  // Red the whole time, not only in the last day
+  urgent?: boolean
 }) {
   const [now, setNow] = useState(() => Date.now())
 
@@ -31,7 +34,7 @@ export function Countdown({
         </time>
       </span>
       <b
-        className={`tablet:text-[18px] tabular-nums ${secondsLeft < 86400 ? 'text-status-dispute-text' : 'text-role-text'}`}
+        className={`tablet:text-[18px] tabular-nums ${urgent || secondsLeft < 86400 ? 'text-status-dispute-text' : 'text-role-text'}`}
       >
         {secondsLeft <= 0
           ? '已超過期限'
