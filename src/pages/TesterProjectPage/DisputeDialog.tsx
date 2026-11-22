@@ -71,7 +71,7 @@ export function DisputeDialog({
                 必填
               </span>
             </legend>
-            <div className="flex flex-col gap-2.5">
+            <div data-role="tester" className="flex flex-col gap-2.5">
               <label
                 className={`flex cursor-pointer items-start gap-3 rounded-[12px] border px-4 py-3.5 ${choice === 'continue' ? 'border-role bg-role-soft ring-role ring-1 ring-inset' : 'border-line-input'}`}
               >
@@ -137,8 +137,10 @@ export function DisputeDialog({
             15% 後，剩下的報酬由測試人員和負責人各拿一半，專案變成「已退款」。
           </p>
 
-          <div className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3">
-            <DialogClose className="btn btn-secondary">取消</DialogClose>
+          <div
+            data-role="tester"
+            className="tablet:flex-row tablet:justify-end flex flex-col-reverse gap-3"
+          >
             <DialogClose
               disabled={!choice}
               className="btn btn-primary min-w-40"
