@@ -48,9 +48,13 @@ export function TesterReportPage() {
   const [tried, setTried] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitDialogOpen, setSubmitDialogOpen] = useState(false)
+  const [now] = useState(() => Date.now())
 
   if (!project || !detail) return <Navigate to="/tester" replace />
-  if (project.status !== 'TESTING') {
+  if (
+    project.status !== 'TESTING' ||
+    (detail.submitDeadline && new Date(detail.submitDeadline).getTime() < now)
+  ) {
     return <Navigate to={`/tester/projects/${id}`} replace />
   }
 

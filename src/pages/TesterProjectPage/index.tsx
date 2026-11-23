@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router'
 import { StatusTag } from '@/components/StatusTag'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
+import { WarningIcon } from '@/components/icons/WarningIcon'
 import { joinedProjectDetails, joinedProjects } from '@/data/tester'
 import { DisputeDialog } from './DisputeDialog'
 import { MobileActionBar } from './MobileActionBar'
@@ -19,8 +20,14 @@ export function TesterProjectPage() {
   const [disputeDialogOpen, setDisputeDialogOpen] = useState(false)
   const [rateDialogOpen, setRateDialogOpen] = useState(false)
   const [rating, setRating] = useState<Rating | null>(null)
+  const [now] = useState(() => Date.now())
 
   if (!project || !detail) return <Navigate to="/tester" replace />
+
+  const overdue =
+    project.status === 'TESTING' &&
+    !!detail.submitDeadline &&
+    new Date(detail.submitDeadline).getTime() < now
 
   return (
     <div className="max-w-page tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
@@ -33,7 +40,14 @@ export function TesterProjectPage() {
       </Link>
 
       <div className="flex flex-col items-start gap-3">
-        <StatusTag status={project.status} needsAction={false} />
+        {overdue ? (
+          <span className="bg-status-dispute-bg text-status-dispute-text inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
+            <WarningIcon />
+            報告逾期
+          </span>
+        ) : (
+          <StatusTag status={project.status} needsAction={false} />
+        )}
         <h1 className="text-subtitle">{project.name}</h1>
         <p className="text-ink-subtle flex flex-wrap items-center gap-1.5">
           {project.owner}、
@@ -48,6 +62,7 @@ export function TesterProjectPage() {
       <StatusBanner
         project={project}
         detail={detail}
+        overdue={overdue}
         rating={rating}
         onOpenEnvDialog={() => setEnvDialogOpen(true)}
         onOpenDisputeDialog={() => setDisputeDialogOpen(true)}
@@ -59,6 +74,7 @@ export function TesterProjectPage() {
       <MobileActionBar
         project={project}
         detail={detail}
+        overdue={overdue}
         rating={rating}
         onOpenEnvDialog={() => setEnvDialogOpen(true)}
         onOpenDisputeDialog={() => setDisputeDialogOpen(true)}
