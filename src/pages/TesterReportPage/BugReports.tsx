@@ -35,9 +35,8 @@ export function BugReports({
 
         return (
           <section
-            key={index}
-            id={`bug-${no}`}
-            className="bg-surface border-ink tablet:p-6 flex scroll-mt-6 flex-col gap-4 rounded-md border p-4"
+            key={bug.id}
+            className="bg-surface border-ink tablet:p-6 flex flex-col gap-4 rounded-md border p-4"
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -51,7 +50,7 @@ export function BugReports({
               <button
                 type="button"
                 onClick={() =>
-                  setBugs(bugs.filter((_, other) => other !== index))
+                  setBugs(bugs.filter((other) => other.id !== bug.id))
                 }
                 className="hover:bg-platform-soft inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full transition duration-150 ease-out"
               >
@@ -365,6 +364,7 @@ export function BugReports({
           setBugs([
             ...bugs,
             {
+              id: crypto.randomUUID(),
               type: 'Bug',
               title: '',
               env,

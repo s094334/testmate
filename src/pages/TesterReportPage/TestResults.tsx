@@ -1,10 +1,7 @@
-import { Fragment } from 'react'
 import { InfoPopover } from '@/components/InfoPopover'
 import { CloseIcon } from '@/components/icons/CloseIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import type { ReportItem } from '@/data/tester'
-
-type ItemState = ReportItem & { savedBugRef: string }
 
 export function TestResults({
   items,
@@ -12,12 +9,12 @@ export function TestResults({
   bugCount,
   tried,
 }: {
-  items: ItemState[]
-  setItems: (items: ItemState[]) => void
+  items: ReportItem[]
+  setItems: (items: ReportItem[]) => void
   bugCount: number
   tried: boolean
 }) {
-  function update(index: number, patch: Partial<ItemState>) {
+  function update(index: number, patch: Partial<ReportItem>) {
     setItems(
       items.map((item, other) =>
         other === index ? { ...item, ...patch } : item
@@ -75,9 +72,6 @@ export function TestResults({
 
         {items.map((item, index) => {
           const no = String(index + 1).padStart(2, '0')
-          const refs = [...new Set(item.savedBugRef.match(/\d+/g)?.map(Number))]
-            .filter((n) => n > 0)
-            .sort((a, b) => a - b)
 
           return (
             <div
@@ -197,48 +191,23 @@ export function TestResults({
                 </fieldset>
 
                 {item.pass === false && (
-                  <>
-                    <label className="flex flex-col gap-1">
-                      <span className="font-bold">
-                        相關 bug
-                        <span className="text-status-dispute-text text-required ml-1.5">
-                          必填
-                        </span>
+                  <label className="flex flex-col gap-1.5">
+                    <span className="font-bold">
+                      相關 bug
+                      <span className="text-status-dispute-text text-required ml-1.5">
+                        必填
                       </span>
-                      <input
-                        type="text"
-                        value={item.bugRef}
-                        onChange={(event) =>
-                          update(index, { bugRef: event.target.value })
-                        }
-                        placeholder="例：01、03"
-                        className={`bg-surface min-h-12 w-full rounded-md px-3 ${tried && !item.bugRef.trim() ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
-                      />
-                    </label>
-                    {item.bugRef === item.savedBugRef && refs.length > 0 && (
-                      <p className="flex flex-wrap items-baseline">
-                        <span className="text-ink-subtle mr-2">跳到</span>
-                        {refs.map((n, k) => (
-                          <Fragment key={n}>
-                            {k > 0 && '、'}
-                            {n <= bugCount && (
-                              <a
-                                href={`#bug-${String(n).padStart(2, '0')}`}
-                                className="link text-role font-bold"
-                              >
-                                BUG {String(n).padStart(2, '0')}
-                              </a>
-                            )}
-                            {n > bugCount && (
-                              <span className="text-status-dispute-text">
-                                BUG {String(n).padStart(2, '0')}（還沒新增）
-                              </span>
-                            )}
-                          </Fragment>
-                        ))}
-                      </p>
-                    )}
-                  </>
+                    </span>
+                    <input
+                      type="text"
+                      value={item.bugRef}
+                      onChange={(event) =>
+                        update(index, { bugRef: event.target.value })
+                      }
+                      placeholder="例：01、03"
+                      className={`bg-surface min-h-12 w-full rounded-md px-3 ${tried && !item.bugRef.trim() ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
+                    />
+                  </label>
                 )}
               </div>
             </div>
@@ -257,7 +226,6 @@ export function TestResults({
               result: '',
               pass: null,
               bugRef: '',
-              savedBugRef: '',
             },
           ])
         }

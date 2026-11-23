@@ -19,30 +19,29 @@ export function TesterReportPage() {
   const detail = joinedProjectDetails[id]
   const draft = reportDrafts[id]
   const [env, setEnv] = useState(draft?.env ?? '')
-  const [items, setItems] = useState<(ReportItem & { savedBugRef: string })[]>(
-    () =>
-      (
-        draft?.items ?? [
-          { title: '', steps: '', result: '', pass: null, bugRef: '' },
-        ]
-      ).map((item) => ({ ...item, savedBugRef: item.bugRef }))
+  const [items, setItems] = useState<ReportItem[]>(
+    draft?.items ?? [
+      { title: '', steps: '', result: '', pass: null, bugRef: '' },
+    ]
   )
   const [bugs, setBugs] = useState<ReportBug[]>(
-    draft?.bugs ?? [
-      {
-        type: 'Bug',
-        title: '',
-        env: '',
-        steps: '',
-        priority: '一般',
-        frequency: '每次都會發生',
-        location: '',
-        original: '',
-        languageIssue: '錯字',
-        suggestion: '',
-        files: [],
-      },
-    ]
+    () =>
+      draft?.bugs ?? [
+        {
+          id: crypto.randomUUID(),
+          type: 'Bug',
+          title: '',
+          env: '',
+          steps: '',
+          priority: '一般',
+          frequency: '每次都會發生',
+          location: '',
+          original: '',
+          languageIssue: '錯字',
+          suggestion: '',
+          files: [],
+        },
+      ]
   )
   const [savedAt, setSavedAt] = useState(draft?.savedAt ?? '')
   const [tried, setTried] = useState(false)
@@ -75,7 +74,6 @@ export function TesterReportPage() {
 
   function save() {
     const now = new Date()
-    setItems(items.map((item) => ({ ...item, savedBugRef: item.bugRef })))
     setSavedAt(
       `今天 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
     )

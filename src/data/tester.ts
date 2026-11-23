@@ -389,7 +389,7 @@ export const joinedProjectDetails: Record<
 }
 
 // One row of 測試結果, all filled in by the tester.
-// bugRef: the BUG numbers as typed, e.g. 01、03 (only when pass is false)
+// bugRef: the related bugs as typed by the tester, e.g. 01、03 (only when pass is false)
 export type ReportItem = {
   title: string
   steps: string
@@ -401,6 +401,7 @@ export type ReportItem = {
 // 語言 uses location, original, languageIssue and suggestion;
 // every other type uses title, env and steps
 export type ReportBug = {
+  id: string
   type: 'Bug' | '語言' | '建議' | '介面體驗' | '效能' | '其他'
   title: string
   env: string
@@ -461,6 +462,7 @@ export const reportDrafts: Record<
     ],
     bugs: [
       {
+        id: 'b1',
         type: 'Bug',
         title: '確認預約後 App 閃退',
         env: 'Galaxy Tab S9、One UI 6、App 2.3.0',
@@ -475,6 +477,7 @@ export const reportDrafts: Record<
         files: ['crash-01.mp4'],
       },
       {
+        id: 'b2',
         type: '語言',
         title: '',
         env: '',
