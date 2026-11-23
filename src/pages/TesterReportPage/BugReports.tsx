@@ -1,5 +1,6 @@
 import { CloseIcon } from '@/components/icons/CloseIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
+import { InfoPopover } from '@/components/InfoPopover'
 import type { ReportBug } from '@/data/tester'
 
 export function BugReports({
@@ -23,11 +24,11 @@ export function BugReports({
     <section className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
         <h2 className="text-subheading tablet:text-heading">回報 bug</h2>
-        <p className="text-ink-subtle">
-          測試項目選「不通過」時，在旁邊填上相關的 bug 編號，一個結果有好幾個
-          bug 就都填上。
-        </p>
       </div>
+      <p className="text-ink-subtle">
+        測試項目選「不通過」時，在旁邊填上相關的 bug 編號，當同個項目有好幾個
+        bug 時，可以填多個編號。
+      </p>
 
       {bugs.map((bug, index) => {
         const no = String(index + 1).padStart(2, '0')
@@ -118,9 +119,33 @@ export function BugReports({
                 </div>
 
                 <div className="tablet:grid-cols-[200px_240px] grid gap-4">
-                  <label className="flex min-w-0 flex-col gap-1.5">
-                    <span className="font-bold">嚴重度</span>
+                  <div className="flex min-w-0 flex-col gap-1.5">
+                    <div className="flex items-center gap-1">
+                      <label
+                        htmlFor={`bug-${no}-priority`}
+                        className="font-bold"
+                      >
+                        嚴重度
+                      </label>
+                      <InfoPopover label="嚴重度說明">
+                        <ul className="flex flex-col gap-1">
+                          <li>
+                            <b>致命</b>：無法繼續使用，或資料、金錢出錯
+                          </li>
+                          <li>
+                            <b>嚴重</b>：主要功能壞掉，但有方法繞過
+                          </li>
+                          <li>
+                            <b>一般</b>：次要功能異常或顯示錯誤
+                          </li>
+                          <li>
+                            <b>輕微</b>：不影響使用的小瑕疵
+                          </li>
+                        </ul>
+                      </InfoPopover>
+                    </div>
                     <select
+                      id={`bug-${no}-priority`}
                       value={bug.priority}
                       onChange={(event) =>
                         update(index, {
@@ -129,16 +154,12 @@ export function BugReports({
                       }
                       className="bg-surface border-line-input min-h-12 w-full rounded-md border px-3"
                     >
-                      <option value="致命">
-                        致命：無法繼續使用，或資料、金錢出錯
-                      </option>
-                      <option value="嚴重">
-                        嚴重：主要功能壞掉，但有方法繞過
-                      </option>
-                      <option value="一般">一般：次要功能異常或顯示錯誤</option>
-                      <option value="輕微">輕微：不影響使用的小瑕疵</option>
+                      <option>致命</option>
+                      <option>嚴重</option>
+                      <option>一般</option>
+                      <option>輕微</option>
                     </select>
-                  </label>
+                  </div>
                   <label className="flex min-w-0 flex-col gap-1.5">
                     <span className="font-bold">頻率</span>
                     <select
@@ -153,6 +174,7 @@ export function BugReports({
                     >
                       <option>每次都會發生</option>
                       <option>偶爾才發生</option>
+                      <option>無法穩定重置</option>
                     </select>
                   </label>
                 </div>
@@ -278,9 +300,6 @@ export function BugReports({
             <div className="flex flex-col gap-1.5">
               <span className="font-bold">
                 {bug.type === '語言' ? '位置截圖' : '截圖或錄影'}
-                <span className="text-status-dispute-text text-required ml-1.5">
-                  必填
-                </span>
               </span>
               <div className="flex flex-wrap items-center gap-2">
                 {bug.files.map((name, fileIndex) => (

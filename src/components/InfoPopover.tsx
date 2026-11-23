@@ -24,7 +24,7 @@ export function InfoPopover({ children, label }: InfoPopoverProps) {
       <PopoverContent
         side="top"
         sideOffset={4}
-        className="bg-surface text-ink block w-72 max-w-(--available-width) rounded-md px-4 py-3 text-[length:inherit] shadow-(--shadow-overlay) ring-0 outline-none data-[side=bottom]:slide-in-from-top-0! data-[side=top]:slide-in-from-bottom-0!"
+        className="bg-surface text-ink block w-80 max-w-(--available-width) rounded-md px-4 py-3 text-[length:inherit] shadow-(--shadow-overlay) ring-0 outline-none data-[side=bottom]:slide-in-from-top-0! data-[side=top]:slide-in-from-bottom-0!"
       >
         {children}
       </PopoverContent>

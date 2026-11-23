@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import { InfoPopover } from '@/components/InfoPopover'
 import { CloseIcon } from '@/components/icons/CloseIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import type { ReportItem } from '@/data/tester'
@@ -27,7 +28,16 @@ export function TestResults({
   return (
     <section className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
-        <h2 className="text-subheading tablet:text-heading">測試結果</h2>
+        <div className="flex items-center gap-1">
+          <h2 className="text-subheading tablet:text-heading">測試結果</h2>
+          <InfoPopover label="測試結果說明">
+            <div className="flex flex-col gap-2">
+              <p>
+                每個測試項目都要分開填寫一筆，包含測試項目、操作步驟，以及每個步驟實際看到的結果。填寫完成後，再選擇「通過」或「不通過」。{' '}
+              </p>
+            </div>
+          </InfoPopover>
+        </div>
         <p className="text-ink-subtle desktop:hidden">
           通過 {items.filter((item) => item.pass === true).length}／
           {items.length} 項、回報 {bugCount} 個 bug
@@ -118,6 +128,9 @@ export function TestResults({
                   onChange={(event) =>
                     update(index, { steps: event.target.value })
                   }
+                  placeholder={
+                    '1. 多人同時編輯同一份檔案，確認結果1\n2. 輸入文字時，確認結果2'
+                  }
                   className={`bg-surface w-full resize-y rounded-md px-3 py-2.5 ${tried && !item.steps.trim() ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
                 />
               </label>
@@ -134,6 +147,9 @@ export function TestResults({
                   value={item.result}
                   onChange={(event) =>
                     update(index, { result: event.target.value })
+                  }
+                  placeholder={
+                    '1. 無法多人同時輸入文字內容\n2. 輸入文字時，無法即時看到其他人輸入的內容'
                   }
                   className={`bg-surface w-full resize-y rounded-md px-3 py-2.5 ${tried && !item.result.trim() ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
                 />
