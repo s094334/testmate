@@ -11,6 +11,7 @@ import {
 } from '@/data/tester'
 import { Countdown } from '@/pages/TesterProjectPage/Countdown'
 import { BugReports } from './BugReports'
+import { SubmitDialog } from './SubmitDialog'
 import { TestResults } from './TestResults'
 
 export function TesterReportPage() {
@@ -46,6 +47,7 @@ export function TesterReportPage() {
   const [savedAt, setSavedAt] = useState(draft?.savedAt ?? '')
   const [tried, setTried] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitDialogOpen, setSubmitDialogOpen] = useState(false)
 
   if (!project || !detail) return <Navigate to="/tester" replace />
   if (project.status !== 'TESTING') {
@@ -79,8 +81,12 @@ export function TesterReportPage() {
     )
   }
 
-  function submit() {
+  function openSubmitDialog() {
     if (missing) return setTried(true)
+    setSubmitDialogOpen(true)
+  }
+
+  function confirmSubmit() {
     setTried(false)
     setSubmitted(true)
     window.scrollTo({ top: 0 })
@@ -171,12 +177,18 @@ export function TesterReportPage() {
             </button>
             <button
               type="button"
-              onClick={submit}
+              onClick={openSubmitDialog}
               className="btn btn-primary tablet:min-w-50 tablet:flex-none min-w-30 flex-1 px-4"
             >
               繳交測試報告
             </button>
           </div>
+
+          <SubmitDialog
+            open={submitDialogOpen}
+            onOpenChange={setSubmitDialogOpen}
+            onConfirm={confirmSubmit}
+          />
         </div>
       )}
 
@@ -186,14 +198,13 @@ export function TesterReportPage() {
             <CheckIcon className="size-7" />
           </span>
           <h2 className="text-section-title">已繳交測試報告</h2>
-          <p className="text-ink-muted">等負責人逐項驗收，驗收通過後撥款。</p>
-          <button
-            type="button"
-            onClick={() => setSubmitted(false)}
-            className="link min-h-11 cursor-pointer px-2"
+          <p className="text-ink-muted">待負責人逐項驗收報告。</p>
+          <Link
+            to={`/tester/projects/${id}`}
+            className="btn btn-secondary mt-2"
           >
-            返回編輯
-          </button>
+            回到專案頁
+          </Link>
         </section>
       )}
     </div>
