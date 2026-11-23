@@ -7,6 +7,7 @@ import {
   ownerProjects,
   ownerReports,
 } from '@/data/owner'
+import { Countdown } from '@/pages/TesterProjectPage/Countdown'
 import { BugReports } from './BugReports'
 import { Decision } from './Decision'
 import { TestResults } from './TestResults'
@@ -51,6 +52,24 @@ export function OwnerReportPage() {
         </div>
       </div>
 
+      {details.reviewDeadline && (
+        <div className="bg-status-pending-bg tablet:flex-row tablet:items-center tablet:justify-between flex flex-col gap-x-6 gap-y-2 rounded-md px-5 py-4">
+          <div className="flex min-w-0 gap-2.5">
+            <ClockIcon className="text-status-pending-text mt-[3px] size-5 flex-none" />
+            <p className="flex flex-col">
+              <b className="text-status-pending-text">請在期限前完成驗收</b>
+              逾期未驗收視為通過，系統會自動撥款給{details.tester.fullName}
+              ，專案變為「已完成」。
+            </p>
+          </div>
+          <Countdown
+            label="驗收期限"
+            deadline={details.reviewDeadline}
+            className="tablet:items-end tablet:pl-0 tablet:text-right flex flex-none flex-col pl-7.5"
+          />
+        </div>
+      )}
+
       <section className="flex flex-col gap-3">
         <h2 className="text-subheading tablet:text-heading">測試環境</h2>
         <p className="bg-page border-line rounded-md border px-4 py-3.5">
@@ -66,6 +85,7 @@ export function OwnerReportPage() {
         projectId={id}
         testerName={details.tester.fullName}
         amount={report.amount}
+        thirdRejection={details.rejectionCount === 2}
       />
     </div>
   )

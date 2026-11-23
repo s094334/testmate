@@ -311,8 +311,14 @@ export type EngagementDetails = {
   // TESTING. submitDeadline is an ISO time with the offset; past it the report is overdue
   startedAt?: string
   submitDeadline?: string
-  // SUBMITTED
+  // SUBMITTED. reviewDeadline is an ISO time with the offset; past it the report
+  // passes on its own. rejectionCount is how many times the owner has returned it
+  // (rejection_count); the 3rd return moves the project to DISPUTED
   submittedAt?: string
+  reviewDeadline?: string
+  rejectionCount?: number
+  // DISPUTED. ISO time with the offset; both sides pick a result before it
+  disputeDeadline?: string
   // COMPLETED (before the first rating). ISO time with the offset
   rateDeadline?: string
 }
@@ -375,6 +381,9 @@ export const ownerEngagementDetails: Record<string, EngagementDetails> = {
       languages: ['中文', '英文', '日文'],
     },
     submittedAt: '2026/10/30',
+    reviewDeadline: '2026-11-26T23:59:00+08:00',
+    rejectionCount: 2,
+    disputeDeadline: '2026-11-30T23:59:00+08:00',
   },
   o3: {
     tester: {
