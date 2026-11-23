@@ -75,16 +75,18 @@ export function BugReports({ bugs }: { bugs: ReportBug[] }) {
                     <dt className="text-ink-subtle">問題類型</dt>
                     <dd className="font-bold">{bug.languageIssue}</dd>
                   </div>
-                  <div className="flex flex-col gap-0.5">
-                    <dt className="text-ink-subtle">建議修改</dt>
-                    <dd className="font-bold wrap-anywhere">
-                      {bug.suggestion}
-                    </dd>
-                  </div>
                 </dl>
                 <div className="flex flex-col gap-1.5">
                   <span className="text-ink-subtle">原文</span>
-                  <p className="whitespace-pre-line">{bug.original}</p>
+                  <p className="bg-page border-line rounded-md border px-4 py-3.5 wrap-anywhere whitespace-pre-line">
+                    {bug.original}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-ink-subtle">建議修改</span>
+                  <p className="bg-page border-line rounded-md border px-4 py-3.5 wrap-anywhere whitespace-pre-line">
+                    {bug.suggestion}
+                  </p>
                 </div>
               </>
             )}

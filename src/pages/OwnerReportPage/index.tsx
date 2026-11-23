@@ -33,7 +33,7 @@ export function OwnerReportPage() {
       </Link>
 
       <div className="flex flex-col gap-3">
-        <h1>{project.name}</h1>
+        <h1 className="text-[32px] leading-[1.3] font-bold">{project.name}</h1>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <span className="inline-flex items-center gap-2.5">
             <Avatar
