@@ -6,12 +6,12 @@ import type { ReportBug } from '@/data/tester'
 export function BugReports({
   bugs,
   setBugs,
-  env,
+  addBug,
   tried,
 }: {
   bugs: ReportBug[]
   setBugs: (bugs: ReportBug[]) => void
-  env: string
+  addBug: () => void
   tried: boolean
 }) {
   function update(index: number, patch: Partial<ReportBug>) {
@@ -31,7 +31,7 @@ export function BugReports({
       </p>
 
       {bugs.map((bug, index) => {
-        const no = String(index + 1).padStart(2, '0')
+        const no = String(bug.no).padStart(2, '0')
 
         return (
           <section
@@ -353,25 +353,7 @@ export function BugReports({
 
       <button
         type="button"
-        onClick={() =>
-          setBugs([
-            ...bugs,
-            {
-              id: crypto.randomUUID(),
-              type: 'Bug',
-              title: '',
-              env,
-              steps: '',
-              priority: '一般',
-              frequency: '每次都會發生',
-              location: '',
-              original: '',
-              languageIssue: '錯字',
-              suggestion: '',
-              files: [],
-            },
-          ])
-        }
+        onClick={addBug}
         className="btn btn-secondary self-end"
       >
         <PlusIcon />

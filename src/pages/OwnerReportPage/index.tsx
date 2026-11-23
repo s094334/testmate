@@ -58,7 +58,7 @@ export function OwnerReportPage() {
         </p>
       </section>
 
-      <TestResults items={report.items} bugCount={report.bugs.length} />
+      <TestResults items={report.items} bugs={report.bugs} />
 
       <BugReports bugs={report.bugs} />
 

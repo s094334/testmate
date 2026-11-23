@@ -6,9 +6,6 @@ export function BugReports({ bugs }: { bugs: ReportBug[] }) {
     <section className="flex flex-col gap-3">
       <h2 className="text-subheading tablet:text-heading flex items-center gap-2">
         回報 bug
-        <span className="bg-ink text-surface font-num inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-base font-semibold">
-          {bugs.length}
-        </span>
       </h2>
 
       {bugs.length === 0 && (
@@ -17,8 +14,8 @@ export function BugReports({ bugs }: { bugs: ReportBug[] }) {
         </p>
       )}
 
-      {bugs.map((bug, index) => {
-        const no = String(index + 1).padStart(2, '0')
+      {bugs.map((bug) => {
+        const no = String(bug.no).padStart(2, '0')
 
         return (
           <article

@@ -399,9 +399,11 @@ export type ReportItem = {
 }
 
 // 語言 uses location, original, languageIssue and suggestion;
-// every other type uses title, env and steps
+// every other type uses title, env and steps.
+// no: given when the bug is added; numbers of deleted bugs are never reused
 export type ReportBug = {
   id: string
+  no: number
   type: 'Bug' | '語言' | '建議' | '介面體驗' | '效能' | '其他'
   title: string
   env: string
@@ -463,6 +465,7 @@ export const reportDrafts: Record<
     bugs: [
       {
         id: 'b1',
+        no: 1,
         type: 'Bug',
         title: '確認預約後 App 閃退',
         env: 'Galaxy Tab S9、One UI 6、App 2.3.0',
@@ -478,6 +481,7 @@ export const reportDrafts: Record<
       },
       {
         id: 'b2',
+        no: 2,
         type: '語言',
         title: '',
         env: '',

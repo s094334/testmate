@@ -30,6 +30,7 @@ export function TesterReportPage() {
       draft?.bugs ?? [
         {
           id: crypto.randomUUID(),
+          no: 1,
           type: 'Bug',
           title: '',
           env: '',
@@ -43,6 +44,9 @@ export function TesterReportPage() {
           files: [],
         },
       ]
+  )
+  const [nextBugNo, setNextBugNo] = useState(() =>
+    draft ? Math.max(0, ...draft.bugs.map((bug) => bug.no)) + 1 : 2
   )
   const [savedAt, setSavedAt] = useState(draft?.savedAt ?? '')
   const [tried, setTried] = useState(false)
@@ -79,6 +83,28 @@ export function TesterReportPage() {
     setSavedAt(
       `今天 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
     )
+  }
+
+  function addBug() {
+    setBugs([
+      ...bugs,
+      {
+        id: crypto.randomUUID(),
+        no: nextBugNo,
+        type: 'Bug',
+        title: '',
+        env,
+        steps: '',
+        priority: '一般',
+        frequency: '每次都會發生',
+        location: '',
+        original: '',
+        languageIssue: '錯字',
+        suggestion: '',
+        files: [],
+      },
+    ])
+    setNextBugNo(nextBugNo + 1)
   }
 
   function openSubmitDialog() {
@@ -152,7 +178,12 @@ export function TesterReportPage() {
             tried={tried}
           />
 
-          <BugReports bugs={bugs} setBugs={setBugs} env={env} tried={tried} />
+          <BugReports
+            bugs={bugs}
+            setBugs={setBugs}
+            addBug={addBug}
+            tried={tried}
+          />
 
           {tried && missing && (
             <p className="text-status-dispute-text">

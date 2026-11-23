@@ -1,14 +1,14 @@
 import { Fragment } from 'react'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { CrossIcon } from '@/components/icons/CrossIcon'
-import type { ReportItem } from '@/data/tester'
+import type { ReportBug, ReportItem } from '@/data/tester'
 
 export function TestResults({
   items,
-  bugCount,
+  bugs,
 }: {
   items: ReportItem[]
-  bugCount: number
+  bugs: ReportBug[]
 }) {
   return (
     <section className="flex flex-col gap-3">
@@ -29,10 +29,18 @@ export function TestResults({
         </div>
 
         {items.map((item, index) => {
-          // bugRef is what the tester typed, e.g. 01、03; numbers past the last bug are skipped
-          const refs = [...new Set(item.bugRef.match(/\d+/g)?.map(Number))]
-            .filter((n) => n > 0 && n <= bugCount)
-            .sort((a, b) => a - b)
+          // Link only if every part is the number of an existing bug (e.g. 01、03); else show the text as typed
+          const typed = item.bugRef
+            .trim()
+            .replace(/[０-９]/g, (d) =>
+              String.fromCharCode(d.charCodeAt(0) - 0xfee0)
+            )
+          const numbers = typed.match(/\d+/g)?.map(Number) ?? []
+          const refs =
+            /^[\d、,，\s]+$/.test(typed) &&
+            numbers.every((n) => bugs.some((bug) => bug.no === n))
+              ? [...new Set(numbers)].sort((a, b) => a - b)
+              : []
 
           return (
             <div
@@ -85,6 +93,11 @@ export function TestResults({
                         </a>
                       </Fragment>
                     ))}
+                  </span>
+                )}
+                {!item.pass && refs.length === 0 && typed !== '' && (
+                  <span className="text-ink-muted min-w-0 font-bold wrap-anywhere">
+                    相關 bug：{item.bugRef.trim()}
                   </span>
                 )}
               </div>

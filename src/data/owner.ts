@@ -443,7 +443,7 @@ export const ownerReports: Record<
         steps: '不填年齡直接按「開始試算」',
         result: 'Chrome 顯示提示；Edge 的提示文字和輸入框重疊',
         pass: false,
-        bugRef: '02',
+        bugRef: '02，Edge 才會發生',
       },
       {
         title: '試算結果金額',
@@ -463,6 +463,7 @@ export const ownerReports: Record<
     bugs: [
       {
         id: 'b1',
+        no: 1,
         type: 'Bug',
         title: 'Edge 的試算金額少一位數',
         env: 'Windows 11、Edge 130',
@@ -478,6 +479,7 @@ export const ownerReports: Record<
       },
       {
         id: 'b2',
+        no: 2,
         type: '語言',
         title: '',
         env: '',
