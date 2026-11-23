@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router'
 import { Avatar } from '@/components/Avatar'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { ClockIcon } from '@/components/icons/ClockIcon'
@@ -179,9 +180,12 @@ export function Progress({
             </button>
           )}
           {status === 'SUBMITTED' && (
-            <button type="button" className="btn btn-primary">
+            <Link
+              to={`/owner/projects/${project.id}/report`}
+              className="btn btn-primary"
+            >
               查看報告
-            </button>
+            </Link>
           )}
           {status === 'COMPLETED' && (
             <button
