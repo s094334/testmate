@@ -45,7 +45,7 @@ export function PassDialog({
           >
             <DialogClose className="btn btn-secondary">再看一下</DialogClose>
             <DialogClose onClick={onConfirm} className="btn btn-primary">
-              確定通過
+              通過
             </DialogClose>
           </div>
         </DialogPopup>
