@@ -10,7 +10,6 @@ export function BugReports({
 }: {
   bugs: ReportBug[]
   setBugs: (bugs: ReportBug[]) => void
-  // The report's 測試環境, copied into each new bug
   env: string
   tried: boolean
 }) {

@@ -73,10 +73,7 @@ export function TestResults({
                 <span className="font-num text-ink-subtle desktop:pt-2 text-[22px] font-semibold">
                   {no}
                 </span>
-                {!item.custom && (
-                  <b className="desktop:pt-2 text-[18px]">{item.title}</b>
-                )}
-                {item.custom && (
+                {items.length > 1 && (
                   <button
                     type="button"
                     onClick={() =>
@@ -90,25 +87,23 @@ export function TestResults({
                 )}
               </div>
 
-              {item.custom && (
-                <label className="desktop:col-start-2 desktop:row-start-1 flex flex-col gap-1.5">
-                  <span className="desktop:sr-only font-bold">
-                    測試項目
-                    <span className="text-status-dispute-text text-required ml-1.5">
-                      必填
-                    </span>
+              <label className="desktop:col-start-2 desktop:row-start-1 flex flex-col gap-1.5">
+                <span className="desktop:sr-only font-bold">
+                  測試項目
+                  <span className="text-status-dispute-text text-required ml-1.5">
+                    必填
                   </span>
-                  <input
-                    type="text"
-                    value={item.title}
-                    onChange={(event) =>
-                      update(index, { title: event.target.value })
-                    }
-                    placeholder="測試項目名稱"
-                    className={`bg-surface min-h-12 w-full rounded-md px-3 ${tried && !item.title.trim() ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
-                  />
-                </label>
-              )}
+                </span>
+                <input
+                  type="text"
+                  value={item.title}
+                  onChange={(event) =>
+                    update(index, { title: event.target.value })
+                  }
+                  placeholder="測試項目名稱"
+                  className={`bg-surface min-h-12 w-full rounded-md px-3 ${tried && !item.title.trim() ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
+                />
+              </label>
 
               <label className="flex flex-col gap-1.5">
                 <span className="desktop:sr-only font-bold">
@@ -241,7 +236,6 @@ export function TestResults({
               result: '',
               pass: null,
               bugRef: '',
-              custom: true,
               savedBugRef: '',
             },
           ])

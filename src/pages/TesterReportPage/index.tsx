@@ -18,25 +18,31 @@ export function TesterReportPage() {
   const detail = joinedProjectDetails[id]
   const draft = reportDrafts[id]
   const [env, setEnv] = useState(draft?.env ?? '')
-  // savedBugRef: the 相關 bug as last saved; the 跳到 links only show while it is unchanged
   const [items, setItems] = useState<(ReportItem & { savedBugRef: string })[]>(
     () =>
       (
-        draft?.items ??
-        (detail?.howToTest ?? '')
-          .split('\n')
-          .filter(Boolean)
-          .map((title): ReportItem => ({
-            title,
-            steps: '',
-            result: '',
-            pass: null,
-            bugRef: '',
-            custom: false,
-          }))
+        draft?.items ?? [
+          { title: '', steps: '', result: '', pass: null, bugRef: '' },
+        ]
       ).map((item) => ({ ...item, savedBugRef: item.bugRef }))
   )
-  const [bugs, setBugs] = useState<ReportBug[]>(draft?.bugs ?? [])
+  const [bugs, setBugs] = useState<ReportBug[]>(
+    draft?.bugs ?? [
+      {
+        type: 'Bug',
+        title: '',
+        env: '',
+        steps: '',
+        priority: '一般',
+        frequency: '每次都會發生',
+        location: '',
+        original: '',
+        languageIssue: '錯字',
+        suggestion: '',
+        files: [],
+      },
+    ]
+  )
   const [savedAt, setSavedAt] = useState(draft?.savedAt ?? '')
   const [tried, setTried] = useState(false)
   const [submitted, setSubmitted] = useState(false)

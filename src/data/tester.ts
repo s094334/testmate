@@ -388,7 +388,7 @@ export const joinedProjectDetails: Record<
   },
 }
 
-// One row of 測試結果. custom: added by the tester, not one of the project's items.
+// One row of 測試結果, all filled in by the tester.
 // bugRef: the BUG numbers as typed, e.g. 01、03 (only when pass is false)
 export type ReportItem = {
   title: string
@@ -396,7 +396,6 @@ export type ReportItem = {
   result: string
   pass: boolean | null
   bugRef: string
-  custom: boolean
 }
 
 // 語言 uses location, original, languageIssue and suggestion;
@@ -416,7 +415,7 @@ export type ReportBug = {
 }
 
 // Saved report drafts, by project id. A TESTING project without one starts
-// with an empty row for each line of howToTest.
+// with one empty row and one empty bug.
 export const reportDrafts: Record<
   string,
   { env: string; items: ReportItem[]; bugs: ReportBug[]; savedAt: string }
@@ -430,7 +429,6 @@ export const reportDrafts: Record<
         result: '列出 6 堂課，時間與地點都正確',
         pass: true,
         bugRef: '',
-        custom: false,
       },
       {
         title: '預約一堂課',
@@ -438,7 +436,6 @@ export const reportDrafts: Record<
         result: '按下確認後 App 閃退，重新開啟後沒有預約紀錄',
         pass: false,
         bugRef: '01、02',
-        custom: false,
       },
       {
         title: '額滿課程加入候補',
@@ -446,7 +443,6 @@ export const reportDrafts: Record<
         result: '',
         pass: null,
         bugRef: '',
-        custom: false,
       },
       {
         title: '取消預約',
@@ -454,7 +450,6 @@ export const reportDrafts: Record<
         result: '',
         pass: null,
         bugRef: '',
-        custom: false,
       },
       {
         title: '上課前一小時的提醒通知',
@@ -462,7 +457,6 @@ export const reportDrafts: Record<
         result: '',
         pass: null,
         bugRef: '',
-        custom: false,
       },
     ],
     bugs: [
