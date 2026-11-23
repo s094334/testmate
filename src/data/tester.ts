@@ -249,7 +249,7 @@ export const joinedProjectDetails: Record<
     howToTest:
       '加入購物車與修改數量\n套用優惠券後金額正確\n信用卡付款（測試卡號）\n訂單成立推播與 Email\n申請退貨流程',
     successCriteria:
-      '5 個項目都能順利完成，金額與訂單通知正確。\n發現問題時附上截圖與重現步驟。',
+      '5 個項目都能順利完成，金額與訂單通知正確。\n發現問題時附上截圖與重置步驟。',
   },
   p2: {
     rating: 4.8,
@@ -407,7 +407,7 @@ export type ReportBug = {
   env: string
   steps: string
   priority: '致命' | '嚴重' | '一般' | '輕微'
-  frequency: '每次都會發生' | '偶爾才發生'
+  frequency: '每次都會發生' | '偶爾才發生' | '無法穩定重置'
   location: string
   original: string
   languageIssue: '錯字' | '翻譯不自然' | '文字被截斷'
@@ -467,7 +467,7 @@ export const reportDrafts: Record<
         title: '確認預約後 App 閃退',
         env: 'Galaxy Tab S9、One UI 6、App 2.3.0',
         steps:
-          '重現步驟：\n1. 進入任一課程頁\n2. 按「預約」，再按「確認」\n目前結果：App 閃退，沒有建立預約\n預期結果：顯示預約成功，並出現在「我的預約」',
+          '重置步驟：\n1. 進入任一課程頁\n2. 按「預約」，再按「確認」\n目前結果：App 閃退，沒有建立預約\n預期結果：顯示預約成功，並出現在「我的預約」',
         priority: '致命',
         frequency: '每次都會發生',
         location: '',

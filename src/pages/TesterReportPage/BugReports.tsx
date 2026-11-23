@@ -180,7 +180,7 @@ export function BugReports({
 
                 <label className="flex flex-col gap-1.5">
                   <span className="font-bold">
-                    內容（重現步驟、目前結果與預期結果）
+                    內容（重置步驟、目前結果與預期結果）
                     <span className="text-status-dispute-text text-required ml-1.5">
                       必填
                     </span>
@@ -192,7 +192,7 @@ export function BugReports({
                       update(index, { steps: event.target.value })
                     }
                     placeholder={
-                      '重現步驟：\n1. 進入…\n2. 點擊…\n目前結果：…\n預期結果：…'
+                      '重置步驟：\n1. 進入…\n2. 點擊…\n目前結果：…\n預期結果：…'
                     }
                     className={`bg-surface w-full resize-y rounded-md px-3 py-2.5 ${tried && !bug.steps.trim() ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
                   />
