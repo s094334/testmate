@@ -14,6 +14,7 @@ import { OwnerHomePage } from '@/pages/OwnerHomePage'
 import { OwnerProjectNewPage } from '@/pages/OwnerProjectNewPage'
 import { OwnerProjectInfoPage } from '@/pages/OwnerProjectInfoPage'
 import { OwnerProjectPage } from '@/pages/OwnerProjectPage'
+import { OwnerReportPage } from '@/pages/OwnerReportPage'
 import { TesterHomePage } from '@/pages/TesterHomePage'
 import { TesterInvitePage } from '@/pages/TesterInvitePage'
 import { TesterProfilePage } from '@/pages/TesterProfilePage'
@@ -51,6 +52,7 @@ function App() {
           <Route path="projects/new" element={<OwnerProjectNewPage />} />
           <Route path="projects/:id" element={<OwnerProjectPage />} />
           <Route path="projects/:id/info" element={<OwnerProjectInfoPage />} />
+          <Route path="projects/:id/report" element={<OwnerReportPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

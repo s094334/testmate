@@ -1,6 +1,10 @@
 // Mock data shaped like the API (GET /api/auth/company and GET /api/auth/projects)
 
-import { type ProjectStatus } from '@/data/tester'
+import {
+  type ProjectStatus,
+  type ReportBug,
+  type ReportItem,
+} from '@/data/tester'
 import type { AvatarShape } from '../../shared/avatar-shapes'
 
 type Company = {
@@ -307,8 +311,14 @@ export type EngagementDetails = {
   // TESTING. submitDeadline is an ISO time with the offset; past it the report is overdue
   startedAt?: string
   submitDeadline?: string
-  // SUBMITTED
+  // SUBMITTED. reviewDeadline is an ISO time with the offset; past it the report
+  // passes on its own. rejectionCount is how many times the owner has returned it
+  // (rejection_count); the 3rd return moves the project to DISPUTED
   submittedAt?: string
+  reviewDeadline?: string
+  rejectionCount?: number
+  // DISPUTED. ISO time with the offset; both sides pick a result before it
+  disputeDeadline?: string
   // COMPLETED (before the first rating). ISO time with the offset
   rateDeadline?: string
 }
@@ -371,6 +381,9 @@ export const ownerEngagementDetails: Record<string, EngagementDetails> = {
       languages: ['中文', '英文', '日文'],
     },
     submittedAt: '2026/10/30',
+    reviewDeadline: '2026-11-26T23:59:00+08:00',
+    rejectionCount: 2,
+    disputeDeadline: '2026-11-30T23:59:00+08:00',
   },
   o3: {
     tester: {
@@ -414,5 +427,80 @@ export const ownerProjectInfo: Record<
     specialRequirements:
       '1. iOS 與 Android 都要測到，每種語言至少用其中一種測過。\n' +
       '2. 截圖請保留完整畫面，不要裁切。',
+  },
+}
+
+// Submitted reports the owner reviews, by project id. o6 is the report the
+// tester submitted for p3, with the same fields as the tester's report form.
+export const ownerReports: Record<
+  string,
+  { env: string; amount: string; items: ReportItem[]; bugs: ReportBug[] }
+> = {
+  o6: {
+    env: 'Windows 11、Chrome 130、Edge 130',
+    amount: 'NT$ 800',
+    items: [
+      {
+        title: '填寫試算表單並送出',
+        steps: '填入 35 歲、男性、保額 100 萬、20 年期，按「開始試算」',
+        result: '兩個瀏覽器都正常送出並顯示結果頁',
+        pass: true,
+        bugRef: '',
+      },
+      {
+        title: '欄位未填時的錯誤提示',
+        steps: '不填年齡直接按「開始試算」',
+        result: 'Chrome 顯示提示；Edge 的提示文字和輸入框重疊',
+        pass: false,
+        bugRef: '02，Edge 才會發生',
+      },
+      {
+        title: '試算結果金額',
+        steps: '用同一組條件在 Chrome 和 Edge 各試算一次',
+        result: 'Chrome 年繳 NT$ 18,240；Edge 顯示 NT$ 18,24',
+        pass: false,
+        bugRef: '01',
+      },
+      {
+        title: '下載試算結果 PDF',
+        steps: '在結果頁按「下載 PDF」',
+        result: 'PDF 內容與畫面上的金額相同',
+        pass: true,
+        bugRef: '',
+      },
+    ],
+    bugs: [
+      {
+        id: 'b1',
+        no: 1,
+        type: 'Bug',
+        title: 'Edge 的試算金額少一位數',
+        env: 'Windows 11、Edge 130',
+        steps:
+          '重置步驟：\n1. 用 Edge 開啟試算頁\n2. 填入 35 歲、男性、保額 100 萬、20 年期\n3. 按「開始試算」\n目前結果：年繳金額顯示 NT$ 18,24\n預期結果：顯示 NT$ 18,240，與 Chrome 相同',
+        priority: '嚴重',
+        frequency: '每次都會發生',
+        location: '',
+        original: '',
+        languageIssue: '錯字',
+        suggestion: '',
+        files: ['edge-result.png', 'chrome-result.png'],
+      },
+      {
+        id: 'b2',
+        no: 2,
+        type: '語言',
+        title: '',
+        env: '',
+        steps: '',
+        priority: '輕微',
+        frequency: '每次都會發生',
+        location: '試算表單、年齡欄位',
+        original: '請輸入年齡（需介於 18 至 65 歲之間）',
+        languageIssue: '文字被截斷',
+        suggestion: '請輸入 18–65 歲的年齡',
+        files: ['edge-age-hint.png'],
+      },
+    ],
   },
 }
