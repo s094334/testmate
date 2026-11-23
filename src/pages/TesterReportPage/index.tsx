@@ -9,6 +9,7 @@ import {
   type ReportBug,
   type ReportItem,
 } from '@/data/tester'
+import { Countdown } from '@/pages/TesterProjectPage/Countdown'
 import { BugReports } from './BugReports'
 import { TestResults } from './TestResults'
 
@@ -52,9 +53,6 @@ export function TesterReportPage() {
     return <Navigate to={`/tester/projects/${id}`} replace />
   }
 
-  const deadline = detail.submitDeadline
-    ? new Date(detail.submitDeadline)
-    : null
   const missing =
     !env.trim() ||
     items.some(
@@ -101,20 +99,16 @@ export function TesterReportPage() {
       </Link>
 
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="text-title-page min-w-0">提交測試報告</h1>
-          {deadline && (
-            <p className="flex flex-none flex-col items-end text-right">
-              <span className="text-ink-muted">到期日</span>
-              <span className="font-num tablet:text-[28px] text-[22px] leading-[1.2] font-semibold">
-                {deadline.getFullYear()}/
-                {String(deadline.getMonth() + 1).padStart(2, '0')}/
-                {String(deadline.getDate()).padStart(2, '0')}
-                <span className="ml-1 text-base font-medium">
-                  （{'日一二三四五六'[deadline.getDay()]}）
-                </span>
-              </span>
-            </p>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h1 className="min-w-0 text-[32px] leading-[1.3] font-bold">
+            提交測試報告
+          </h1>
+          {detail.submitDeadline && (
+            <Countdown
+              label="提交期限"
+              deadline={detail.submitDeadline}
+              className="tablet:items-end tablet:text-right flex flex-none flex-col"
+            />
           )}
         </div>
         <p className="text-ink-muted">
@@ -163,7 +157,7 @@ export function TesterReportPage() {
             </p>
           )}
 
-          <div className="border-ink tablet:justify-end flex flex-wrap items-center gap-4 border-t pt-4">
+          <div className="border-line tablet:justify-end flex flex-wrap items-center gap-4 border-t pt-4">
             {savedAt && (
               <span className="text-ink-muted tablet:basis-auto inline-flex basis-full items-center gap-1.5">
                 <CheckIcon className="text-tester-strong size-4.5" />
@@ -173,14 +167,14 @@ export function TesterReportPage() {
             <button
               type="button"
               onClick={save}
-              className="btn btn-secondary tablet:flex-none min-w-30 flex-1"
+              className="btn btn-secondary tablet:min-w-50 tablet:flex-none min-w-30 flex-1 px-4"
             >
               儲存
             </button>
             <button
               type="button"
               onClick={submit}
-              className="btn btn-primary tablet:flex-none min-w-50 flex-1"
+              className="btn btn-primary tablet:min-w-50 tablet:flex-none min-w-30 flex-1 px-4"
             >
               繳交測試報告
             </button>

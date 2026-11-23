@@ -360,7 +360,7 @@ export function BugReports({
             },
           ])
         }
-        className="btn border-ink bg-surface self-end border border-dashed px-5"
+        className="btn btn-secondary self-end"
       >
         <PlusIcon />
         新增 bug
