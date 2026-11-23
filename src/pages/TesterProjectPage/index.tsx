@@ -46,7 +46,7 @@ export function TesterProjectPage() {
             報告逾期
           </span>
         ) : (
-          <StatusTag status={project.status} needsAction={false} />
+          <StatusTag status={project.status} />
         )}
         <h1 className="text-subtitle">{project.name}</h1>
         <p className="text-ink-subtle flex flex-wrap items-center gap-1.5">
