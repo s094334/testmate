@@ -10,6 +10,7 @@ import { WarningIcon } from '@/components/icons/WarningIcon'
 import type { EngagementDetails, OwnerProject } from '@/data/owner'
 import { statusLabels, type ProjectStatus } from '@/data/tester'
 import { Countdown } from '@/pages/TesterProjectPage/Countdown'
+import { DisputeDialog } from './DisputeDialog'
 import { OverdueDialog } from './OverdueDialog'
 import { RateDialog, type Rating } from './RateDialog'
 import { SendEnvDialog } from './SendEnvDialog'
@@ -26,6 +27,7 @@ export function Progress({
   const [envDialogOpen, setEnvDialogOpen] = useState(false)
   const [envProvided, setEnvProvided] = useState(false)
   const [overdueDialogOpen, setOverdueDialogOpen] = useState(false)
+  const [disputeDialogOpen, setDisputeDialogOpen] = useState(false)
   const [rateDialogOpen, setRateDialogOpen] = useState(false)
   const [rating, setRating] = useState<Rating | null>(null)
   const [now] = useState(() => Date.now())
@@ -189,6 +191,15 @@ export function Progress({
               處理逾期
             </button>
           )}
+          {status === 'DISPUTED' && (
+            <button
+              type="button"
+              onClick={() => setDisputeDialogOpen(true)}
+              className="btn border-status-dispute-text bg-status-dispute-text text-surface"
+            >
+              爭議處理
+            </button>
+          )}
           {status === 'SUBMITTED' && (
             <Link
               to={`/owner/projects/${project.id}/report`}
@@ -226,6 +237,14 @@ export function Progress({
             <p className="text-ink-subtle tablet:text-right">
               {details.submittedAt} 已提交報告
             </p>
+          )}
+          {status === 'DISPUTED' && details.disputeDeadline && (
+            <Countdown
+              label="選擇期限"
+              deadline={details.disputeDeadline}
+              urgent
+              className="text-ink-subtle tablet:items-end tablet:text-right flex flex-col"
+            />
           )}
           {status === 'COMPLETED' && !rating && details.rateDeadline && (
             <Countdown
@@ -265,6 +284,16 @@ export function Progress({
           onOpenChange={setOverdueDialogOpen}
           testerName={tester.fullName}
           deadline={deadline}
+        />
+      )}
+
+      {status === 'DISPUTED' && details.disputeDeadline && (
+        <DisputeDialog
+          open={disputeDialogOpen}
+          onOpenChange={setDisputeDialogOpen}
+          testerName={tester.fullName}
+          testerEmail={tester.email}
+          deadline={details.disputeDeadline}
         />
       )}
 
