@@ -323,9 +323,7 @@ export function BugReports({
                     </button>
                   </span>
                 ))}
-                <label
-                  className={`text-ink-muted bg-surface has-focus-visible:outline-ink tablet:order-none tablet:basis-auto tablet:justify-start order-first inline-flex min-h-12 basis-full cursor-pointer items-center justify-center gap-1.5 rounded-md border border-dashed px-4 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 ${tried && bug.files.length === 0 ? 'border-status-dispute-text' : 'border-line-input'}`}
-                >
+                <label className="text-ink-muted bg-surface has-focus-visible:outline-ink tablet:order-none tablet:basis-auto tablet:justify-start border-line-input order-first inline-flex min-h-12 basis-full cursor-pointer items-center justify-center gap-1.5 rounded-md border border-dashed px-4 has-focus-visible:outline-2 has-focus-visible:outline-offset-2">
                   <input
                     type="file"
                     multiple
@@ -348,11 +346,6 @@ export function BugReports({
                   上傳
                 </label>
               </div>
-              {tried && bug.files.length === 0 && (
-                <p className="text-status-dispute-text">
-                  請至少上傳一個截圖或錄影
-                </p>
-              )}
             </div>
           </section>
         )

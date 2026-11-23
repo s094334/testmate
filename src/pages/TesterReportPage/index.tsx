@@ -64,14 +64,10 @@ export function TesterReportPage() {
         !item.steps.trim() ||
         !item.result.trim()
     ) ||
-    bugs.some(
-      (bug) =>
-        bug.files.length === 0 ||
-        (bug.type === '語言'
-          ? !bug.location.trim() ||
-            !bug.original.trim() ||
-            !bug.suggestion.trim()
-          : !bug.title.trim() || !bug.env.trim() || !bug.steps.trim())
+    bugs.some((bug) =>
+      bug.type === '語言'
+        ? !bug.location.trim() || !bug.original.trim() || !bug.suggestion.trim()
+        : !bug.title.trim() || !bug.env.trim() || !bug.steps.trim()
     )
 
   function save() {
@@ -157,7 +153,7 @@ export function TesterReportPage() {
           {tried && missing && (
             <p className="text-status-dispute-text">
               還有欄位沒填完：測試環境、每個測試結果的項目、步驟、結果與通過與否（不通過要填相關
-              bug），以及每個 bug 的必填欄位和截圖或錄影都要填寫。
+              bug），以及每個 bug 的必填欄位都要填寫。
             </p>
           )}
 
