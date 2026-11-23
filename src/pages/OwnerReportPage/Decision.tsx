@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { ReturnIcon } from '@/components/icons/ReturnIcon'
+import { PassDialog } from './PassDialog'
 
-export function Verdict({
+export function Decision({
   projectId,
   testerName,
   amount,
@@ -12,32 +13,33 @@ export function Verdict({
   testerName: string
   amount: string
 }) {
-  const [verdict, setVerdict] = useState<'reject' | 'pass' | null>(null)
+  const [decision, setDecision] = useState<'reject' | 'pass' | null>(null)
   const [reason, setReason] = useState('')
   const [tried, setTried] = useState(false)
   const [sent, setSent] = useState(false)
+  const [passDialogOpen, setPassDialogOpen] = useState(false)
 
   if (sent) {
     return (
       <section className="bg-surface border-ink tablet:px-8 tablet:py-10 flex flex-col items-center gap-3 rounded-md border px-4 py-8 text-center">
         <span
-          className={`inline-flex size-14 items-center justify-center rounded-full ${verdict === 'reject' ? 'bg-status-dispute-bg text-status-dispute-text' : 'bg-tester-soft text-tester-text'}`}
+          className={`inline-flex size-14 items-center justify-center rounded-full ${decision === 'reject' ? 'bg-status-dispute-bg text-status-dispute-text' : 'bg-tester-soft text-tester-text'}`}
         >
-          {verdict === 'reject' ? (
+          {decision === 'reject' ? (
             <ReturnIcon />
           ) : (
             <CheckIcon className="size-6" />
           )}
         </span>
         <h2 className="text-heading">
-          {verdict === 'reject' ? '已退回報告' : '已通過驗收'}
+          {decision === 'reject' ? '已退回報告' : '已通過驗收'}
         </h2>
         <p className="text-ink-muted">
-          {verdict === 'reject'
+          {decision === 'reject'
             ? `已寄信通知${testerName}，報告回到「測試中」，等對方修正後重新提交。`
             : `已撥款 ${amount} 給${testerName}，狀態改為「已完成」。`}
         </p>
-        {verdict === 'reject' && (
+        {decision === 'reject' && (
           <div className="bg-page border-line flex w-full flex-col gap-1 rounded-md border px-4 py-3.5 text-left">
             <span className="text-ink-subtle">需要修正的地方</span>
             <p className="whitespace-pre-line">{reason}</p>
@@ -61,17 +63,17 @@ export function Verdict({
         </legend>
         <div className="tablet:grid-cols-2 grid gap-3">
           <label
-            className={`has-focus-visible:outline-ink flex min-h-16 cursor-pointer items-center gap-3 rounded-[12px] px-4 py-3 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 ${verdict === 'reject' ? 'border-status-dispute-text bg-status-dispute-bg border-2' : 'border-line-input bg-surface border'}`}
+            className={`has-focus-visible:outline-ink flex min-h-16 cursor-pointer items-center gap-3 rounded-[12px] px-4 py-3 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 ${decision === 'reject' ? 'border-status-dispute-text bg-status-dispute-bg border-2' : 'border-line-input bg-surface border'}`}
           >
             <input
               type="radio"
-              name="verdict"
-              checked={verdict === 'reject'}
-              onChange={() => setVerdict('reject')}
+              name="decision"
+              checked={decision === 'reject'}
+              onChange={() => setDecision('reject')}
               className="sr-only"
             />
             <span
-              className={`text-status-dispute-text inline-flex size-10 flex-none items-center justify-center rounded-full ${verdict === 'reject' ? 'bg-surface' : 'bg-status-dispute-bg'}`}
+              className={`text-status-dispute-text inline-flex size-10 flex-none items-center justify-center rounded-full ${decision === 'reject' ? 'bg-surface' : 'bg-status-dispute-bg'}`}
             >
               <ReturnIcon />
             </span>
@@ -81,13 +83,13 @@ export function Verdict({
             </span>
           </label>
           <label
-            className={`has-focus-visible:outline-ink flex min-h-16 cursor-pointer items-center gap-3 rounded-[12px] px-4 py-3 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 ${verdict === 'pass' ? 'border-role bg-role-soft border-2' : 'border-line-input bg-surface border'}`}
+            className={`has-focus-visible:outline-ink flex min-h-16 cursor-pointer items-center gap-3 rounded-[12px] px-4 py-3 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 ${decision === 'pass' ? 'border-role bg-role-soft border-2' : 'border-line-input bg-surface border'}`}
           >
             <input
               type="radio"
-              name="verdict"
-              checked={verdict === 'pass'}
-              onChange={() => setVerdict('pass')}
+              name="decision"
+              checked={decision === 'pass'}
+              onChange={() => setDecision('pass')}
               className="sr-only"
             />
             <span className="bg-tester-soft text-tester-text inline-flex size-10 flex-none items-center justify-center rounded-full">
@@ -101,7 +103,7 @@ export function Verdict({
         </div>
       </fieldset>
 
-      {verdict === 'reject' && (
+      {decision === 'reject' && (
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-2">
             <span className="font-bold">
@@ -132,24 +134,33 @@ export function Verdict({
             onClick={() => (reason.trim() ? setSent(true) : setTried(true))}
             className="btn btn-primary tablet:self-end min-w-40"
           >
-            送出退回
+            退回報告
           </button>
         </div>
       )}
 
-      {verdict === 'pass' && (
+      {decision === 'pass' && (
         <div className="flex flex-col gap-4">
           <p className="text-ink-muted">
-            確認後會撥款報酬 <b className="text-ink">{amount}</b> 給{testerName}
-            ，狀態改為「已完成」。之後可以在測試進度給{testerName}評價。
+            確認通過後，會扣除平台費撥款報酬{' '}
+            <b className="text-ink">{amount}</b> 給{testerName}
+            ，狀態改為「已完成」。後續麻煩給{testerName}評價。
           </p>
           <button
             type="button"
-            onClick={() => setSent(true)}
+            onClick={() => setPassDialogOpen(true)}
             className="btn btn-primary tablet:self-end min-w-40"
           >
             確認通過
           </button>
+
+          <PassDialog
+            open={passDialogOpen}
+            onOpenChange={setPassDialogOpen}
+            onConfirm={() => setSent(true)}
+            testerName={testerName}
+            amount={amount}
+          />
         </div>
       )}
     </section>

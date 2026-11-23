@@ -8,8 +8,8 @@ import {
   ownerReports,
 } from '@/data/owner'
 import { BugReports } from './BugReports'
+import { Decision } from './Decision'
 import { TestResults } from './TestResults'
-import { Verdict } from './Verdict'
 
 export function OwnerReportPage() {
   const { id = '' } = useParams()
@@ -62,7 +62,7 @@ export function OwnerReportPage() {
 
       <BugReports bugs={report.bugs} />
 
-      <Verdict
+      <Decision
         projectId={id}
         testerName={details.tester.fullName}
         amount={report.amount}
