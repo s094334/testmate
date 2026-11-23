@@ -99,7 +99,7 @@ export const devices: Device[] = [
 ]
 
 // Projects the tester has joined. For finished projects, `due` is the end date.
-// needsAction: the tester has something to do (red "!" on the status, counted in the tab badge)
+// needsAction: the tester has something to do (counted in the red badge on the 參與的專案 tab)
 export const joinedProjects: {
   id: string
   name: string

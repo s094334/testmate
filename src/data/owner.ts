@@ -14,7 +14,7 @@ type Company = {
   address: string
 }
 
-type OwnerProject = {
+export type OwnerProject = {
   id: string
   name: string
   summary: string
@@ -29,7 +29,6 @@ type OwnerProject = {
     testerName: string
   } | null
   createdAt: string
-  needsAttention: boolean
 }
 
 // applied: applied by themselves; noreply: invited, no answer yet; declined: the owner declined
@@ -49,6 +48,20 @@ export type RecruitCandidate = {
   status: 'interest' | 'applied' | 'noreply' | 'declined'
   invitedAt?: string
 }
+
+// The picked tester, shown unmasked on 測試進度
+export type EngagedTester = Pick<
+  RecruitCandidate,
+  | 'fullName'
+  | 'email'
+  | 'avatarShape'
+  | 'rating'
+  | 'reviews'
+  | 'city'
+  | 'years'
+  | 'devices'
+  | 'languages'
+>
 
 export const owner: Company = {
   realName: '王大明',
@@ -209,39 +222,66 @@ export const ownerProjects: OwnerProject[] = [
     endsAt: '2026-11-19T15:59:59.000Z',
     engagement: null,
     createdAt: '2026-11-09T02:00:00.000Z',
-    needsAttention: true,
   },
   {
-    id: 'o4',
-    name: '會員集點功能測試',
-    summary: '集點、兌換與點數到期提醒的完整流程測試。',
+    id: 'o5',
+    name: '線上課程網站播放器測試',
+    summary: '影片播放、倍速與字幕切換，以及換章節後接著上次的進度播放。',
     details: {
       location: '遠端',
-      equipment: '自備手機',
-      testPeriod: '2026/11/01–2026/11/25',
+      equipment: '自備電腦',
+      testPeriod: '2026/11/28–2026/12/05',
     },
     recruitmentStatus: 'closed',
-    applicationCount: 4,
-    endsAt: '2026-10-31T15:59:59.000Z',
-    engagement: { id: 'e4', status: 'TESTING', testerName: '張家豪' },
-    createdAt: '2026-10-15T02:00:00.000Z',
-    needsAttention: false,
+    applicationCount: 3,
+    endsAt: '2026-11-20T15:59:59.000Z',
+    engagement: { id: 'e5', status: 'PENDING_PAYMENT', testerName: '哇哩勒' },
+    createdAt: '2026-11-10T02:00:00.000Z',
   },
   {
     id: 'o2',
-    name: '相簿備份 App 測試',
-    summary: '自動備份、大量上傳與相簿分享的穩定度測試。',
+    name: '電商 App 結帳回歸測試',
+    summary: '新版結帳流程的回歸測試，從加入購物車、優惠券、付款到訂單通知。',
     details: {
       location: '遠端',
       equipment: '自備手機',
-      testPeriod: '2026/10/01–2026/11/15',
+      testPeriod: '2026/11/01–2026/11/05',
     },
     recruitmentStatus: 'closed',
     applicationCount: 5,
-    endsAt: '2026-09-30T15:59:59.000Z',
-    engagement: { id: 'e2', status: 'FUNDED', testerName: '陳志明' },
-    createdAt: '2026-09-15T02:00:00.000Z',
-    needsAttention: true,
+    endsAt: '2026-10-25T15:59:59.000Z',
+    engagement: { id: 'e2', status: 'FUNDED', testerName: '哇哩勒' },
+    createdAt: '2026-10-15T02:00:00.000Z',
+  },
+  {
+    id: 'o4',
+    name: '會員中心改版易用性測試',
+    summary: '第一次使用的人能不能順利找到訂單、修改個人資料和查看點數。',
+    details: {
+      location: '遠端',
+      equipment: '自備手機',
+      testPeriod: '2026/11/01–2026/11/08',
+    },
+    recruitmentStatus: 'closed',
+    applicationCount: 4,
+    endsAt: '2026-10-25T15:59:59.000Z',
+    engagement: { id: 'e4', status: 'TESTING', testerName: '哇哩勒' },
+    createdAt: '2026-10-12T02:00:00.000Z',
+  },
+  {
+    id: 'o6',
+    name: '保險試算網頁跨瀏覽器測試',
+    summary: '保費試算網頁在不同瀏覽器的顯示、計算結果與 PDF 下載。',
+    details: {
+      location: '遠端',
+      equipment: '自備電腦',
+      testPeriod: '2026/10/24–2026/10/30',
+    },
+    recruitmentStatus: 'closed',
+    applicationCount: 2,
+    endsAt: '2026-10-18T15:59:59.000Z',
+    engagement: { id: 'e6', status: 'SUBMITTED', testerName: '哇哩勒' },
+    createdAt: '2026-10-05T02:00:00.000Z',
   },
   {
     id: 'o3',
@@ -257,9 +297,96 @@ export const ownerProjects: OwnerProject[] = [
     endsAt: '2026-08-31T15:59:59.000Z',
     engagement: { id: 'e3', status: 'COMPLETED', testerName: '林小美' },
     createdAt: '2026-08-15T02:00:00.000Z',
-    needsAttention: false,
   },
 ]
+
+export type EngagementDetails = {
+  tester: EngagedTester
+  // PENDING_PAYMENT
+  ndaSignedAt?: string
+  // TESTING. submitDeadline is an ISO time with the offset; past it the report is overdue
+  startedAt?: string
+  submitDeadline?: string
+  // SUBMITTED
+  submittedAt?: string
+  // COMPLETED (before the first rating). ISO time with the offset
+  rateDeadline?: string
+}
+
+// What 測試進度 shows for a project with an engagement, by project id.
+// o5, o2, o4 and o6 are the tester's p6, p1, p2 and p3 seen from the owner side.
+export const ownerEngagementDetails: Record<string, EngagementDetails> = {
+  o5: {
+    tester: {
+      fullName: '哇哩勒',
+      email: 'walile.test@gmail.com',
+      avatarShape: 'sparkle',
+      rating: 4.8,
+      reviews: 18,
+      city: '臺北市',
+      years: '1–2 年',
+      devices: ['iPhone 15', 'Galaxy Tab S9'],
+      languages: ['中文', '英文', '日文'],
+    },
+    ndaSignedAt: '2026/11/24',
+  },
+  o2: {
+    tester: {
+      fullName: '哇哩勒',
+      email: 'walile.test@gmail.com',
+      avatarShape: 'sparkle',
+      rating: 4.8,
+      reviews: 18,
+      city: '臺北市',
+      years: '1–2 年',
+      devices: ['iPhone 15', 'Galaxy Tab S9'],
+      languages: ['中文', '英文', '日文'],
+    },
+  },
+  o4: {
+    tester: {
+      fullName: '哇哩勒',
+      email: 'walile.test@gmail.com',
+      avatarShape: 'sparkle',
+      rating: 4.8,
+      reviews: 18,
+      city: '臺北市',
+      years: '1–2 年',
+      devices: ['iPhone 15', 'Galaxy Tab S9'],
+      languages: ['中文', '英文', '日文'],
+    },
+    startedAt: '2026/11/01',
+    submitDeadline: '2026-11-08T23:59:00+08:00',
+  },
+  o6: {
+    tester: {
+      fullName: '哇哩勒',
+      email: 'walile.test@gmail.com',
+      avatarShape: 'sparkle',
+      rating: 4.8,
+      reviews: 18,
+      city: '臺北市',
+      years: '1–2 年',
+      devices: ['iPhone 15', 'Galaxy Tab S9'],
+      languages: ['中文', '英文', '日文'],
+    },
+    submittedAt: '2026/10/30',
+  },
+  o3: {
+    tester: {
+      fullName: '林小美',
+      email: 'hsiaomei.lin@example.com',
+      avatarShape: 'halves',
+      rating: 4.4,
+      reviews: 3,
+      city: '臺南市',
+      years: '1–2 年',
+      devices: ['iPhone 13'],
+      languages: ['中文', '英文'],
+    },
+    rateDeadline: '2026-11-27T23:59:00+08:00',
+  },
+}
 
 // What 專案資訊 shows on top of ownerProjects, by project id
 export const ownerProjectInfo: Record<

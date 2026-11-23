@@ -33,7 +33,7 @@ export function TesterProjectPage() {
       </Link>
 
       <div className="flex flex-col items-start gap-3">
-        <StatusTag status={project.status} needsAction={false} />
+        <StatusTag status={project.status} />
         <h1 className="text-subtitle">{project.name}</h1>
         <p className="text-ink-subtle flex flex-wrap items-center gap-1.5">
           {project.owner}、
