@@ -47,7 +47,12 @@ export function TestResults({
       <div className="desktop:gap-0 desktop:overflow-hidden desktop:rounded-md desktop:border desktop:border-ink desktop:bg-surface flex flex-col gap-3">
         <div className="border-ink desktop:grid hidden grid-cols-[48px_1.1fr_2fr_2fr_220px_44px] gap-4 border-b px-6 py-3 font-bold">
           <span>#</span>
-          <span>測試項目</span>
+          <span>
+            測試項目
+            <span className="text-status-dispute-text text-required ml-1.5">
+              必填
+            </span>
+          </span>
           <span>
             詳細步驟
             <span className="text-status-dispute-text text-required ml-1.5">

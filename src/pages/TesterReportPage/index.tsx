@@ -128,6 +128,9 @@ export function TesterReportPage() {
                 必填
               </span>
             </label>
+            <p className="text-ink-subtle">
+              依序填寫裝置、系統版本、App 版本，用「、」隔開
+            </p>
             <input
               id="env"
               type="text"
@@ -136,9 +139,6 @@ export function TesterReportPage() {
               placeholder="例：iPhone 15、iOS 18.1、App 1.2.0"
               className={`bg-surface min-h-12 w-full rounded-md px-3 ${tried && !env.trim() ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
             />
-            <p className="text-ink-subtle">
-              依序填寫裝置、系統版本、App 版本，用「、」隔開
-            </p>
           </section>
 
           <TestResults
