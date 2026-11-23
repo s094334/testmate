@@ -6,6 +6,7 @@ import { type Rating } from './RateDialog'
 export function StatusBanner({
   project,
   detail,
+  overdue,
   rating,
   onOpenEnvDialog,
   onOpenDisputeDialog,
@@ -13,6 +14,7 @@ export function StatusBanner({
 }: {
   project: (typeof joinedProjects)[number]
   detail: (typeof joinedProjectDetails)[string]
+  overdue: boolean
   rating: Rating | null
   onOpenEnvDialog: () => void
   onOpenDisputeDialog: () => void
@@ -25,7 +27,9 @@ export function StatusBanner({
           PENDING_NDA: 'bg-role-soft text-role-text',
           PENDING_PAYMENT: 'bg-role-soft text-role-text',
           FUNDED: 'bg-role-soft text-role-text',
-          TESTING: 'bg-role-soft text-role-text',
+          TESTING: overdue
+            ? 'bg-status-dispute-bg text-status-dispute-text'
+            : 'bg-role-soft text-role-text',
           SUBMITTED: 'bg-role-soft text-role-text',
           DISPUTED: 'bg-status-dispute-bg text-status-dispute-text',
           COMPLETED: 'bg-role-soft text-role-text',
@@ -71,10 +75,20 @@ export function StatusBanner({
           報酬已由平台代管，收到測試環境後就能開始測試
         </p>
       )}
-      {project.status === 'TESTING' && (
+      {project.status === 'TESTING' && !overdue && (
         <p className="tablet:text-[18px] font-bold">
           依測試說明進行測試，完成後提交測試報告
         </p>
+      )}
+      {overdue && (
+        <div className="flex flex-col gap-1">
+          <p className="tablet:text-[18px] font-bold">
+            已超過提交期限，現在無法繳交，待負責人決定是否延期。
+          </p>
+          <p className="text-ink">
+            如果之前有儲存測試報告內容，會暫時保留，待確認延期後，可以繼續填寫。
+          </p>
+        </div>
       )}
       {project.status === 'SUBMITTED' && (
         <p className="tablet:text-[18px] font-bold">已送出，等負責人驗收</p>
@@ -158,13 +172,13 @@ export function StatusBanner({
           開始測試
         </button>
       )}
-      {project.status === 'TESTING' && (
-        <button
-          type="button"
+      {project.status === 'TESTING' && !overdue && (
+        <Link
+          to={`/tester/projects/${project.id}/report`}
           className="btn btn-primary tablet:inline-flex hidden min-w-40"
         >
           提交報告
-        </button>
+        </Link>
       )}
       {project.status === 'DISPUTED' && (
         <button

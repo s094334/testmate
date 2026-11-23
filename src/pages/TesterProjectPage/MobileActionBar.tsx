@@ -7,6 +7,7 @@ import { type Rating } from './RateDialog'
 export function MobileActionBar({
   project,
   detail,
+  overdue,
   rating,
   onOpenEnvDialog,
   onOpenDisputeDialog,
@@ -14,6 +15,7 @@ export function MobileActionBar({
 }: {
   project: (typeof joinedProjects)[number]
   detail: (typeof joinedProjectDetails)[string]
+  overdue: boolean
   rating: Rating | null
   onOpenEnvDialog: () => void
   onOpenDisputeDialog: () => void
@@ -83,10 +85,13 @@ export function MobileActionBar({
           開始測試
         </button>
       )}
-      {project.status === 'TESTING' && (
-        <button type="button" className="btn btn-primary flex-1 px-4">
+      {project.status === 'TESTING' && !overdue && (
+        <Link
+          to={`/tester/projects/${project.id}/report`}
+          className="btn btn-primary flex-1 px-4"
+        >
           提交報告
-        </button>
+        </Link>
       )}
       {project.status === 'DISPUTED' && (
         <button

@@ -20,6 +20,7 @@ import { TesterProfilePage } from '@/pages/TesterProfilePage'
 import { TesterNdaPage } from '@/pages/TesterNdaPage'
 import { TesterProjectPage } from '@/pages/TesterProjectPage'
 import { TesterProjectsPage } from '@/pages/TesterProjectsPage'
+import { TesterReportPage } from '@/pages/TesterReportPage'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="projects" element={<TesterProjectsPage />} />
           <Route path="projects/:id" element={<TesterProjectPage />} />
           <Route path="projects/:id/nda" element={<TesterNdaPage />} />
+          <Route path="projects/:id/report" element={<TesterReportPage />} />
         </Route>
         <Route path="owner" element={<OwnerLayout />}>
           <Route index element={<OwnerHomePage />} />
