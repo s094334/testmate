@@ -305,7 +305,7 @@ export function BugReports({
                 {bug.files.map((name, fileIndex) => (
                   <span
                     key={fileIndex}
-                    className="border-line bg-page inline-flex items-center gap-1 rounded-md border pl-3"
+                    className="border-line bg-page inline-flex min-w-0 items-center gap-1 rounded-md border pl-3 wrap-anywhere"
                   >
                     {name}
                     <button
@@ -325,7 +325,7 @@ export function BugReports({
                   </span>
                 ))}
                 <label
-                  className={`text-ink-muted bg-surface has-focus-visible:outline-ink inline-flex min-h-12 cursor-pointer items-center gap-1.5 rounded-md border border-dashed px-4 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 ${tried && bug.files.length === 0 ? 'border-status-dispute-text' : 'border-line-input'}`}
+                  className={`text-ink-muted bg-surface has-focus-visible:outline-ink tablet:order-none tablet:basis-auto tablet:justify-start order-first inline-flex min-h-12 basis-full cursor-pointer items-center justify-center gap-1.5 rounded-md border border-dashed px-4 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 ${tried && bug.files.length === 0 ? 'border-status-dispute-text' : 'border-line-input'}`}
                 >
                   <input
                     type="file"
