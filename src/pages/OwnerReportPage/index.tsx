@@ -85,6 +85,7 @@ export function OwnerReportPage() {
         projectId={id}
         testerName={details.tester.fullName}
         amount={report.amount}
+        thirdRejection={details.rejectionCount === 2}
       />
     </div>
   )

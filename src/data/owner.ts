@@ -316,6 +316,7 @@ export type EngagementDetails = {
   // (rejection_count); the 3rd return moves the project to DISPUTED
   submittedAt?: string
   reviewDeadline?: string
+  rejectionCount?: number
   // COMPLETED (before the first rating). ISO time with the offset
   rateDeadline?: string
 }
@@ -379,6 +380,7 @@ export const ownerEngagementDetails: Record<string, EngagementDetails> = {
     },
     submittedAt: '2026/10/30',
     reviewDeadline: '2026-11-26T23:59:00+08:00',
+    rejectionCount: 2,
   },
   o3: {
     tester: {

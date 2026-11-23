@@ -1,23 +1,28 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { ReturnIcon } from '@/components/icons/ReturnIcon'
 import { PassDialog } from './PassDialog'
+import { RejectDisputeDialog } from './RejectDisputeDialog'
 
 export function Decision({
   projectId,
   testerName,
   amount,
+  thirdRejection,
 }: {
   projectId: string
   testerName: string
   amount: string
+  thirdRejection: boolean
 }) {
+  const navigate = useNavigate()
   const [decision, setDecision] = useState<'reject' | 'pass' | null>(null)
   const [reason, setReason] = useState('')
   const [tried, setTried] = useState(false)
   const [sent, setSent] = useState(false)
   const [passDialogOpen, setPassDialogOpen] = useState(false)
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false)
 
   if (sent) {
     return (
@@ -37,7 +42,7 @@ export function Decision({
         <p className="text-ink-muted">
           {decision === 'reject'
             ? `已寄信通知${testerName}，報告回到「測試中」，等對方修正後重新提交。`
-            : `已撥款 ${amount} 給${testerName}，狀態改為「已完成」。`}
+            : `平台將扣除平台費撥款給${testerName}，狀態改為「已完成」。`}
         </p>
         {decision === 'reject' && (
           <div className="bg-page border-line flex w-full flex-col gap-1 rounded-md border px-4 py-3.5 text-left">
@@ -113,8 +118,10 @@ export function Decision({
               </span>
             </span>
             <span className="text-ink-subtle">
-              寫清楚是哪個測試項目或 bug、要補什麼；送出後會寄信通知
-              {testerName}，報告會回到「測試中」。
+              寫清楚是哪個測試項目或 bug、要補什麼；
+              {thirdRejection
+                ? `這是第 3 次退回，送出後會寄信通知${testerName}，專案會進入「爭議處理中」。`
+                : `送出後會寄信通知${testerName}，報告會回到「測試中」。`}
             </span>
             <textarea
               rows={5}
@@ -131,11 +138,26 @@ export function Decision({
           )}
           <button
             type="button"
-            onClick={() => (reason.trim() ? setSent(true) : setTried(true))}
+            onClick={() => {
+              if (!reason.trim()) setTried(true)
+              else if (thirdRejection) setRejectDialogOpen(true)
+              else setSent(true)
+            }}
             className="btn btn-primary tablet:self-end min-w-40"
           >
             退回報告
           </button>
+
+          <RejectDisputeDialog
+            open={rejectDialogOpen}
+            onOpenChange={setRejectDialogOpen}
+            onConfirm={() =>
+              navigate(`/owner/projects/${projectId}`, {
+                state: { disputed: true },
+              })
+            }
+            testerName={testerName}
+          />
         </div>
       )}
 

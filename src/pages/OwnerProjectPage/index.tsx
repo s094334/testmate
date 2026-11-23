@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router'
+import { Link, Navigate, useLocation, useParams } from 'react-router'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { InfoIcon } from '@/components/icons/InfoIcon'
 import {
@@ -12,6 +12,7 @@ import { Recruiting } from './Recruiting'
 
 export function OwnerProjectPage() {
   const { id = '' } = useParams()
+  const { state } = useLocation()
   const [chosen, setChosen] = useState<RecruitCandidate | null>(null)
   const project = ownerProjects.find((owned) => owned.id === id)
   const details = ownerEngagementDetails[id]
@@ -46,7 +47,7 @@ export function OwnerProjectPage() {
       {project.engagement && details && (
         <Progress
           project={project}
-          status={project.engagement.status}
+          status={state?.disputed ? 'DISPUTED' : project.engagement.status}
           details={details}
         />
       )}

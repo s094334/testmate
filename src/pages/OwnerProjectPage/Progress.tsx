@@ -105,6 +105,16 @@ export function Progress({
         </div>
       )}
 
+      {status === 'DISPUTED' && (
+        <div className="bg-status-dispute-bg flex gap-2.5 rounded-md px-5 py-4">
+          <WarningIcon className="text-status-dispute-text mt-[3px] size-5 flex-none" />
+          <p className="flex flex-col">
+            <b className="text-status-dispute-text">驗收結果有爭議</b>
+            請和{tester.fullName}協商後，回到平台選擇結果。
+          </p>
+        </div>
+      )}
+
       <div className="bg-surface tablet:flex-row tablet:items-start tablet:justify-between tablet:gap-6 tablet:px-7 tablet:py-6 flex flex-col gap-4 rounded-xl px-4 py-5 shadow-[0_2px_12px_rgb(30_30_28/6%)]">
         <div className="flex min-w-0 flex-col gap-2.5">
           <div className="flex items-center gap-3">
