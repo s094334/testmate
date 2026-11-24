@@ -5,7 +5,7 @@ import { StarIcon } from '@/components/icons/StarIcon'
 import { openProjects } from '@/data/openProjects'
 import { ProjectDetail } from './ProjectDetail'
 
-export function TesterProjectsPage() {
+export function TesterExplorePage() {
   // ?id= opens one project; the list below keeps its search and 載入更多 while it is open
   const [searchParams] = useSearchParams()
   const id = searchParams.get('id')
