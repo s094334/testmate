@@ -24,7 +24,7 @@ export function TesterInvitePage() {
       </Link>
 
       <div className="flex flex-col gap-3">
-        <h1>{project.name}</h1>
+        <h1 className="text-[32px] leading-[1.3] font-bold">{project.name}</h1>
         <span className="text-ink-subtle flex flex-wrap items-center gap-1.5">
           {project.owner}、
           <span className="text-star flex">

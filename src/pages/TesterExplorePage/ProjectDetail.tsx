@@ -1,6 +1,5 @@
 import { Link } from 'react-router'
 import { InfoPopover } from '@/components/InfoPopover'
-import { CheckIcon } from '@/components/icons/CheckIcon'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import type { OpenProject } from '@/data/openProjects'
@@ -25,7 +24,7 @@ export function ProjectDetail({
       </Link>
 
       <div className="flex flex-col gap-3">
-        <h1>{project.name}</h1>
+        <h1 className="text-[32px] leading-[1.3] font-bold">{project.name}</h1>
         <span className="text-ink-subtle flex flex-wrap items-center gap-1.5">
           {project.owner}、
           <span className="text-star flex">
@@ -126,8 +125,7 @@ export function ProjectDetail({
           {applied && (
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <b className="text-role-text">已送出申請，等專案負責人回覆</b>
-              <span className="btn btn-inactive min-w-40 cursor-default gap-1.5 rounded-md">
-                <CheckIcon className="size-4.5" />
+              <span className="btn btn-inactive min-w-40 cursor-default rounded-md">
                 已申請
               </span>
             </div>
@@ -156,14 +154,10 @@ export function ProjectDetail({
 
         {applied && (
           <>
-            <span className="btn btn-inactive cursor-default gap-1.5 rounded-md">
-              <CheckIcon className="size-4.5" />
+            <span className="btn btn-inactive cursor-default rounded-md">
               已申請
             </span>
-            <b className="text-role-text inline-flex items-center gap-1.5">
-              <CheckIcon className="size-4.5" />
-              已送出申請，等專案負責人回覆
-            </b>
+            <b className="text-role-text">已送出申請，等專案負責人回覆</b>
           </>
         )}
       </div>
