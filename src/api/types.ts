@@ -71,6 +71,31 @@ export type ProjectCard = {
   created_at: string
 }
 
+// 專案詳情, from GET /api/projects/{id}: everything in ProjectCard and more.
+// Written from worker/projects/lib/project.ts, not API.md, like ProjectCard.
+// closed and cancelled projects come back too.
+export type Project = ProjectCard & {
+  owner_id: string
+  languages: { name: string; native_required: boolean }[]
+  qa_experience_required: boolean
+  min_qa_years: 'under_1' | '1_to_2' | '3_to_5' | 'over_5' | null
+  test_mode: 'remote' | 'onsite'
+  test_city: string | null // null：遠端
+  start_date: string // YYYY-MM-DD
+  special_requirements: string | null
+  recruitment_status: 'recruiting' | 'closed' | 'cancelled'
+  viewer: { applied: boolean } | null // null：不是登入的測試人員
+  confidential: {
+    how_to_test: string
+    success_criteria: string
+    confidential_details: string | null
+    // 待清除的遺留欄位: the platform decided not to collect 測試環境說明, but
+    // the backend still sends it, always null. Do not show or send it.
+    environment_info: string | null
+    test_items: { id: string; title: string; steps: string; expected: string }[]
+  } | null // null：不是這個專案的負責人
+}
+
 // Sent to POST /api/projects. Written from worker/projects/create.ts, not API.md:
 // API.md「10. POST /api/projects」is older than the 發布專案 form.
 // confidential_details, environment_info and test_items are left out until the

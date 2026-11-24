@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { request } from './client'
-import type { ProjectCard } from './types'
+import type { Project, ProjectCard } from './types'
 
 export function useProjects() {
   return useQuery({
@@ -9,5 +9,12 @@ export function useProjects() {
       request<{ items: ProjectCard[]; next_cursor: string | null }>(
         '/api/projects'
       ),
+  })
+}
+
+export function useProject(id: string) {
+  return useQuery({
+    queryKey: ['projects', id],
+    queryFn: () => request<Project>(`/api/projects/${id}`),
   })
 }

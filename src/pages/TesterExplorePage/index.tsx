@@ -1,37 +1,32 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { useProjects } from '@/api/projects'
-import { useSession } from '@/api/session'
 import { useTags } from '@/api/tags'
 import { SearchIcon } from '@/components/icons/SearchIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
-import { openProjects } from '@/data/openProjects'
 import { ProjectDetail } from './ProjectDetail'
 
 export function TesterExplorePage() {
   // ?id= opens one project; the list below keeps its search and 載入更多 while it is open
   const [searchParams] = useSearchParams()
   const id = searchParams.get('id')
-  const { data: user } = useSession()
   const { data: projects, isPending, isError, isSuccess } = useProjects()
   const { data: deviceTags } = useTags('device')
   const [query, setQuery] = useState('')
   const [deviceTagId, setDeviceTagId] = useState('')
   const [shown, setShown] = useState(5)
   const [applied, setApplied] = useState<string[]>([])
-  const selected = openProjects.find((project) => project.id === id)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [id])
 
-  if (selected) {
+  if (id) {
     return (
       <ProjectDetail
-        project={selected}
-        canApply={user?.role === 'tester'}
-        applied={applied.includes(selected.id)}
-        onApply={() => setApplied([...applied, selected.id])}
+        id={id}
+        applied={applied.includes(id)}
+        onApply={() => setApplied([...applied, id])}
       />
     )
   }
