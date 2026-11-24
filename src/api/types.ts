@@ -43,6 +43,34 @@ export type Tag = {
   name: string
 }
 
+// One row of 搜尋專案, from GET /api/projects. Written from worker/projects/list.ts,
+// not API.md: API.md `Project` is older than the 發布專案 form.
+export type ProjectCard = {
+  id: string
+  name: string
+  summary: string
+  company: {
+    name: string
+    average_score: number | null // null：還沒有評價
+    rating_count: number
+  }
+  industry: Tag
+  interests: Tag[]
+  devices: {
+    id: string
+    device_tag: Tag | null // null：自訂裝置，名稱在 custom_name
+    brand: string | null
+    model: string | null
+    min_os_version: string | null
+    custom_name: string | null
+  }[]
+  end_date: string // YYYY-MM-DD
+  reward: number
+  report_days: number
+  application_count: number
+  created_at: string
+}
+
 // Sent to POST /api/projects. Written from worker/projects/create.ts, not API.md:
 // API.md「10. POST /api/projects」is older than the 發布專案 form.
 // confidential_details, environment_info and test_items are left out until the

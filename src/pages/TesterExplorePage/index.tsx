@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
+import { useProjects } from '@/api/projects'
 import { useSession } from '@/api/session'
+import { useTags } from '@/api/tags'
 import { SearchIcon } from '@/components/icons/SearchIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import { openProjects } from '@/data/openProjects'
@@ -11,8 +13,10 @@ export function TesterExplorePage() {
   const [searchParams] = useSearchParams()
   const id = searchParams.get('id')
   const { data: user } = useSession()
+  const { data: projects, isPending, isError, isSuccess } = useProjects()
+  const { data: deviceTags } = useTags('device')
   const [query, setQuery] = useState('')
-  const [platform, setPlatform] = useState('')
+  const [deviceTagId, setDeviceTagId] = useState('')
   const [shown, setShown] = useState(5)
   const [applied, setApplied] = useState<string[]>([])
   const selected = openProjects.find((project) => project.id === id)
@@ -33,12 +37,14 @@ export function TesterExplorePage() {
   }
 
   const keyword = query.trim().toLowerCase()
-  const matches = openProjects.filter(
+  const matches = (projects?.items ?? []).filter(
     (project) =>
-      (!platform ||
-        project.devices.some((device) => device.platform === platform)) &&
+      (!deviceTagId ||
+        project.devices.some(
+          (device) => device.device_tag?.id === deviceTagId
+        )) &&
       (!keyword ||
-        [project.name, project.owner, project.category]
+        [project.name, project.company.name, project.industry.name]
           .join(' ')
           .toLowerCase()
           .includes(keyword))
@@ -72,23 +78,36 @@ export function TesterExplorePage() {
         <label className="tablet:min-w-55 flex flex-col gap-1.5">
           <span className="font-bold">裝置</span>
           <select
-            value={platform}
+            value={deviceTagId}
             onChange={(event) => {
-              setPlatform(event.target.value)
+              setDeviceTagId(event.target.value)
               setShown(5)
             }}
             className="bg-surface border-line-input min-h-12 w-full rounded-md border px-3"
           >
             <option value="">全部裝置</option>
-            <option>iOS</option>
-            <option>Android</option>
-            <option>macOS</option>
-            <option>Windows</option>
+            {deviceTags?.items.map((tag) => (
+              <option key={tag.id} value={tag.id}>
+                {tag.name}
+              </option>
+            ))}
           </select>
         </label>
       </search>
 
       <div className="bg-surface border-ink overflow-hidden rounded-md border">
+        {isPending && (
+          <p className="text-ink-muted tablet:px-6 tablet:py-8 px-4 py-6">
+            載入中…
+          </p>
+        )}
+
+        {isError && (
+          <p className="text-ink-muted tablet:px-6 tablet:py-8 px-4 py-6">
+            專案載入失敗，請重新整理再試一次。
+          </p>
+        )}
+
         {matches.slice(0, shown).map((project) => (
           <Link
             key={project.id}
@@ -100,39 +119,53 @@ export function TesterExplorePage() {
                 {project.name}
               </h2>
               <span className="bg-platform-soft text-platform-strong rounded-[4px] px-2 font-bold">
-                {project.category}
+                {project.industry.name}
               </span>
             </div>
-            <p className="text-ink-muted">{project.intro}</p>
+            <p className="text-ink-muted">{project.summary}</p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <span className="text-ink-subtle">{project.owner}</span>
-              <span className="inline-flex items-center gap-1.5">
-                <span className="text-star flex">
-                  <StarIcon />
+              <span className="text-ink-subtle">{project.company.name}</span>
+              {project.company.average_score === null ? (
+                <span className="text-ink-subtle">尚無評價</span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="text-star flex">
+                    <StarIcon />
+                  </span>
+                  <b>{project.company.average_score}</b>
+                  <span className="text-ink-subtle">
+                    公司評價（{project.company.rating_count} 則）
+                  </span>
                 </span>
-                <b>{project.rating}</b>
-                <span className="text-ink-subtle">
-                  公司評價（{project.reviews} 則）
-                </span>
+              )}
+              <span className="text-ink-subtle">
+                截止 {project.end_date.replaceAll('-', '/')}
               </span>
-              <span className="text-ink-subtle">截止 {project.startDate}</span>
-              {project.devices.map((device) => (
+              {[
+                ...new Set(
+                  project.devices.map(
+                    (device) => device.device_tag?.name ?? device.custom_name
+                  )
+                ),
+              ].map((name) => (
                 <span
-                  key={device.name}
+                  key={name}
                   className="bg-tester-soft text-tester-text desktop:group-hover/row:bg-surface rounded-[4px] px-3 font-bold transition-colors duration-150 ease-out"
                 >
-                  {device.name}
+                  {name}
                 </span>
               ))}
             </div>
           </Link>
         ))}
 
-        {matches.length === 0 && (
+        {isSuccess && matches.length === 0 && (
           <p className="text-ink-muted tablet:px-6 tablet:py-8 px-4 py-6">
             {keyword
               ? `找不到符合「${query.trim()}」的專案，換個關鍵字或裝置試試。`
-              : '目前沒有這個裝置的專案，試試其他裝置。'}
+              : deviceTagId
+                ? '目前沒有這個裝置的專案，試試其他裝置。'
+                : '目前沒有招募中的專案。'}
           </p>
         )}
       </div>
