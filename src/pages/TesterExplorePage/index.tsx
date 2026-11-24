@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
+import { useSession } from '@/api/session'
 import { SearchIcon } from '@/components/icons/SearchIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import { openProjects } from '@/data/openProjects'
@@ -9,6 +10,7 @@ export function TesterExplorePage() {
   // ?id= opens one project; the list below keeps its search and 載入更多 while it is open
   const [searchParams] = useSearchParams()
   const id = searchParams.get('id')
+  const { data: user } = useSession()
   const [query, setQuery] = useState('')
   const [platform, setPlatform] = useState('')
   const [shown, setShown] = useState(5)
@@ -23,6 +25,7 @@ export function TesterExplorePage() {
     return (
       <ProjectDetail
         project={selected}
+        canApply={user?.role === 'tester'}
         applied={applied.includes(selected.id)}
         onApply={() => setApplied([...applied, selected.id])}
       />
@@ -42,7 +45,10 @@ export function TesterExplorePage() {
   )
 
   return (
-    <div className="max-w-page tablet:px-6 tablet:gap-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-5 px-4 pt-6 pb-12">
+    <div
+      data-role="tester"
+      className="max-w-page tablet:px-6 tablet:gap-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-5 px-4 pt-6 pb-12"
+    >
       <h1 className="text-[32px] leading-[1.3] font-bold">搜尋專案</h1>
 
       <search className="tablet:flex-row tablet:items-end tablet:justify-between flex flex-col gap-x-6 gap-y-3">

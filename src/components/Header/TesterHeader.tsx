@@ -18,7 +18,10 @@ export function TesterHeader() {
   const logout = useLogout()
 
   return (
-    <header className="bg-surface border-line sticky top-0 z-3 border-b">
+    <header
+      data-role="tester"
+      className="bg-surface border-line sticky top-0 z-3 border-b"
+    >
       <nav className="max-w-page tablet:gap-3 tablet:px-6 tablet:py-3 tablet:min-h-17 mx-auto flex min-h-15 items-center justify-between gap-2 py-2 pr-2 pl-4">
         <div className="flex min-w-0 items-center gap-8">
           <Link to="/tester" className="flex min-w-0 items-center">
@@ -42,8 +45,8 @@ export function TesterHeader() {
             我的檔案
           </Link>
           <Link
-            to="/tester/projects"
-            className={`tablet:block hidden py-2 ${pathname === '/tester/projects' ? 'font-bold shadow-[inset_0_-2px_0_var(--color-role)]' : 'hover:shadow-[inset_0_-2px_0_var(--color-tester)]'}`}
+            to="/projects"
+            className={`tablet:block hidden py-2 ${pathname === '/projects' ? 'font-bold shadow-[inset_0_-2px_0_var(--color-role)]' : 'hover:shadow-[inset_0_-2px_0_var(--color-tester)]'}`}
           >
             搜尋專案
           </Link>
@@ -86,11 +89,11 @@ export function TesterHeader() {
               </span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              render={<Link to="/tester/projects" />}
+              render={<Link to="/projects" />}
               className="focus:bg-platform-soft tablet:hidden min-h-12 rounded-none px-4 text-base"
             >
               <span
-                className={`py-2 ${pathname === '/tester/projects' ? 'font-bold shadow-[inset_0_-2px_0_var(--color-role)]' : ''}`}
+                className={`py-2 ${pathname === '/projects' ? 'font-bold shadow-[inset_0_-2px_0_var(--color-role)]' : ''}`}
               >
                 搜尋專案
               </span>
