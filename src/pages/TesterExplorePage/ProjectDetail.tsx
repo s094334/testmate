@@ -6,17 +6,22 @@ import type { OpenProject } from '@/data/openProjects'
 
 export function ProjectDetail({
   project,
+  canApply,
   applied,
   onApply,
 }: {
   project: OpenProject
+  canApply: boolean
   applied: boolean
   onApply: () => void
 }) {
   return (
-    <div className="max-w-page tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
+    <div
+      data-role="tester"
+      className="max-w-page tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12"
+    >
       <Link
-        to="/tester/projects"
+        to="/projects"
         className="link inline-flex min-h-11 items-center gap-1.5 self-start"
       >
         <ChevronDownIcon className="rotate-90" />
@@ -107,7 +112,7 @@ export function ProjectDetail({
             </b>
           </div>
 
-          {!applied && (
+          {canApply && !applied && (
             <div className="flex flex-col items-end gap-2">
               <button
                 type="button"
@@ -122,7 +127,7 @@ export function ProjectDetail({
             </div>
           )}
 
-          {applied && (
+          {canApply && applied && (
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <b className="text-role-text">已送出申請，等專案負責人回覆</b>
               <span className="btn btn-inactive min-w-40 cursor-default rounded-md">
@@ -141,7 +146,7 @@ export function ProjectDetail({
           </b>
         </div>
 
-        {!applied && (
+        {canApply && !applied && (
           <>
             <button type="button" onClick={onApply} className="btn btn-primary">
               申請
@@ -152,7 +157,7 @@ export function ProjectDetail({
           </>
         )}
 
-        {applied && (
+        {canApply && applied && (
           <>
             <span className="btn btn-inactive cursor-default rounded-md">
               已申請
