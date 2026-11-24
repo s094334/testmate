@@ -249,7 +249,7 @@ export const joinedProjectDetails: Record<
     howToTest:
       '加入購物車與修改數量\n套用優惠券後金額正確\n信用卡付款（測試卡號）\n訂單成立推播與 Email\n申請退貨流程',
     successCriteria:
-      '5 個項目都能順利完成，金額與訂單通知正確。\n發現問題時附上截圖與重現步驟。',
+      '5 個項目都能順利完成，金額與訂單通知正確。\n發現問題時附上截圖與重置步驟。',
   },
   p2: {
     rating: 4.8,
@@ -385,6 +385,117 @@ export const joinedProjectDetails: Record<
     endDate: '2026/12/05',
     pay: 'NT$ 900',
     payDeadline: '2026-11-27T23:59:00+08:00',
+  },
+}
+
+// One row of 測試結果, all filled in by the tester.
+// bugRef: the related bugs as typed by the tester, e.g. 01、03 (only when pass is false)
+export type ReportItem = {
+  title: string
+  steps: string
+  result: string
+  pass: boolean | null
+  bugRef: string
+}
+
+// 語言 uses location, original, languageIssue and suggestion;
+// every other type uses title, env and steps.
+// no: given when the bug is added; numbers of deleted bugs are never reused
+export type ReportBug = {
+  id: string
+  no: number
+  type: 'Bug' | '語言' | '建議' | '介面體驗' | '效能' | '其他'
+  title: string
+  env: string
+  steps: string
+  priority: '致命' | '嚴重' | '一般' | '輕微'
+  frequency: '每次都會發生' | '偶爾才發生' | '無法穩定重置'
+  location: string
+  original: string
+  languageIssue: '錯字' | '翻譯不自然' | '文字被截斷'
+  suggestion: string
+  files: string[]
+}
+
+// Saved report drafts, by project id. A TESTING project without one starts
+// with one empty row and one empty bug.
+export const reportDrafts: Record<
+  string,
+  { env: string; items: ReportItem[]; bugs: ReportBug[]; savedAt: string }
+> = {
+  p7: {
+    env: '',
+    items: [
+      {
+        title: '依日期與地點搜尋課程',
+        steps: '選擇 11/25、信義區，搜尋瑜伽課程',
+        result: '列出 6 堂課，時間與地點都正確',
+        pass: true,
+        bugRef: '',
+      },
+      {
+        title: '預約一堂課',
+        steps: '選一堂還有空位的課，按「預約」後再按「確認」',
+        result: '按下確認後 App 閃退，重新開啟後沒有預約紀錄',
+        pass: false,
+        bugRef: '01、02',
+      },
+      {
+        title: '額滿課程加入候補',
+        steps: '',
+        result: '',
+        pass: null,
+        bugRef: '',
+      },
+      {
+        title: '取消預約',
+        steps: '',
+        result: '',
+        pass: null,
+        bugRef: '',
+      },
+      {
+        title: '上課前一小時的提醒通知',
+        steps: '',
+        result: '',
+        pass: null,
+        bugRef: '',
+      },
+    ],
+    bugs: [
+      {
+        id: 'b1',
+        no: 1,
+        type: 'Bug',
+        title: '確認預約後 App 閃退',
+        env: 'Galaxy Tab S9、One UI 6、App 2.3.0',
+        steps:
+          '重置步驟：\n1. 進入任一課程頁\n2. 按「預約」，再按「確認」\n目前結果：App 閃退，沒有建立預約\n預期結果：顯示預約成功，並出現在「我的預約」',
+        priority: '致命',
+        frequency: '每次都會發生',
+        location: '',
+        original: '',
+        languageIssue: '錯字',
+        suggestion: '',
+        files: ['crash-01.mp4'],
+      },
+      {
+        id: 'b2',
+        no: 2,
+        type: '語言',
+        title: '',
+        env: '',
+        steps: '',
+        priority: '輕微',
+        frequency: '每次都會發生',
+        location: '預約確認視窗',
+        original: '確定要預約這堂課程程嗎？',
+        languageIssue: '錯字',
+        suggestion: '確定要預約這堂課程嗎？',
+        files: ['confirm-dialog.png'],
+      },
+    ],
+    savedAt: '2026/11/21 17:20',
   },
 }
 
