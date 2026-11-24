@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
-import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { SearchIcon } from '@/components/icons/SearchIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import { openProjects } from '@/data/openProjects'
@@ -44,7 +43,7 @@ export function TesterProjectsPage() {
 
   return (
     <div className="max-w-page tablet:px-6 tablet:gap-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-5 px-4 pt-6 pb-12">
-      <h1>搜尋專案</h1>
+      <h1 className="text-[32px] leading-[1.3] font-bold">搜尋專案</h1>
 
       <search className="tablet:flex-row tablet:items-end tablet:justify-between flex flex-col gap-x-6 gap-y-3">
         <label className="tablet:max-w-100 flex flex-1 flex-col gap-1.5">
@@ -85,65 +84,42 @@ export function TesterProjectsPage() {
 
       <div className="bg-surface border-ink overflow-hidden rounded-md border">
         {matches.slice(0, shown).map((project) => (
-          <article
+          <Link
             key={project.id}
-            className="border-line tablet:flex-row tablet:items-center tablet:gap-6 tablet:p-6 flex flex-col gap-3 border-t p-4 first:border-t-0"
+            to={`?id=${project.id}`}
+            className="group/row border-line -outline-offset-2 tablet:p-6 desktop:hover:bg-role-soft flex flex-col gap-3 border-t p-4 transition-colors duration-150 ease-out first:border-t-0"
           >
-            <div className="flex min-w-0 flex-1 flex-col gap-3">
-              <div className="tablet:flex-row tablet:flex-wrap tablet:items-center flex flex-col-reverse items-start gap-x-3 gap-y-2">
-                <h2 className="tablet:text-subheading text-[18px] leading-[1.4]">
-                  {project.name}
-                </h2>
-                <span className="bg-platform-soft text-platform-strong rounded-[4px] px-2 font-bold">
-                  {project.category}
+            <div className="tablet:flex-row tablet:flex-wrap tablet:items-center flex flex-col-reverse items-start gap-x-3 gap-y-2">
+              <h2 className="tablet:text-subheading text-[18px] leading-[1.4]">
+                {project.name}
+              </h2>
+              <span className="bg-platform-soft text-platform-strong rounded-[4px] px-2 font-bold">
+                {project.category}
+              </span>
+            </div>
+            <p className="text-ink-muted">{project.intro}</p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <span className="text-ink-subtle">{project.owner}</span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="text-star flex">
+                  <StarIcon />
                 </span>
-              </div>
-              <p className="text-ink-muted">{project.intro}</p>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <span className="text-ink-subtle">{project.owner}</span>
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="text-star flex">
-                    <StarIcon />
-                  </span>
-                  <b>{project.rating}</b>
-                  <span className="text-ink-subtle">
-                    公司評價（{project.reviews} 則）
-                  </span>
-                </span>
+                <b>{project.rating}</b>
                 <span className="text-ink-subtle">
-                  截止 {project.startDate}
+                  公司評價（{project.reviews} 則）
                 </span>
-                {project.devices.map((device) => (
-                  <span
-                    key={device.name}
-                    className="bg-tester-soft text-tester-text tablet:inline hidden rounded-[4px] px-3 font-bold"
-                  >
-                    {device.name}
-                  </span>
-                ))}
-              </div>
+              </span>
+              <span className="text-ink-subtle">截止 {project.startDate}</span>
+              {project.devices.map((device) => (
+                <span
+                  key={device.name}
+                  className="bg-tester-soft text-tester-text desktop:group-hover/row:bg-surface rounded-[4px] px-3 font-bold transition-colors duration-150 ease-out"
+                >
+                  {device.name}
+                </span>
+              ))}
             </div>
-            <div className="flex items-start justify-between gap-3">
-              <div className="tablet:hidden flex min-w-0 flex-wrap gap-2 pt-2.5">
-                {project.devices.map((device) => (
-                  <span
-                    key={device.name}
-                    className="bg-tester-soft text-tester-text rounded-[4px] px-3 font-bold"
-                  >
-                    {device.name}
-                  </span>
-                ))}
-              </div>
-              <Link
-                to={`?id=${project.id}`}
-                className="btn btn-secondary tablet:min-h-12 tablet:px-5 min-h-11 flex-none gap-2 px-4"
-              >
-                查看詳情
-                <ChevronDownIcon className="size-4.5 -rotate-90" />
-                <span className="sr-only">{project.name}</span>
-              </Link>
-            </div>
-          </article>
+          </Link>
         ))}
 
         {matches.length === 0 && (
