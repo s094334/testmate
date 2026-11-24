@@ -10,6 +10,7 @@ import { checkOrigin } from './http/origin'
 import { fail, validationFailed } from './http/response'
 import { createProject, createProjectRoute } from './projects/create'
 import { getProject, getProjectRoute } from './projects/get'
+import { listProjects, listProjectsRoute } from './projects/list'
 import { listTags, listTagsRoute } from './tags/list'
 
 const app = new OpenAPIHono<{ Bindings: Env }>({
@@ -28,6 +29,7 @@ app.openapi(getSessionRoute, getSession)
 app.openapi(getProfileRoute, getProfile)
 app.openapi(saveProfileRoute, saveProfile)
 app.openapi(createProjectRoute, createProject)
+app.openapi(listProjectsRoute, listProjects)
 app.openapi(getProjectRoute, getProject)
 app.openapi(listTagsRoute, listTags)
 
