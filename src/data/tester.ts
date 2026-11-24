@@ -523,7 +523,7 @@ export const invitedProjects = [
     owner: '小帳本',
     rating: 4.2,
     reviews: 5,
-    category: '金融',
+    category: '金融保險',
     pay: 'NT$ 1,000',
     replyBy: '2026/11/05',
     startDate: '2026/11/03',

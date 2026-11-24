@@ -20,7 +20,7 @@ import { TesterInvitePage } from '@/pages/TesterInvitePage'
 import { TesterProfilePage } from '@/pages/TesterProfilePage'
 import { TesterNdaPage } from '@/pages/TesterNdaPage'
 import { TesterProjectPage } from '@/pages/TesterProjectPage'
-import { TesterProjectsPage } from '@/pages/TesterProjectsPage'
+import { TesterExplorePage } from '@/pages/TesterExplorePage'
 import { TesterReportPage } from '@/pages/TesterReportPage'
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
           <Route index element={<TesterHomePage />} />
           <Route path="invites/:id" element={<TesterInvitePage />} />
           <Route path="profile" element={<TesterProfilePage />} />
-          <Route path="projects" element={<TesterProjectsPage />} />
+          <Route path="projects" element={<TesterExplorePage />} />
           <Route path="projects/:id" element={<TesterProjectPage />} />
           <Route path="projects/:id/nda" element={<TesterNdaPage />} />
           <Route path="projects/:id/report" element={<TesterReportPage />} />
