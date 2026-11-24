@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import { AppLayout } from '@/layouts/AppLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { OwnerLayout } from '@/layouts/OwnerLayout'
@@ -32,6 +32,7 @@ function App() {
           <Route path="how-it-works" element={<HowItWorksPage />} />
           <Route path="copyright" element={<CopyrightPage />} />
           <Route path="privacy" element={<PrivacyPage />} />
+          <Route path="projects" element={<TesterExplorePage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="login" element={<LoginPage />} />
@@ -41,7 +42,10 @@ function App() {
           <Route index element={<TesterHomePage />} />
           <Route path="invites/:id" element={<TesterInvitePage />} />
           <Route path="profile" element={<TesterProfilePage />} />
-          <Route path="projects" element={<TesterExplorePage />} />
+          <Route
+            path="projects"
+            element={<Navigate to="/projects" replace />}
+          />
           <Route path="projects/:id" element={<TesterProjectPage />} />
           <Route path="projects/:id/nda" element={<TesterNdaPage />} />
           <Route path="projects/:id/report" element={<TesterReportPage />} />

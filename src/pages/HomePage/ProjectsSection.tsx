@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { HomeProjectsBackground } from '@/components/backgrounds/HomeProjectsBackground'
 import { ArrowRightIcon } from '@/components/icons/ArrowRightIcon'
 import { MinusCircleIcon } from '@/components/icons/MinusCircleIcon'
@@ -12,15 +13,15 @@ export function ProjectsSection() {
           <div className="flex flex-col gap-1">
             <h2>目前專案</h2>
           </div>
-          <a
-            href="#"
+          <Link
+            to="/projects"
             className="group/all border-ink bg-surface tablet:inline-flex min-h-14 hidden items-center gap-3 rounded-full border pr-3 pl-6 font-bold whitespace-nowrap"
           >
             看全部專案
             <span className="bg-flow-arrow text-ink animate-nudge inline-flex size-8 items-center justify-center rounded-full transition-[translate] duration-250 group-hover/all:translate-x-1.5 group-hover/all:animate-none">
               <ArrowRightIcon />
             </span>
-          </a>
+          </Link>
         </div>
         <div className="tablet:grid tablet:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] tablet:gap-6 tablet:overflow-visible tablet:px-0 tablet:pb-0 flex scroll-px-4 snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2">
           {currentProjects.map((project) => (
@@ -73,29 +74,29 @@ export function ProjectsSection() {
                     {project.deadline}
                   </b>
                 </span>
-                <a
-                  href="#"
+                <Link
+                  to="/projects"
                   className="link underline-offset-5 group/case inline-flex min-h-11 items-center gap-2 font-bold whitespace-nowrap"
                 >
                   查看案件
                   <span className="transition-transform duration-150 ease-out group-hover/case:translate-x-1">
                     <ArrowRightIcon />
                   </span>
-                </a>
+                </Link>
               </div>
             </article>
           ))}
         </div>
         <div className="tablet:hidden flex px-4">
-          <a
-            href="#"
+          <Link
+            to="/projects"
             className="group/all border-ink bg-surface flex min-h-12 flex-1 items-center justify-center gap-3 rounded-full border pr-2 pl-4 font-bold whitespace-nowrap"
           >
             看全部專案
             <span className="bg-flow-arrow text-ink animate-nudge inline-flex size-8 items-center justify-center rounded-full transition-[translate] duration-250 group-hover/all:translate-x-1.5 group-hover/all:animate-none">
               <ArrowRightIcon />
             </span>
-          </a>
+          </Link>
         </div>
       </section>
     </div>
