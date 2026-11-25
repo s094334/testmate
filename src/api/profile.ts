@@ -15,8 +15,13 @@ export function useSaveProfile() {
   return useMutation({
     mutationFn: (body: SaveProfileBody) =>
       request<TesterProfile>('/api/auth/profile', { method: 'PUT', body }),
-    // The next tab to save builds its body from this, so it does not send back
-    // what was there before this save
-    onSuccess: (profile) => queryClient.setQueryData(['profile'], profile),
+    onSuccess: (profile) => {
+      // The next tab to save builds its body from this, so it does not send back
+      // what was there before this save
+      queryClient.setQueryData(['profile'], profile)
+      // The header's name is display_name from the session, worked out on the
+      // backend from the nickname and real name just saved
+      queryClient.invalidateQueries({ queryKey: ['session'] })
+    },
   })
 }

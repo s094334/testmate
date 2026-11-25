@@ -6,7 +6,7 @@ import { createDb, saveTogether } from '../db'
 import { companies, loginAttempts, testerProfiles, users } from '../db/schema'
 import { fail, ok } from '../http/response'
 import { hashPassword, verifyPassword } from './lib/password'
-import { newSession } from './lib/session'
+import { displayName, newSession } from './lib/session'
 
 const loginBody = z.object({
   email: z
@@ -89,8 +89,7 @@ export const login: RouteHandler<typeof loginRoute, { Bindings: Env }> = async (
       passwordHash: users.passwordHash,
       passwordSalt: users.passwordSalt,
       passwordIterations: users.passwordIterations,
-      // A tester has a tester profile, an owner has a company; never both
-      displayName: sql<string>`coalesce(${testerProfiles.realName}, ${companies.realName})`,
+      displayName,
     })
     .from(users)
     .leftJoin(testerProfiles, eq(testerProfiles.userId, users.id))

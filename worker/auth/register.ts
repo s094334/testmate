@@ -200,7 +200,11 @@ export const register: RouteHandler<
         id: userId,
         email: body.email,
         role: body.role,
-        display_name: body.profile.real_name,
+        // Same as displayName in lib/session.ts; a tester's nickname is never '' here
+        display_name:
+          body.role === 'tester'
+            ? body.profile.nickname
+            : body.profile.real_name,
         avatar_shape: avatarShape,
       },
       201
