@@ -3,6 +3,7 @@ import { and, eq, inArray } from 'drizzle-orm'
 import { cities } from '../../shared/cities'
 import { createDb, insertRows, saveTogether } from '../db'
 import {
+  minQaYearsOptions,
   tags,
   testerDevices,
   testerProfileTags,
@@ -10,7 +11,12 @@ import {
 } from '../db/schema'
 import { requireAuth, requireRole, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
-import { findTesterProfile, testerProfileSchema } from './lib/profile'
+import {
+  findTesterProfile,
+  nicknameField,
+  qaYearsOf,
+  testerProfileSchema,
+} from './lib/profile'
 
 const saveProfileBody = z
   .object(
@@ -20,6 +26,7 @@ const saveProfileBody = z
         .trim()
         .min(1, '請輸入姓名')
         .max(50, '姓名最多 50 字'),
+      nickname: nicknameField,
       city: z.enum(cities, { error: '請選擇縣市' }),
       // 0912-345-678 and 0912 345 678 are accepted and saved as 0912345678
       phone: z
@@ -38,10 +45,7 @@ const saveProfileBody = z
                 .trim()
                 .min(1, '請輸入公司名稱')
                 .max(100, '公司名稱最多 100 字'),
-              years: z
-                .int({ error: '年資須為整數' })
-                .min(1, '年資至少 1 年')
-                .max(50, '年資最多 50 年'),
+              years: z.enum(minQaYearsOptions, { error: '請選擇年資' }),
             },
             { error: '經驗格式錯誤' }
           ),
@@ -267,7 +271,7 @@ export const saveProfile: RouteHandler<
     return fail(c, 400, 'VALIDATION_FAILED', wrongTags[0].message, wrongTags)
   }
 
-  const qaYears = body.experiences.reduce((sum, { years }) => sum + years, 0)
+  const qaYears = qaYearsOf(body.experiences)
 
   // Profile, devices and tags are saved together or not at all
   await saveTogether(db, [
@@ -278,6 +282,7 @@ export const saveProfile: RouteHandler<
       .values({
         userId: user.id,
         realName: body.real_name,
+        nickname: body.nickname,
         phone: body.phone,
         city: body.city,
         hasQaExperience: body.has_qa_experience,
@@ -289,6 +294,7 @@ export const saveProfile: RouteHandler<
         target: testerProfiles.userId,
         set: {
           realName: body.real_name,
+          nickname: body.nickname,
           phone: body.phone,
           city: body.city,
           hasQaExperience: body.has_qa_experience,
