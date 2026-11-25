@@ -22,10 +22,10 @@ const saveProfileBody = z
   .object(
     {
       real_name: z
-        .string({ error: '請輸入姓名' })
+        .string({ error: '請輸入真實姓名' })
         .trim()
-        .min(1, '請輸入姓名')
-        .max(50, '姓名最多 50 字'),
+        .min(1, '請輸入真實姓名')
+        .max(50, '真實姓名最多 50 字'),
       nickname: nicknameField,
       city: z.enum(cities, { error: '請選擇縣市' }),
       // 0912-345-678 and 0912 345 678 are accepted and saved as 0912345678

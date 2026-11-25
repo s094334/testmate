@@ -1,25 +1,36 @@
 import { useState } from 'react'
 import { useFieldArray, useForm, useWatch } from 'react-hook-form'
+import { ApiError } from '@/api/client'
+import { useSaveProfile } from '@/api/profile'
+import type { TesterProfile } from '@/api/types'
 import { CloseIcon } from '@/components/icons/CloseIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
-import { tester } from '@/data/tester'
+import { toSaveProfileBody } from './profileBody'
 
 type FormValues = {
   hasExperience: 'yes' | 'no'
-  jobs: { years: string; company: string }[]
+  jobs: TesterProfile['experiences']
 }
 
-export function Experience() {
+export function Experience({ profile }: { profile: TesterProfile }) {
   const {
     register,
     handleSubmit,
     control,
     clearErrors,
+    setError,
     formState: { errors },
   } = useForm<FormValues>({
     shouldFocusError: false,
-    defaultValues: tester.experience,
+    defaultValues: {
+      hasExperience: profile.has_qa_experience ? 'yes' : 'no',
+      // One empty row is ready for when 有 QA 經驗 is picked
+      jobs:
+        profile.experiences.length > 0
+          ? profile.experiences
+          : [{ years: 'under_1', company: '' }],
+    },
   })
 
   const { fields, append, remove } = useFieldArray({ control, name: 'jobs' })
@@ -27,9 +38,50 @@ export function Experience() {
   const hasExperience = useWatch({ control, name: 'hasExperience' })
 
   const [saved, setSaved] = useState(false)
+  const saveProfile = useSaveProfile()
 
   const save = handleSubmit(
-    () => setSaved(true),
+    (values) => {
+      setSaved(false)
+      // Every save sends the nickname too, and the backend rejects an empty one
+      if (profile.nickname === '') {
+        setError('root', { message: '請先到基本資料填寫暱稱' })
+        return
+      }
+      saveProfile.mutate(
+        {
+          ...toSaveProfileBody(profile),
+          has_qa_experience: values.hasExperience === 'yes',
+          // The rows stay on screen when 沒有經驗 is picked, but are not saved
+          experiences: values.hasExperience === 'yes' ? values.jobs : [],
+        },
+        {
+          onSuccess: () => setSaved(true),
+          onError: (error) => {
+            if (!(error instanceof ApiError)) {
+              setError('root', { message: '無法連線，請稍後再試' })
+              return
+            }
+            if (error.code !== 'VALIDATION_FAILED') {
+              setError('root', { message: error.message })
+              return
+            }
+            error.details.forEach((detail) => {
+              const index = detail.field.match(
+                /^experiences\[(\d+)\]\.company$/
+              )?.[1]
+              if (index !== undefined) {
+                setError(`jobs.${Number(index)}.company`, {
+                  message: detail.message,
+                })
+              } else {
+                setError('root', { message: detail.message })
+              }
+            })
+          },
+        }
+      )
+    },
     () => setSaved(false)
   )
 
@@ -109,10 +161,10 @@ export function Experience() {
                       })}
                       className="border-line-input bg-surface min-h-12 w-full rounded-md border px-3"
                     >
-                      <option>未滿 1 年</option>
-                      <option>1–2 年</option>
-                      <option>3–5 年</option>
-                      <option>超過 5 年</option>
+                      <option value="under_1">未滿 1 年</option>
+                      <option value="1_to_2">1–2 年</option>
+                      <option value="3_to_5">3–5 年</option>
+                      <option value="over_5">超過 5 年</option>
                     </select>
                   </div>
 
@@ -151,7 +203,7 @@ export function Experience() {
             <button
               type="button"
               onClick={() => {
-                append({ years: '未滿 1 年', company: '' })
+                append({ years: 'under_1', company: '' })
                 setSaved(false)
               }}
               className="btn btn-secondary self-start"
@@ -166,19 +218,35 @@ export function Experience() {
       <div className="border-line desktop:flex hidden items-center justify-end gap-3 border-t pt-6">
         <span className="text-ink-subtle">
           {saved && '已儲存'}
-          {!saved && errors.jobs && '還有必填欄位沒填'}
+          {!saved && errors.root?.message}
+          {!saved && !errors.root && errors.jobs && '還有必填欄位沒填'}
         </span>
-        <button type="button" onClick={save} className="btn btn-secondary px-8">
+        <button
+          type="button"
+          onClick={save}
+          disabled={saveProfile.isPending}
+          className="btn btn-secondary px-8"
+        >
           儲存
         </button>
       </div>
 
       <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 flex flex-col gap-2 rounded-b-md border-t px-4 py-3">
         {saved && <span className="text-tester-text">已儲存</span>}
-        {!saved && errors.jobs && (
+        {!saved && errors.root && (
+          <span className="text-status-dispute-text">
+            {errors.root.message}
+          </span>
+        )}
+        {!saved && !errors.root && errors.jobs && (
           <span className="text-status-dispute-text">還有必填欄位沒填</span>
         )}
-        <button type="button" onClick={save} className="btn btn-secondary px-4">
+        <button
+          type="button"
+          onClick={save}
+          disabled={saveProfile.isPending}
+          className="btn btn-secondary px-4"
+        >
           儲存
         </button>
       </div>

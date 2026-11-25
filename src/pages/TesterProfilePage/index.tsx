@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
+import { useProfile } from '@/api/profile'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { devices, tester } from '@/data/tester'
 import { BasicInfo } from './BasicInfo'
 import { Devices } from './Devices'
 import { Experience } from './Experience'
@@ -14,8 +14,19 @@ export function TesterProfilePage() {
       (value) => value === params.get('tab')
     ) ?? 'basic'
   )
-  const [deviceList, setDeviceList] = useState(devices)
-  const [interestList, setInterestList] = useState(tester.interests)
+  const { data: profile, isPending } = useProfile()
+
+  if (!profile) {
+    return (
+      <div className="max-w-page tablet:px-6 desktop:gap-8 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
+        <div className="bg-surface border-ink rounded-md border">
+          <p className="text-ink-muted tablet:px-6 tablet:py-8 px-4 py-6">
+            {isPending ? '載入中…' : '檔案載入失敗，請重新整理再試一次。'}
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-page tablet:px-6 desktop:gap-8 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
@@ -52,16 +63,16 @@ export function TesterProfilePage() {
         >
           {/* keepMounted: what was typed stays when switching to another tab and back */}
           <TabsContent value="basic" keepMounted>
-            <BasicInfo />
+            <BasicInfo profile={profile} />
           </TabsContent>
           <TabsContent value="experience" keepMounted>
-            <Experience />
+            <Experience profile={profile} />
           </TabsContent>
           <TabsContent value="devices" keepMounted>
-            <Devices devices={deviceList} onChange={setDeviceList} />
+            <Devices profile={profile} />
           </TabsContent>
           <TabsContent value="interests" keepMounted>
-            <Interests interests={interestList} onChange={setInterestList} />
+            <Interests profile={profile} />
           </TabsContent>
         </div>
       </Tabs>
