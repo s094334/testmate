@@ -110,20 +110,22 @@ export function ProjectDetail({
               <div className="flex flex-col gap-0.5">
                 <dt className="text-ink-subtle">設備</dt>
                 <dd className="text-body-large font-bold">
-                  {project.devices.map((device) => (
-                    <span key={device.id} className="block">
-                      {[
-                        device.device_tag?.name,
-                        device.brand,
-                        device.model,
-                        device.custom_name,
-                      ]
-                        .filter(Boolean)
-                        .join('、')}
-                      {device.min_os_version &&
-                        `、${device.min_os_version} 以上`}
-                    </span>
-                  ))}
+                  {project.devices.length === 0
+                    ? '不限裝置'
+                    : project.devices.map((device) => (
+                        <span key={device.id} className="block">
+                          {[
+                            device.device_tag?.name,
+                            device.brand,
+                            device.model,
+                            device.custom_name,
+                          ]
+                            .filter(Boolean)
+                            .join('、')}
+                          {device.min_os_version &&
+                            `、${device.min_os_version} 以上`}
+                        </span>
+                      ))}
                 </dd>
               </div>
               <div className="flex flex-col gap-0.5">
