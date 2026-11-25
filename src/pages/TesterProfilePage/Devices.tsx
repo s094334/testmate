@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import { ApiError } from '@/api/client'
+import { useSaveProfile } from '@/api/profile'
+import { useTags } from '@/api/tags'
+import type { TesterProfile } from '@/api/types'
 import { AddedDevices } from '@/components/Devices/AddedDevices'
 import { CustomDeviceForm } from '@/components/Devices/CustomDeviceForm'
 import { PickDeviceForm } from '@/components/Devices/PickDeviceForm'
@@ -9,16 +13,42 @@ import { TabletIcon } from '@/components/icons/TabletIcon'
 import { TvIcon } from '@/components/icons/TvIcon'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Device } from '@/data/tester'
+import { devicesOf, toDeviceBodies, toSaveProfileBody } from './profileBody'
 
-export function Devices({
-  devices,
-  onChange,
-}: {
-  devices: Device[]
-  onChange: (devices: Device[]) => void
-}) {
+export function Devices({ profile }: { profile: TesterProfile }) {
   const [type, setType] = useState<Device['type']>('phone')
+  const [devices, setDevices] = useState(() => devicesOf(profile))
   const [saved, setSaved] = useState(false)
+  const [saveError, setSaveError] = useState('')
+  const { data: deviceTags } = useTags('device')
+  const saveProfile = useSaveProfile()
+
+  function save() {
+    setSaved(false)
+    setSaveError('')
+    // Every save sends the nickname too, and the backend rejects an empty one
+    if (profile.nickname === '') {
+      setSaveError('請先到基本資料填寫暱稱')
+      return
+    }
+    if (!deviceTags) {
+      setSaveError('無法連線，請稍後再試')
+      return
+    }
+    saveProfile.mutate(
+      {
+        ...toSaveProfileBody(profile),
+        devices: toDeviceBodies(devices, deviceTags.items),
+      },
+      {
+        onSuccess: () => setSaved(true),
+        onError: (error) =>
+          setSaveError(
+            error instanceof ApiError ? error.message : '無法連線，請稍後再試'
+          ),
+      }
+    )
+  }
 
   return (
     <section className="desktop:gap-6 desktop:p-8 flex flex-col gap-5 px-4 py-5">
@@ -71,7 +101,7 @@ export function Devices({
               key={type}
               type={type}
               onAdd={(device) => {
-                onChange([...devices, device])
+                setDevices([...devices, device])
                 setSaved(false)
               }}
             />
@@ -80,7 +110,7 @@ export function Devices({
           {type === 'custom' && (
             <CustomDeviceForm
               onAdd={(device) => {
-                onChange([...devices, device])
+                setDevices([...devices, device])
                 setSaved(false)
               }}
             />
@@ -91,16 +121,20 @@ export function Devices({
       <AddedDevices
         devices={devices}
         onRemove={(id) => {
-          onChange(devices.filter((device) => device.id !== id))
+          setDevices(devices.filter((device) => device.id !== id))
           setSaved(false)
         }}
       />
 
       <div className="desktop:flex hidden items-center justify-end gap-3">
-        <span className="text-ink-subtle">{saved && '已儲存'}</span>
+        <span className="text-ink-subtle">
+          {saved && '已儲存'}
+          {saveError}
+        </span>
         <button
           type="button"
-          onClick={() => setSaved(true)}
+          onClick={save}
+          disabled={saveProfile.isPending}
           className="btn btn-secondary px-8"
         >
           儲存
@@ -109,9 +143,13 @@ export function Devices({
 
       <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 flex flex-col gap-2 rounded-b-md border-t px-4 py-3">
         {saved && <span className="text-tester-text">已儲存</span>}
+        {saveError && (
+          <span className="text-status-dispute-text">{saveError}</span>
+        )}
         <button
           type="button"
-          onClick={() => setSaved(true)}
+          onClick={save}
+          disabled={saveProfile.isPending}
           className="btn btn-secondary px-4"
         >
           儲存

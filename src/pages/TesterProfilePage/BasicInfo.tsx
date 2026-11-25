@@ -1,46 +1,90 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { ApiError } from '@/api/client'
+import { useSaveProfile } from '@/api/profile'
+import type { TesterProfile } from '@/api/types'
 import { LockIcon } from '@/components/icons/LockIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
+import { isPhone, phoneFormatMessage } from '../../../shared/phone'
 import { cityOptions } from '@/data/options'
-import { tester } from '@/data/tester'
 import { Languages } from './Languages'
 import { PayoutAccount } from './PayoutAccount'
+import { formFieldOf, toSaveProfileBody } from './profileBody'
 
 export type FormValues = {
   name: string
+  nickname: string
   city: string
   phone: string
   languages: string[]
   nativeLanguages: string[]
 }
 
-function isPhone(value: string) {
-  return /^09\d{8}$/.test(value.replace(/[\s-]/g, ''))
-}
-
-export function BasicInfo() {
+export function BasicInfo({ profile }: { profile: TesterProfile }) {
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<FormValues>({
     shouldFocusError: false,
     defaultValues: {
-      name: tester.name,
-      city: tester.city,
-      phone: tester.phone,
-      languages: tester.languages,
-      nativeLanguages: tester.nativeLanguages,
+      name: profile.real_name,
+      nickname: profile.nickname,
+      city: profile.city,
+      phone: profile.phone,
+      languages: profile.languages.map((language) => language.name),
+      nativeLanguages: profile.languages
+        .filter((language) => language.native)
+        .map((language) => language.name),
     },
   })
 
   const [saved, setSaved] = useState(false)
+  const saveProfile = useSaveProfile()
 
   const save = handleSubmit(
-    () => setSaved(true),
+    (values) => {
+      setSaved(false)
+      saveProfile.mutate(
+        {
+          ...toSaveProfileBody(profile),
+          real_name: values.name,
+          nickname: values.nickname,
+          city: values.city,
+          phone: values.phone,
+          languages: values.languages.map((language) => ({
+            name: language,
+            native: values.nativeLanguages.includes(language),
+          })),
+        },
+        {
+          onSuccess: () => setSaved(true),
+          onError: (error) => {
+            if (!(error instanceof ApiError)) {
+              setError('root', { message: '無法連線，請稍後再試' })
+              return
+            }
+            if (error.code !== 'VALIDATION_FAILED') {
+              setError('root', { message: error.message })
+              return
+            }
+            // Languages, and other tabs' parts sent as last saved, have no
+            // field here to show their message under
+            error.details.forEach((detail) => {
+              const field = formFieldOf(detail.field)
+              if (field) {
+                setError(field, { message: detail.message })
+              } else {
+                setError('root', { message: detail.message })
+              }
+            })
+          },
+        }
+      )
+    },
     () => setSaved(false)
   )
 
@@ -51,7 +95,7 @@ export function BasicInfo() {
       <div className="desktop:grid-cols-2 grid max-w-220 gap-x-6 gap-y-5">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="name" className="text-label">
-            姓名
+            真實姓名
             <span className="text-status-dispute-text text-required ml-1.5">
               必填
             </span>
@@ -62,7 +106,7 @@ export function BasicInfo() {
             autoComplete="name"
             required
             {...register('name', {
-              validate: (value) => value.trim() !== '' || '請填寫姓名',
+              validate: (value) => value.trim() !== '' || '請填寫真實姓名',
               onChange: () => setSaved(false),
             })}
             className={`bg-surface min-h-12 w-full rounded-md px-3 ${errors.name ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
@@ -76,6 +120,33 @@ export function BasicInfo() {
         </div>
 
         <div className="flex flex-col gap-1.5">
+          <label htmlFor="nickname" className="text-label">
+            暱稱
+            <span className="text-status-dispute-text text-required ml-1.5">
+              必填
+            </span>
+          </label>
+          <input
+            id="nickname"
+            type="text"
+            autoComplete="nickname"
+            required
+            maxLength={12}
+            {...register('nickname', {
+              validate: (value) => value.trim() !== '' || '請填寫暱稱',
+              onChange: () => setSaved(false),
+            })}
+            className={`bg-surface min-h-12 w-full rounded-md px-3 ${errors.nickname ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
+          />
+          {errors.nickname && (
+            <span className="text-status-dispute-text inline-flex items-center gap-1.5">
+              <WarningIcon />
+              {errors.nickname.message}
+            </span>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className="text-label">
             Email
           </label>
@@ -83,7 +154,7 @@ export function BasicInfo() {
             id="email"
             type="email"
             readOnly
-            value={tester.email}
+            value={profile.email}
             className="border-line bg-platform-soft text-ink-muted min-h-12 w-full rounded-md border px-3"
           />
           <span className="text-ink-subtle inline-flex items-center gap-1.5">
@@ -117,13 +188,12 @@ export function BasicInfo() {
           <input
             id="phone"
             type="tel"
-            inputMode="numeric"
+            inputMode="tel"
             autoComplete="tel"
             required
             placeholder="0912-345-678"
             {...register('phone', {
-              validate: (value) =>
-                isPhone(value) || '請輸入 09 開頭的 10 位數手機號碼',
+              validate: (value) => isPhone(value) || phoneFormatMessage,
               onChange: () => setSaved(false),
             })}
             className={`bg-surface min-h-12 w-full rounded-md px-3 ${errors.phone ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}
@@ -150,9 +220,18 @@ export function BasicInfo() {
       <div className="desktop:flex hidden items-center justify-end gap-3">
         <span className="text-ink-subtle">
           {saved && '已儲存'}
-          {!saved && (errors.name || errors.phone) && '還有必填欄位沒填'}
+          {!saved && errors.root?.message}
+          {!saved &&
+            !errors.root &&
+            (errors.name || errors.nickname || errors.phone) &&
+            '還有必填欄位沒填'}
         </span>
-        <button type="button" onClick={save} className="btn btn-secondary px-8">
+        <button
+          type="button"
+          onClick={save}
+          disabled={saveProfile.isPending}
+          className="btn btn-secondary px-8"
+        >
           儲存
         </button>
       </div>
@@ -162,10 +241,22 @@ export function BasicInfo() {
           收款帳戶's own bar (儲存帳戶) takes over. -mx-4 cancels the section padding so it spans the card */}
       <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 flex flex-col gap-2 border-t px-4 py-3">
         {saved && <span className="text-tester-text">已儲存</span>}
-        {!saved && (errors.name || errors.phone) && (
-          <span className="text-status-dispute-text">還有必填欄位沒填</span>
+        {!saved && errors.root && (
+          <span className="text-status-dispute-text">
+            {errors.root.message}
+          </span>
         )}
-        <button type="button" onClick={save} className="btn btn-secondary px-4">
+        {!saved &&
+          !errors.root &&
+          (errors.name || errors.nickname || errors.phone) && (
+            <span className="text-status-dispute-text">還有必填欄位沒填</span>
+          )}
+        <button
+          type="button"
+          onClick={save}
+          disabled={saveProfile.isPending}
+          className="btn btn-secondary px-4"
+        >
           儲存
         </button>
       </div>

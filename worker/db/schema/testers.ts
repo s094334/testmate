@@ -8,6 +8,7 @@ import {
 } from 'drizzle-orm/sqlite-core'
 import { users } from './accounts'
 import { id, timestamp } from './columns'
+import { minQaYearsOptions } from './projects'
 import { tags } from './tags'
 
 // One per tester, created at signup with real_name, phone and city.
@@ -17,17 +18,28 @@ export const testerProfiles = sqliteTable('tester_profiles', {
     .primaryKey()
     .references(() => users.id, { onDelete: 'cascade' }),
   realName: text('real_name').notNull(),
+  // Shown to others instead of the real name. Not unique. Empty for testers
+  // who signed up before nicknames existed, until they set one in the profile.
+  nickname: text('nickname').notNull().default(''),
   // 10 digits starting with 09, dashes and spaces already removed
   phone: text('phone').notNull(),
   city: text('city').notNull(),
   hasQaExperience: integer('has_qa_experience', { mode: 'boolean' })
     .notNull()
     .default(false),
+  // years is one of the 最低年資 codes of 發布專案. Profiles saved before that
+  // still have a number of years until the next save; findTesterProfile reads
+  // both. Only the TypeScript type changed, so there is no migration.
   experiences: text('experiences', { mode: 'json' })
-    .$type<{ company: string; years: number }[]>()
+    .$type<
+      {
+        company: string
+        years: (typeof minQaYearsOptions)[number] | number
+      }[]
+    >()
     .notNull()
     .default([]),
-  // The sum of experiences[].years, written on every save so SQL can use it
+  // qaYearsOf(experiences), written on every save so SQL can use it
   // (match_score in phase 8). Profiles saved before experiences existed keep
   // their old value until the next save.
   qaYears: integer('qa_years').notNull().default(0),
