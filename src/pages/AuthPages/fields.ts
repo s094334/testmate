@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form'
+import { isPhone, phoneFormatMessage } from '../../../shared/phone'
 import { cityOptions } from '@/data/options'
 import type { Device } from '@/data/tester'
 import { industries } from './data'
@@ -179,9 +180,7 @@ export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
     requiredMessage: '請填寫手機號碼',
     rules: {
       pattern: { value: /\S/, message: '請填寫手機號碼' },
-      validate: (value) =>
-        /^09\d{2}[-\s]?\d{3}[-\s]?\d{3}$/.test(value) ||
-        '請輸入 09 開頭的 10 位數手機號碼',
+      validate: (value) => isPhone(value) || phoneFormatMessage,
     },
   },
   {
@@ -216,9 +215,7 @@ export const ownerProfileFields: FieldConfig<OwnerProfileFormValues>[] = [
       // Spaces only counts as not filled in
       pattern: { value: /\S/, message: '請填寫手機號碼' },
       // 09 + 8 more digits; a hyphen or space between the groups is allowed
-      validate: (value) =>
-        /^09\d{2}[-\s]?\d{3}[-\s]?\d{3}$/.test(value) ||
-        '請輸入 09 開頭的 10 位數手機號碼',
+      validate: (value) => isPhone(value) || phoneFormatMessage,
     },
   },
 ]

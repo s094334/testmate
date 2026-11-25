@@ -5,6 +5,7 @@ import { useSaveProfile } from '@/api/profile'
 import type { TesterProfile } from '@/api/types'
 import { LockIcon } from '@/components/icons/LockIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
+import { isPhone, phoneFormatMessage } from '../../../shared/phone'
 import { cityOptions } from '@/data/options'
 import { Languages } from './Languages'
 import { PayoutAccount } from './PayoutAccount'
@@ -17,10 +18,6 @@ export type FormValues = {
   phone: string
   languages: string[]
   nativeLanguages: string[]
-}
-
-function isPhone(value: string) {
-  return /^09\d{8}$/.test(value.replace(/[\s-]/g, ''))
 }
 
 export function BasicInfo({ profile }: { profile: TesterProfile }) {
@@ -191,13 +188,12 @@ export function BasicInfo({ profile }: { profile: TesterProfile }) {
           <input
             id="phone"
             type="tel"
-            inputMode="numeric"
+            inputMode="tel"
             autoComplete="tel"
             required
             placeholder="0912-345-678"
             {...register('phone', {
-              validate: (value) =>
-                isPhone(value) || '請輸入 09 開頭的 10 位數手機號碼',
+              validate: (value) => isPhone(value) || phoneFormatMessage,
               onChange: () => setSaved(false),
             })}
             className={`bg-surface min-h-12 w-full rounded-md px-3 ${errors.phone ? 'border-status-dispute-text border-2' : 'border-line-input border'}`}

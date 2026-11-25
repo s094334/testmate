@@ -13,7 +13,7 @@ import {
 } from '../db/schema'
 import { fail, ok } from '../http/response'
 import { hashPassword } from './lib/password'
-import { nicknameField } from './lib/profile'
+import { nicknameField, phoneField } from './lib/profile'
 import { newSession } from './lib/session'
 
 // Fields both roles send. `role` decides which profile comes with them.
@@ -39,11 +39,7 @@ const profileFields = {
     .trim()
     .min(1, '請輸入姓名')
     .max(50, '姓名最多 50 字'),
-  // 0912-345-678 and 0912 345 678 are accepted and saved as 0912345678
-  phone: z
-    .string({ error: '請輸入手機號碼' })
-    .overwrite((value) => value.replace(/[\s-]/g, ''))
-    .regex(/^09[0-9]{8}$/, '手機號碼須為 09 開頭的 10 碼數字'),
+  phone: phoneField,
 }
 
 const profileError = (issue: { code?: string }) =>

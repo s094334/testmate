@@ -14,6 +14,7 @@ import { fail, ok } from '../http/response'
 import {
   findTesterProfile,
   nicknameField,
+  phoneField,
   qaYearsOf,
   testerProfileSchema,
 } from './lib/profile'
@@ -28,11 +29,7 @@ const saveProfileBody = z
         .max(50, '真實姓名最多 50 字'),
       nickname: nicknameField,
       city: z.enum(cities, { error: '請選擇縣市' }),
-      // 0912-345-678 and 0912 345 678 are accepted and saved as 0912345678
-      phone: z
-        .string({ error: '請輸入手機號碼' })
-        .overwrite((value) => value.replace(/[\s-]/g, ''))
-        .regex(/^09[0-9]{8}$/, '手機號碼格式錯誤'),
+      phone: phoneField,
       has_qa_experience: z
         .boolean({ error: '請選擇是否有 QA 經驗' })
         .default(false),

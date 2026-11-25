@@ -1,5 +1,10 @@
 import { z } from '@hono/zod-openapi'
 import { and, eq } from 'drizzle-orm'
+import {
+  isPhone,
+  normalizePhone,
+  phoneFormatMessage,
+} from '../../../shared/phone'
 import type { Db } from '../../db'
 import {
   minQaYearsOptions,
@@ -15,6 +20,12 @@ const tag = z.object({
   category: z.enum(tagCategories),
   name: z.string(),
 })
+
+// Both roles' signup and PUT /api/auth/profile. The forms check with the same isPhone.
+export const phoneField = z
+  .string({ error: '請輸入手機號碼' })
+  .overwrite(normalizePhone)
+  .refine(isPhone, phoneFormatMessage)
 
 // Signup and PUT /api/auth/profile both take it. Same as maxLength on both forms.
 export const nicknameField = z
