@@ -95,6 +95,27 @@ export type SaveProfileBody = {
   interest_tag_ids: string[]
 }
 
+// API.md `Company`, from GET and PUT /api/auth/company
+export type Company = {
+  real_name: string
+  email: string
+  phone: string // 10 碼數字，沒有 - 和空白
+  name: string // 公司名稱
+  tax_id: string | null
+  industry_tag: Tag
+  address: string
+}
+
+// Sent to PUT /api/auth/company
+export type SaveCompanyBody = {
+  real_name: string
+  phone: string
+  name: string
+  tax_id: string | null // 空字串視為沒填
+  industry_tag_id: string
+  address: string
+}
+
 // One row of 搜尋專案, from GET /api/projects. Written from worker/projects/list.ts,
 // not API.md: API.md `Project` is older than the 發布專案 form.
 export type ProjectCard = {
