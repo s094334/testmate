@@ -199,7 +199,7 @@ export const ownerProfileFields: FieldConfig<OwnerProfileFormValues>[] = [
     name: 'name',
     type: 'text',
     autoComplete: 'name',
-    placeholder: '例：哇哩勒',
+    placeholder: '例：王小明',
     requiredMessage: '請填寫真實姓名',
     rules: { pattern: { value: /\S/, message: '請填寫真實姓名' } },
   },
