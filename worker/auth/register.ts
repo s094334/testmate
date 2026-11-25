@@ -1,18 +1,17 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
-import { eq } from 'drizzle-orm'
 import { avatarShapes } from '../../shared/avatar-shapes'
 import { cities } from '../../shared/cities'
 import { createDb, isUniqueViolation, saveTogether } from '../db'
 import {
   companies,
   disputeAgreements,
-  tags,
   testerProfiles,
   users,
 } from '../db/schema'
 import { fail, ok } from '../http/response'
+import { companyFields, isIndustryTag } from './lib/company'
 import { hashPassword } from './lib/password'
-import { nicknameField, phoneField } from './lib/profile'
+import { nicknameField, phoneField, realNameField } from './lib/profile'
 
 // Fields both roles send. `role` decides which profile comes with them.
 const account = {
@@ -30,16 +29,7 @@ const account = {
   agreed: z.literal(true, { error: '請同意爭議處理流程' }),
 }
 
-// Every profile has a name and phone. A field of the other role is rejected, not ignored.
-const profileFields = {
-  real_name: z
-    .string({ error: '請輸入姓名' })
-    .trim()
-    .min(1, '請輸入姓名')
-    .max(50, '姓名最多 50 字'),
-  phone: phoneField,
-}
-
+// A field of the other role is rejected, not ignored
 const profileError = (issue: { code?: string }) =>
   issue.code === 'unrecognized_keys' ? '這個角色沒有這個欄位' : '請填寫基本資料'
 
@@ -51,7 +41,8 @@ const registerBody = z.discriminatedUnion(
       role: z.literal('tester'),
       profile: z.strictObject(
         {
-          ...profileFields,
+          real_name: realNameField,
+          phone: phoneField,
           nickname: nicknameField,
           city: z.enum(cities, { error: '請選擇縣市' }),
         },
@@ -61,28 +52,7 @@ const registerBody = z.discriminatedUnion(
     z.object({
       ...account,
       role: z.literal('owner'),
-      profile: z.strictObject(
-        {
-          ...profileFields,
-          name: z
-            .string({ error: '請輸入公司名稱' })
-            .trim()
-            .min(1, '請輸入公司名稱')
-            .max(100, '公司名稱最多 100 字'),
-          tax_id: z
-            .string({ error: '統一編號須為 8 碼數字' })
-            .regex(/^([0-9]{8})?$/, '統一編號須為 8 碼數字')
-            .nullish()
-            .transform((value) => value || null),
-          industry_tag_id: z.uuid({ error: '請選擇產業' }),
-          address: z
-            .string({ error: '請輸入地址' })
-            .trim()
-            .min(1, '請輸入地址')
-            .max(200, '地址最多 200 字'),
-        },
-        { error: profileError }
-      ),
+      profile: z.strictObject(companyFields, { error: profileError }),
     }),
   ],
   { error: '請選擇角色' }
@@ -128,19 +98,13 @@ export const register: RouteHandler<
   const body = c.req.valid('json')
   const db = createDb(c.env)
 
-  // Tags are seed data that no API changes, so the category read here
-  // cannot change before the batch below runs
-  if (body.role === 'owner') {
-    const [tag] = await db
-      .select({ category: tags.category })
-      .from(tags)
-      .where(eq(tags.id, body.profile.industry_tag_id))
-
-    if (tag?.category !== 'industry') {
-      return fail(c, 400, 'VALIDATION_FAILED', '請選擇產業', [
-        { field: 'profile.industry_tag_id', message: '請選擇產業' },
-      ])
-    }
+  if (
+    body.role === 'owner' &&
+    !(await isIndustryTag(db, body.profile.industry_tag_id))
+  ) {
+    return fail(c, 400, 'VALIDATION_FAILED', '請選擇產業', [
+      { field: 'profile.industry_tag_id', message: '請選擇產業' },
+    ])
   }
 
   const password = await hashPassword(body.password)
