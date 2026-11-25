@@ -18,7 +18,12 @@ export type RegisterBody =
       email: string
       password: string
       role: 'tester'
-      profile: { real_name: string; phone: string; city: string }
+      profile: {
+        real_name: string
+        nickname: string // 最多 12 字
+        phone: string
+        city: string
+      }
       agreed: true
     }
   | {

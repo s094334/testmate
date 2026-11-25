@@ -34,6 +34,7 @@ export type AccountFormValues = {
 
 export type TesterProfileFormValues = {
   name: string
+  nickname: string
   phone: string
   city: string
 }
@@ -150,13 +151,23 @@ export const loginFields: FieldConfig<LoginFormValues>[] = [
 
 export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
   {
-    label: '姓名',
+    label: '真實姓名',
     name: 'name',
     type: 'text',
     autoComplete: 'name',
-    placeholder: '例：哇哩勒',
+    placeholder: '例：王小明',
     requiredMessage: '請填寫真實姓名',
     rules: { pattern: { value: /\S/, message: '請填寫真實姓名' } },
+  },
+  {
+    label: '暱稱',
+    name: 'nickname',
+    type: 'text',
+    autoComplete: 'nickname',
+    maxLength: 12,
+    placeholder: '例：哇哩勒',
+    requiredMessage: '請填寫暱稱',
+    rules: { pattern: { value: /\S/, message: '請填寫暱稱' } },
   },
   {
     label: '手機號碼',

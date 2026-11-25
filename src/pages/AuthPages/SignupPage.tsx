@@ -43,6 +43,7 @@ export function SignupPage() {
   // The two profile forms are kept apart, so changing role never mixes their answers
   const [testerProfile, setTesterProfile] = useState<TesterProfileFormValues>({
     name: '',
+    nickname: '',
     phone: '',
     city: '',
   })
@@ -149,6 +150,7 @@ export function SignupPage() {
                 agreed: true,
                 profile: {
                   real_name: testerProfile.name,
+                  nickname: testerProfile.nickname,
                   phone: testerProfile.phone,
                   city: testerProfile.city,
                 },

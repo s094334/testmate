@@ -13,6 +13,7 @@ import {
 } from '../db/schema'
 import { fail, ok } from '../http/response'
 import { hashPassword } from './lib/password'
+import { nicknameField } from './lib/profile'
 import { newSession } from './lib/session'
 
 // Fields both roles send. `role` decides which profile comes with them.
@@ -57,6 +58,7 @@ const registerBody = z.discriminatedUnion(
       profile: z.strictObject(
         {
           ...profileFields,
+          nickname: nicknameField,
           city: z.enum(cities, { error: '請選擇縣市' }),
         },
         { error: profileError }
@@ -171,6 +173,7 @@ export const register: RouteHandler<
         ? db.insert(testerProfiles).values({
             userId,
             realName: body.profile.real_name,
+            nickname: body.profile.nickname,
             phone: body.profile.phone,
             city: body.profile.city,
           })
