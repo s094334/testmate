@@ -18,7 +18,12 @@ export type RegisterBody =
       email: string
       password: string
       role: 'tester'
-      profile: { real_name: string; phone: string; city: string }
+      profile: {
+        real_name: string
+        nickname: string // 最多 12 字
+        phone: string
+        city: string
+      }
       agreed: true
     }
   | {
@@ -41,6 +46,53 @@ export type Tag = {
   id: string
   category: 'device' | 'industry' | 'interest' | 'audience'
   name: string
+}
+
+// 我的檔案, from GET and PUT /api/auth/profile. Written from
+// worker/auth/lib/profile.ts, not API.md: API.md `TesterProfile` has no nickname yet.
+export type TesterProfile = {
+  real_name: string
+  nickname: string // ''：暱稱功能上線前註冊、還沒填暱稱的帳號
+  email: string
+  phone: string // 10 碼數字，沒有 - 和空白
+  city: string
+  has_qa_experience: boolean
+  experiences: {
+    company: string
+    years: 'under_1' | '1_to_2' | '3_to_5' | 'over_5' // 同發布專案的 min_qa_years
+  }[]
+  qa_years: number // 唯讀，每段經歷取範圍下限加總（暫定）
+  languages: { name: string; native: boolean }[]
+  devices: {
+    id: string
+    device_tag: Tag | null // null：自訂裝置，名稱在 custom_name
+    brand: string | null
+    model: string | null
+    os_version: string | null
+    custom_name: string | null
+  }[]
+  interests: Tag[]
+  updated_at: string
+}
+
+// Sent to PUT /api/auth/profile. Written from worker/auth/save-profile.ts.
+// It replaces the whole profile: a list left out is saved as empty.
+export type SaveProfileBody = {
+  real_name: string
+  nickname: string
+  phone: string
+  city: string
+  has_qa_experience: boolean
+  experiences: TesterProfile['experiences'] // has_qa_experience 為 false 時要是 []
+  languages: { name: string; native: boolean }[]
+  devices: {
+    device_tag_id: string | null // null：自訂裝置
+    brand?: string | null
+    model?: string | null
+    os_version?: string | null
+    custom_name?: string | null
+  }[]
+  interest_tag_ids: string[]
 }
 
 // One row of 搜尋專案, from GET /api/projects. Written from worker/projects/list.ts,

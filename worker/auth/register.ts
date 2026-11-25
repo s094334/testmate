@@ -1,6 +1,5 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { eq } from 'drizzle-orm'
-import { setCookie } from 'hono/cookie'
 import { avatarShapes } from '../../shared/avatar-shapes'
 import { cities } from '../../shared/cities'
 import { createDb, isUniqueViolation, saveTogether } from '../db'
@@ -13,7 +12,7 @@ import {
 } from '../db/schema'
 import { fail, ok } from '../http/response'
 import { hashPassword } from './lib/password'
-import { newSession } from './lib/session'
+import { nicknameField, phoneField } from './lib/profile'
 
 // Fields both roles send. `role` decides which profile comes with them.
 const account = {
@@ -38,11 +37,7 @@ const profileFields = {
     .trim()
     .min(1, '請輸入姓名')
     .max(50, '姓名最多 50 字'),
-  // 0912-345-678 and 0912 345 678 are accepted and saved as 0912345678
-  phone: z
-    .string({ error: '請輸入手機號碼' })
-    .overwrite((value) => value.replace(/[\s-]/g, ''))
-    .regex(/^09[0-9]{8}$/, '手機號碼須為 09 開頭的 10 碼數字'),
+  phone: phoneField,
 }
 
 const profileError = (issue: { code?: string }) =>
@@ -57,6 +52,7 @@ const registerBody = z.discriminatedUnion(
       profile: z.strictObject(
         {
           ...profileFields,
+          nickname: nicknameField,
           city: z.enum(cities, { error: '請選擇縣市' }),
         },
         { error: profileError }
@@ -103,7 +99,7 @@ export const registerRoute = createRoute({
   },
   responses: {
     201: {
-      description: '註冊成功，並設定 session cookie',
+      description: '註冊成功（不會登入，要另外呼叫 POST /api/auth/login）',
       content: {
         'application/json': {
           schema: z.object({
@@ -151,10 +147,10 @@ export const register: RouteHandler<
   const userId = crypto.randomUUID()
   const avatarShape =
     avatarShapes[Math.floor(Math.random() * avatarShapes.length)]
-  const session = await newSession(db, userId)
 
   try {
-    // Account, profile, agreement and session are saved together or not at all.
+    // Account, profile and agreement are saved together or not at all.
+    // No session: signing up does not log in, the user logs in afterwards.
     // A taken email is not looked up first: the unique index on users.email
     // fails the batch, so two signups with one email at the same time cannot both pass.
     await saveTogether(db, [
@@ -171,6 +167,7 @@ export const register: RouteHandler<
         ? db.insert(testerProfiles).values({
             userId,
             realName: body.profile.real_name,
+            nickname: body.profile.nickname,
             phone: body.profile.phone,
             city: body.profile.city,
           })
@@ -184,16 +181,7 @@ export const register: RouteHandler<
             address: body.profile.address,
           }),
       db.insert(disputeAgreements).values({ userId }),
-      session.insert,
     ])
-
-    setCookie(c, 'session', session.token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'Lax',
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60,
-    })
 
     return ok(
       c,
@@ -201,7 +189,11 @@ export const register: RouteHandler<
         id: userId,
         email: body.email,
         role: body.role,
-        display_name: body.profile.real_name,
+        // Same as displayName in lib/session.ts; a tester's nickname is never '' here
+        display_name:
+          body.role === 'tester'
+            ? body.profile.nickname
+            : body.profile.real_name,
         avatar_shape: avatarShape,
       },
       201

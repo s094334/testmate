@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form'
+import { isPhone, phoneFormatMessage } from '../../../shared/phone'
 import { cityOptions } from '@/data/options'
 import type { Device } from '@/data/tester'
 import { industries } from './data'
@@ -34,6 +35,7 @@ export type AccountFormValues = {
 
 export type TesterProfileFormValues = {
   name: string
+  nickname: string
   phone: string
   city: string
 }
@@ -150,13 +152,23 @@ export const loginFields: FieldConfig<LoginFormValues>[] = [
 
 export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
   {
-    label: '姓名',
+    label: '真實姓名',
     name: 'name',
     type: 'text',
     autoComplete: 'name',
-    placeholder: '例：哇哩勒',
+    placeholder: '例：王小明',
     requiredMessage: '請填寫真實姓名',
     rules: { pattern: { value: /\S/, message: '請填寫真實姓名' } },
+  },
+  {
+    label: '暱稱',
+    name: 'nickname',
+    type: 'text',
+    autoComplete: 'nickname',
+    maxLength: 12,
+    placeholder: '例：哇哩勒',
+    requiredMessage: '請填寫暱稱',
+    rules: { pattern: { value: /\S/, message: '請填寫暱稱' } },
   },
   {
     label: '手機號碼',
@@ -168,9 +180,7 @@ export const testerProfileFields: FieldConfig<TesterProfileFormValues>[] = [
     requiredMessage: '請填寫手機號碼',
     rules: {
       pattern: { value: /\S/, message: '請填寫手機號碼' },
-      validate: (value) =>
-        /^09\d{2}[-\s]?\d{3}[-\s]?\d{3}$/.test(value) ||
-        '請輸入 09 開頭的 10 位數手機號碼',
+      validate: (value) => isPhone(value) || phoneFormatMessage,
     },
   },
   {
@@ -189,7 +199,7 @@ export const ownerProfileFields: FieldConfig<OwnerProfileFormValues>[] = [
     name: 'name',
     type: 'text',
     autoComplete: 'name',
-    placeholder: '例：哇哩勒',
+    placeholder: '例：王小明',
     requiredMessage: '請填寫真實姓名',
     rules: { pattern: { value: /\S/, message: '請填寫真實姓名' } },
   },
@@ -205,9 +215,7 @@ export const ownerProfileFields: FieldConfig<OwnerProfileFormValues>[] = [
       // Spaces only counts as not filled in
       pattern: { value: /\S/, message: '請填寫手機號碼' },
       // 09 + 8 more digits; a hyphen or space between the groups is allowed
-      validate: (value) =>
-        /^09\d{2}[-\s]?\d{3}[-\s]?\d{3}$/.test(value) ||
-        '請輸入 09 開頭的 10 位數手機號碼',
+      validate: (value) => isPhone(value) || phoneFormatMessage,
     },
   },
 ]

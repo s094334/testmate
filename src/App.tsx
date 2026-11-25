@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
+import { Toaster } from '@/components/ui/toast'
 import { AppLayout } from '@/layouts/AppLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { OwnerLayout } from '@/layouts/OwnerLayout'
@@ -59,6 +60,7 @@ function App() {
           <Route path="projects/:id/report" element={<OwnerReportPage />} />
         </Route>
       </Routes>
+      <Toaster />
     </BrowserRouter>
   )
 }

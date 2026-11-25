@@ -30,6 +30,12 @@ export async function newSession(db: Db, userId: string) {
   }
 }
 
+// API.md `User`'s display_name, for a query joining testerProfiles and companies.
+// A tester is shown by nickname, or by real name while the nickname is '' (signed
+// up before nicknames existed). An owner has a company instead; never both.
+// nullif because '' is not NULL, so coalesce alone would pick the empty nickname.
+export const displayName = sql<string>`coalesce(nullif(${testerProfiles.nickname}, ''), ${testerProfiles.realName}, ${companies.realName})`
+
 // Finds who a `session` cookie belongs to, shaped as API.md `User`.
 // An expired session is treated the same as no session.
 export async function findSessionUser(db: Db, token: string) {
@@ -39,8 +45,7 @@ export async function findSessionUser(db: Db, token: string) {
       email: users.email,
       role: users.role,
       avatar_shape: users.avatarShape,
-      // A tester has a tester profile, an owner has a company; never both
-      display_name: sql<string>`coalesce(${testerProfiles.realName}, ${companies.realName})`,
+      display_name: displayName,
     })
     .from(sessions)
     .innerJoin(users, eq(users.id, sessions.userId))
