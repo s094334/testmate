@@ -1,5 +1,5 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
-import { and, desc, eq, inArray } from 'drizzle-orm'
+import { and, desc, eq, gte, inArray } from 'drizzle-orm'
 import { createDb } from '../db'
 import {
   companies,
@@ -10,6 +10,7 @@ import {
 } from '../db/schema'
 import { ok } from '../http/response'
 import { projectSchema } from './lib/project'
+import { taiwanToday } from './lib/today'
 
 export const listProjectsRoute = createRoute({
   method: 'get',
@@ -62,7 +63,15 @@ export const listProjects: RouteHandler<
     .from(projects)
     .innerJoin(companies, eq(companies.userId, projects.ownerId))
     .innerJoin(tags, eq(tags.id, companies.industryTagId))
-    .where(eq(projects.recruitmentStatus, 'recruiting'))
+    // end_date is the last day to apply. The phase 9 job that closes projects
+    // past it does not exist yet, so the list leaves them out itself; findProject
+    // does the same for the detail
+    .where(
+      and(
+        eq(projects.recruitmentStatus, 'recruiting'),
+        gte(projects.endDate, taiwanToday())
+      )
+    )
     // id breaks ties between projects created in the same millisecond,
     // so the order is fixed and a cursor can say where a page ends
     .orderBy(desc(projects.createdAt), desc(projects.id))

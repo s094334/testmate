@@ -14,6 +14,7 @@ import {
   tags,
   testModes,
 } from '../../db/schema'
+import { taiwanToday } from './today'
 
 const tag = z.object({
   id: z.uuid(),
@@ -142,7 +143,14 @@ export async function findProject(
     report_days: project.reportDays,
     reward: project.reward,
     special_requirements: project.specialRequirements,
-    recruitment_status: project.recruitmentStatus,
+    // end_date is the last day to apply. The phase 9 job that sets closed past
+    // it does not exist yet, so the detail works it out itself, the same way
+    // GET /api/projects leaves those projects out
+    recruitment_status:
+      project.recruitmentStatus === 'recruiting' &&
+      project.endDate < taiwanToday()
+        ? 'closed'
+        : project.recruitmentStatus,
     // Applications do not exist yet, so nobody has applied
     application_count: 0,
     created_at: project.createdAt,
