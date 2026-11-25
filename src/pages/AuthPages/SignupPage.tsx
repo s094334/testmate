@@ -1,11 +1,12 @@
 // The whole signup flow lives at ONE address, /signup.
 // This component remembers which step is showing and everything typed so far,
 // and shows one step at a time.
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { ApiError, request } from '@/api/client'
 import type { RegisterBody, User } from '@/api/types'
+import { toast } from '@/components/ui/toast'
 import type {
   AccountFormValues,
   OwnerProfileFormValues,
@@ -19,14 +20,14 @@ import { SignupTesterProfilePage } from './SignupTesterProfilePage'
 
 export function SignupPage() {
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
 
+  // Signing up does not log in: the new account logs in on /login
   const signup = useMutation({
     mutationFn: (body: RegisterBody) =>
       request<User>('/api/auth/register', { method: 'POST', body }),
-    onSuccess: (user) => {
-      queryClient.setQueryData(['session'], user)
-      navigate(user.role === 'owner' ? '/owner' : '/tester')
+    onSuccess: () => {
+      toast.add({ title: '註冊成功，請登入', timeout: 4000 })
+      navigate('/login')
     },
   })
 

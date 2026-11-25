@@ -1,6 +1,5 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { eq } from 'drizzle-orm'
-import { setCookie } from 'hono/cookie'
 import { avatarShapes } from '../../shared/avatar-shapes'
 import { cities } from '../../shared/cities'
 import { createDb, isUniqueViolation, saveTogether } from '../db'
@@ -14,7 +13,6 @@ import {
 import { fail, ok } from '../http/response'
 import { hashPassword } from './lib/password'
 import { nicknameField, phoneField } from './lib/profile'
-import { newSession } from './lib/session'
 
 // Fields both roles send. `role` decides which profile comes with them.
 const account = {
@@ -101,7 +99,7 @@ export const registerRoute = createRoute({
   },
   responses: {
     201: {
-      description: '註冊成功，並設定 session cookie',
+      description: '註冊成功（不會登入，要另外呼叫 POST /api/auth/login）',
       content: {
         'application/json': {
           schema: z.object({
@@ -149,10 +147,10 @@ export const register: RouteHandler<
   const userId = crypto.randomUUID()
   const avatarShape =
     avatarShapes[Math.floor(Math.random() * avatarShapes.length)]
-  const session = await newSession(db, userId)
 
   try {
-    // Account, profile, agreement and session are saved together or not at all.
+    // Account, profile and agreement are saved together or not at all.
+    // No session: signing up does not log in, the user logs in afterwards.
     // A taken email is not looked up first: the unique index on users.email
     // fails the batch, so two signups with one email at the same time cannot both pass.
     await saveTogether(db, [
@@ -183,16 +181,7 @@ export const register: RouteHandler<
             address: body.profile.address,
           }),
       db.insert(disputeAgreements).values({ userId }),
-      session.insert,
     ])
-
-    setCookie(c, 'session', session.token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'Lax',
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60,
-    })
 
     return ok(
       c,
