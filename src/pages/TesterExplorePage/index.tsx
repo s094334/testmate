@@ -136,6 +136,11 @@ export function TesterExplorePage() {
               <span className="text-ink-subtle">
                 截止 {project.end_date.replaceAll('-', '/')}
               </span>
+              {project.devices.length === 0 && (
+                <span className="bg-tester-soft text-tester-text desktop:group-hover/row:bg-surface rounded-[4px] px-3 font-bold transition-colors duration-150 ease-out">
+                  不限裝置
+                </span>
+              )}
               {[
                 ...new Set(
                   project.devices.map(

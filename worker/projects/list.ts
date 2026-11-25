@@ -1,5 +1,15 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
-import { and, desc, eq, gte, inArray, lt, or, sql } from 'drizzle-orm'
+import {
+  and,
+  desc,
+  eq,
+  gte,
+  inArray,
+  lt,
+  notExists,
+  or,
+  sql,
+} from 'drizzle-orm'
 import { createDb } from '../db'
 import {
   companies,
@@ -146,14 +156,25 @@ export const listProjects: RouteHandler<
             )
           : undefined,
         // Subqueries, not joins: a project with two matching devices would
-        // otherwise come back twice
+        // otherwise come back twice.
+        // A project with no devices takes testers on any device, so it matches
+        // every device filter. One with only custom devices has no tag to
+        // match yet, so it matches none
         query.device
-          ? inArray(
-              projects.id,
-              db
-                .select({ id: projectDevices.projectId })
-                .from(projectDevices)
-                .where(inArray(projectDevices.deviceTagId, query.device))
+          ? or(
+              inArray(
+                projects.id,
+                db
+                  .select({ id: projectDevices.projectId })
+                  .from(projectDevices)
+                  .where(inArray(projectDevices.deviceTagId, query.device))
+              ),
+              notExists(
+                db
+                  .select({ id: projectDevices.id })
+                  .from(projectDevices)
+                  .where(eq(projectDevices.projectId, projects.id))
+              )
             )
           : undefined,
         query.industry
