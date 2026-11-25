@@ -10,16 +10,30 @@ export function TesterExplorePage() {
   // ?id= opens one project; the list below keeps its search and 載入更多 while it is open
   const [searchParams] = useSearchParams()
   const id = searchParams.get('id')
-  const { data: projects, isPending, isError, isSuccess } = useProjects()
-  const { data: deviceTags } = useTags('device')
   const [query, setQuery] = useState('')
+  const [debouncedQuery, setDebouncedQuery] = useState('')
   const [deviceTagId, setDeviceTagId] = useState('')
+  const {
+    data: projects,
+    isPending,
+    isError,
+  } = useProjects({
+    q: debouncedQuery,
+    device: deviceTagId,
+  })
+  const { data: deviceTags } = useTags('device')
   const [shown, setShown] = useState(5)
   const [applied, setApplied] = useState<string[]>([])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [id])
+
+  // Asks the API once typing pauses for 300ms, not on every key
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query), 300)
+    return () => clearTimeout(timer)
+  }, [query])
 
   if (id) {
     return (
@@ -30,20 +44,6 @@ export function TesterExplorePage() {
       />
     )
   }
-
-  const keyword = query.trim().toLowerCase()
-  const matches = (projects?.items ?? []).filter(
-    (project) =>
-      (!deviceTagId ||
-        project.devices.some(
-          (device) => device.device_tag?.id === deviceTagId
-        )) &&
-      (!keyword ||
-        [project.name, project.company.name, project.industry.name]
-          .join(' ')
-          .toLowerCase()
-          .includes(keyword))
-  )
 
   return (
     <div
@@ -65,6 +65,7 @@ export function TesterExplorePage() {
                 setShown(5)
               }}
               placeholder="專案名稱、公司或類別"
+              maxLength={50}
               autoComplete="off"
               className="bg-surface border-line-input min-h-12 w-full rounded-md border pr-3 pl-11"
             />
@@ -97,13 +98,14 @@ export function TesterExplorePage() {
           </p>
         )}
 
-        {isError && (
+        {/* A failed refetch keeps the projects already on screen */}
+        {isError && !projects && (
           <p className="text-ink-muted tablet:px-6 tablet:py-8 px-4 py-6">
             專案載入失敗，請重新整理再試一次。
           </p>
         )}
 
-        {matches.slice(0, shown).map((project) => (
+        {projects?.items.slice(0, shown).map((project) => (
           <Link
             key={project.id}
             to={`?id=${project.id}`}
@@ -154,10 +156,10 @@ export function TesterExplorePage() {
           </Link>
         ))}
 
-        {isSuccess && matches.length === 0 && (
+        {projects?.items.length === 0 && (
           <p className="text-ink-muted tablet:px-6 tablet:py-8 px-4 py-6">
-            {keyword
-              ? `找不到符合「${query.trim()}」的專案，換個關鍵字或裝置試試。`
+            {debouncedQuery.trim()
+              ? `找不到符合「${debouncedQuery.trim()}」的專案，換個關鍵字或裝置試試。`
               : deviceTagId
                 ? '目前沒有這個裝置的專案，試試其他裝置。'
                 : '目前沒有招募中的專案。'}
@@ -165,7 +167,7 @@ export function TesterExplorePage() {
         )}
       </div>
 
-      {matches.length > shown && (
+      {projects && projects.items.length > shown && (
         <button
           type="button"
           onClick={() => setShown(shown + 5)}
