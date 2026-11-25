@@ -15,6 +15,7 @@ import {
 import { requireAuth, requireRole, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
 import { findProject, projectSchema } from './lib/project'
+import { taiwanToday } from './lib/today'
 
 // Days after 開始測試 to hand in the report. The form has no field for it yet,
 // so every project gets this; projects.report_days stores it per project.
@@ -281,12 +282,7 @@ const createProjectBody = z
         message: '遠端測試不能填寫測試地點',
       })
     }
-    // Dates are Taiwan dates; en-CA writes today as 2026-11-18, so the
-    // YYYY-MM-DD strings compare in date order
-    if (
-      body.start_date <
-      new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' })
-    ) {
+    if (body.start_date < taiwanToday()) {
       ctx.addIssue({
         code: 'custom',
         path: ['start_date'],
