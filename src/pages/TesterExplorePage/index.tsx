@@ -14,15 +14,19 @@ export function TesterExplorePage() {
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [deviceTagId, setDeviceTagId] = useState('')
   const {
-    data: projects,
+    data,
     isPending,
     isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    isFetchNextPageError,
   } = useProjects({
     q: debouncedQuery,
     device: deviceTagId,
   })
+  const projects = data?.pages.flatMap((page) => page.items)
   const { data: deviceTags } = useTags('device')
-  const [shown, setShown] = useState(5)
   const [applied, setApplied] = useState<string[]>([])
 
   useEffect(() => {
@@ -60,10 +64,7 @@ export function TesterExplorePage() {
             <input
               type="search"
               value={query}
-              onChange={(event) => {
-                setQuery(event.target.value)
-                setShown(5)
-              }}
+              onChange={(event) => setQuery(event.target.value)}
               placeholder="專案名稱、公司或類別"
               maxLength={50}
               autoComplete="off"
@@ -75,10 +76,7 @@ export function TesterExplorePage() {
           <span className="font-bold">裝置</span>
           <select
             value={deviceTagId}
-            onChange={(event) => {
-              setDeviceTagId(event.target.value)
-              setShown(5)
-            }}
+            onChange={(event) => setDeviceTagId(event.target.value)}
             className="bg-surface border-line-input min-h-12 w-full rounded-md border px-3"
           >
             <option value="">全部裝置</option>
@@ -105,7 +103,7 @@ export function TesterExplorePage() {
           </p>
         )}
 
-        {projects?.items.slice(0, shown).map((project) => (
+        {projects?.map((project) => (
           <Link
             key={project.id}
             to={`?id=${project.id}`}
@@ -156,7 +154,7 @@ export function TesterExplorePage() {
           </Link>
         ))}
 
-        {projects?.items.length === 0 && (
+        {projects?.length === 0 && (
           <p className="text-ink-muted tablet:px-6 tablet:py-8 px-4 py-6">
             {debouncedQuery.trim()
               ? `找不到符合「${debouncedQuery.trim()}」的專案，換個關鍵字或裝置試試。`
@@ -167,13 +165,19 @@ export function TesterExplorePage() {
         )}
       </div>
 
-      {projects && projects.items.length > shown && (
+      {/* isFetchNextPageError stays true while the retry is loading */}
+      {isFetchNextPageError && !isFetchingNextPage && (
+        <p className="text-ink-muted self-center">載入失敗，請再試一次。</p>
+      )}
+
+      {hasNextPage && (
         <button
           type="button"
-          onClick={() => setShown(shown + 5)}
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
           className="btn btn-secondary min-w-50 self-center"
         >
-          載入更多
+          {isFetchingNextPage ? '載入中…' : '載入更多'}
         </button>
       )}
     </div>
