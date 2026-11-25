@@ -17,6 +17,9 @@ export const testerProfiles = sqliteTable('tester_profiles', {
     .primaryKey()
     .references(() => users.id, { onDelete: 'cascade' }),
   realName: text('real_name').notNull(),
+  // Shown to others instead of the real name. Not unique. Empty for testers
+  // who signed up before nicknames existed, until they set one in the profile.
+  nickname: text('nickname').notNull().default(''),
   // 10 digits starting with 09, dashes and spaces already removed
   phone: text('phone').notNull(),
   city: text('city').notNull(),

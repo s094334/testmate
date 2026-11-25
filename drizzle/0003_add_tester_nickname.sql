@@ -1,0 +1,1 @@
+ALTER TABLE `tester_profiles` ADD `nickname` text DEFAULT '' NOT NULL;
