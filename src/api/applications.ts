@@ -65,3 +65,28 @@ export function useSelectApplication(projectId: string) {
     },
   })
 }
+
+export function useDeclineApplication(projectId: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (applicationId: string) =>
+      request<Application>(`/api/applications/${applicationId}/decline`, {
+        method: 'POST',
+      }),
+    // Returns the refetch, so the card shows 已婉拒 from the server before
+    // the buttons come back
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ['applications', { projectId }],
+      }),
+    onError: (error) => {
+      // 409: chosen or declined already; the list shows which
+      if (error instanceof ApiError && error.status === 409) {
+        queryClient.invalidateQueries({
+          queryKey: ['applications', { projectId }],
+        })
+      }
+    },
+  })
+}
