@@ -17,7 +17,10 @@ export function OwnerLayout() {
   if (user.role !== 'owner') return <Navigate to="/tester" replace />
 
   return (
-    <div data-role="owner" className="flex min-h-dvh flex-col">
+    <div
+      data-role="owner"
+      className="flex min-h-dvh flex-col pb-(--bottom-bar-height)"
+    >
       <OwnerHeader />
       <main className="flex flex-1 flex-col">
         <Outlet />
