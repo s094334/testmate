@@ -3,6 +3,7 @@ import { HTTPException } from 'hono/http-exception'
 import { getCompany, getCompanyRoute } from './auth/get-company'
 import { getProfile, getProfileRoute } from './auth/get-profile'
 import { getSession, getSessionRoute } from './auth/get-session'
+import { listOwnProjects, listOwnProjectsRoute } from './auth/list-own-projects'
 import { login, loginRoute } from './auth/login'
 import { logout, logoutRoute } from './auth/logout'
 import { register, registerRoute } from './auth/register'
@@ -32,6 +33,7 @@ app.openapi(getProfileRoute, getProfile)
 app.openapi(saveProfileRoute, saveProfile)
 app.openapi(getCompanyRoute, getCompany)
 app.openapi(saveCompanyRoute, saveCompany)
+app.openapi(listOwnProjectsRoute, listOwnProjects)
 app.openapi(createProjectRoute, createProject)
 app.openapi(listProjectsRoute, listProjects)
 app.openapi(getProjectRoute, getProject)
