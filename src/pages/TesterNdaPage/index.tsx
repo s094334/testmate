@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
+import { BottomBar } from '@/components/BottomBar'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
@@ -193,7 +194,7 @@ export function TesterNdaPage() {
       )}
 
       {!signedAt && (
-        <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-col gap-2 border-t px-4 py-3">
+        <BottomBar className="border-line bg-surface tablet:hidden fixed inset-x-0 bottom-0 flex flex-col gap-2 border-t px-4 py-3">
           {tried && (
             <p className="text-status-dispute-text">
               {step === 1 ? '請先勾選同意受測者同意書' : '請先勾選同意保密協議'}
@@ -235,7 +236,7 @@ export function TesterNdaPage() {
               </button>
             </div>
           )}
-        </div>
+        </BottomBar>
       )}
     </div>
   )

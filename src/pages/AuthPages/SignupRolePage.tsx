@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { BottomBar } from '@/components/BottomBar'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { OwnerIllustration } from '@/components/illustrations/OwnerIllustration'
 import { TesterIllustration } from '@/components/illustrations/TesterIllustration'
@@ -57,18 +58,20 @@ export function SignupRolePage({ defaultRole, onNext }: SignupRolePageProps) {
           </span>
         </button>
       </div>
-      <button
-        type="button"
-        disabled={!role}
-        onClick={() => role && onNext(role)}
-        className="btn btn-primary btn-ink w-full"
-      >
-        {role === 'owner'
-          ? '以專案負責人身分繼續'
-          : role === 'tester'
-            ? '以測試人員身分繼續'
-            : '下一步'}
-      </button>
+      <BottomBar className="border-line bg-surface tablet:static tablet:border-t-0 tablet:p-0 fixed inset-x-0 bottom-0 border-t px-4 py-3">
+        <button
+          type="button"
+          disabled={!role}
+          onClick={() => role && onNext(role)}
+          className="btn btn-primary btn-ink w-full"
+        >
+          {role === 'owner'
+            ? '以專案負責人身分繼續'
+            : role === 'tester'
+              ? '以測試人員身分繼續'
+              : '下一步'}
+        </button>
+      </BottomBar>
       <p className="text-ink-muted text-center">
         已經有帳號？
         <Link to="/login" className="link text-role font-bold">

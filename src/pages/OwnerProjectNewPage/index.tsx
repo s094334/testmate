@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router'
 import { ApiError, request } from '@/api/client'
 import { useTags } from '@/api/tags'
 import type { CreateProjectBody } from '@/api/types'
+import { BottomBar } from '@/components/BottomBar'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
 import {
@@ -241,7 +242,7 @@ export function OwnerProjectNewPage() {
           </div>
         )}
 
-        <div className="border-line bg-surface desktop:hidden tablet:-mx-6 sticky bottom-0 z-2 -mx-4 flex gap-3 border-t px-4 py-3">
+        <BottomBar className="border-line bg-surface desktop:hidden fixed inset-x-0 bottom-0 z-2 flex gap-3 border-t px-4 py-3">
           {step === 1 && (
             <Link to="/owner" className="btn btn-secondary flex-1 gap-1.5 px-4">
               <ChevronDownIcon className="rotate-90" />
@@ -276,7 +277,7 @@ export function OwnerProjectNewPage() {
           >
             {step === 3 ? '發布' : '下一步'}
           </button>
-        </div>
+        </BottomBar>
       </div>
     </div>
   )

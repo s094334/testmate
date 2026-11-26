@@ -16,7 +16,7 @@ export function AppLayout() {
   }, [pathname])
 
   return (
-    <div className="flex min-h-dvh flex-col">
+    <div className="flex min-h-dvh flex-col pb-(--bottom-bar-height)">
       {user === undefined ? (
         <HeaderShell>{null}</HeaderShell>
       ) : user === null ? (

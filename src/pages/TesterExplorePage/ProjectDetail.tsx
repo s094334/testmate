@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { ApiError } from '@/api/client'
 import { useProject } from '@/api/projects'
 import { useSession } from '@/api/session'
+import { BottomBar } from '@/components/BottomBar'
 import { InfoPopover } from '@/components/InfoPopover'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
@@ -195,7 +196,7 @@ export function ProjectDetail({
         </div>
       </article>
 
-      <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-col gap-2 border-t px-4 py-3">
+      <BottomBar className="border-line bg-surface tablet:hidden fixed inset-x-0 bottom-0 flex flex-col gap-2 border-t px-4 py-3">
         <div className="flex items-baseline justify-between gap-3">
           <span className="text-[18px] font-bold">申請截止</span>
           <b className="text-section-title leading-[1.3]">
@@ -226,7 +227,7 @@ export function ProjectDetail({
         {project.recruitment_status !== 'recruiting' && (
           <b className="text-ink-subtle">招募已結束</b>
         )}
-      </div>
+      </BottomBar>
     </div>
   )
 }
