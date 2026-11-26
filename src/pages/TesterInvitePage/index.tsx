@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router'
+import { BottomBar } from '@/components/BottomBar'
 import { InfoPopover } from '@/components/InfoPopover'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
@@ -132,7 +133,7 @@ export function TesterInvitePage() {
         </div>
       </article>
 
-      <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-col gap-2 border-t px-4 py-3">
+      <BottomBar className="border-line bg-surface tablet:hidden fixed inset-x-0 bottom-0 flex flex-col gap-2 border-t px-4 py-3">
         <div className="flex items-baseline justify-between gap-3">
           <span className="text-[18px] font-bold">回覆期限</span>
           <b className="text-section-title leading-[1.3]">{project.replyBy}</b>
@@ -166,7 +167,7 @@ export function TesterInvitePage() {
             {reply === 'yes' ? '已回覆有興趣' : '已回覆婉拒'}
           </b>
         )}
-      </div>
+      </BottomBar>
     </div>
   )
 }

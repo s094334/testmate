@@ -17,7 +17,10 @@ export function TesterLayout() {
   if (user.role !== 'tester') return <Navigate to="/owner" replace />
 
   return (
-    <div data-role="tester" className="flex min-h-dvh flex-col">
+    <div
+      data-role="tester"
+      className="flex min-h-dvh flex-col pb-(--bottom-bar-height)"
+    >
       <TesterHeader />
       {/* The whole page scrolls and the header sticks to the top.
           mt-auto pushes the footer to the bottom when the page is shorter than the screen */}

@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { BottomBar } from '@/components/BottomBar'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
 import { Countdown } from './Countdown'
@@ -22,7 +23,7 @@ export function MobileActionBar({
   onOpenRateDialog: () => void
 }) {
   return (
-    <div className="border-line bg-surface tablet:hidden sticky bottom-0 -mx-4 flex flex-wrap gap-2 border-t px-4 py-3">
+    <BottomBar className="border-line bg-surface tablet:hidden fixed inset-x-0 bottom-0 flex flex-wrap gap-2 border-t px-4 py-3">
       {project.status === 'PENDING_NDA' && detail.ndaDeadline && (
         <Countdown
           label="簽署期限"
@@ -111,6 +112,6 @@ export function MobileActionBar({
           {rating ? '編輯評價' : '評價'}
         </button>
       )}
-    </div>
+    </BottomBar>
   )
 }

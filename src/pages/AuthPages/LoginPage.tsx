@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 import { ApiError, request } from '@/api/client'
 import type { User } from '@/api/types'
+import { BottomBar } from '@/components/BottomBar'
 import { WarningIcon } from '@/components/icons/WarningIcon'
 import { loginFields, type LoginFormValues } from './fields'
 import { FormField } from './FormField'
@@ -49,13 +50,15 @@ export function LoginPage() {
             : '無法連線，請稍後再試'}
         </span>
       )}
-      <button
-        type="submit"
-        disabled={login.isPending}
-        className="btn btn-primary btn-ink w-full"
-      >
-        登入
-      </button>
+      <BottomBar className="border-line bg-surface tablet:static tablet:border-t-0 tablet:p-0 fixed inset-x-0 bottom-0 border-t px-4 py-3">
+        <button
+          type="submit"
+          disabled={login.isPending}
+          className="btn btn-primary btn-ink w-full"
+        >
+          登入
+        </button>
+      </BottomBar>
       <div className="flex flex-col gap-1">
         <p className="text-ink-muted text-center">
           還沒有帳號？
