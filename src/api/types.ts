@@ -169,6 +169,35 @@ export type Project = ProjectCard & {
   } | null // null：不是這個專案的負責人
 }
 
+// One row of the owner's 專案列表, from GET /api/auth/projects.
+// Written from worker/auth/list-own-projects.ts.
+export type OwnProject = {
+  id: string
+  name: string
+  summary: string
+  test_mode: 'remote' | 'onsite'
+  test_city: string | null // null：遠端
+  start_date: string // YYYY-MM-DD
+  end_date: string // YYYY-MM-DD
+  recruitment_status: 'recruiting' | 'closed' | 'cancelled' // 過了 end_date 的招募中專案是 closed
+  application_count: number
+  // 暫時一律是 null：合作還沒做
+  engagement: {
+    id: string
+    status:
+      | 'PENDING_NDA'
+      | 'PENDING_PAYMENT'
+      | 'FUNDED'
+      | 'TESTING'
+      | 'SUBMITTED'
+      | 'DISPUTED'
+      | 'COMPLETED'
+      | 'REFUNDED' // 不會是 CANCELLED：取消的合作不算
+    tester_name: string // FUNDED 之前是去識別化姓名
+  } | null
+  created_at: string
+}
+
 // Sent to POST /api/projects. Written from worker/projects/create.ts, not API.md:
 // API.md「10. POST /api/projects」is older than the 發布專案 form.
 // confidential_details, environment_info and test_items are left out until the

@@ -4,7 +4,7 @@ import {
   useQuery,
 } from '@tanstack/react-query'
 import { request } from './client'
-import type { Project, ProjectCard } from './types'
+import type { OwnProject, Project, ProjectCard } from './types'
 
 export function useProjects(filters: { q: string; device: string }) {
   return useInfiniteQuery({
@@ -23,6 +23,13 @@ export function useProjects(filters: { q: string; device: string }) {
     initialPageParam: '',
     getNextPageParam: (lastPage) => lastPage.next_cursor,
     placeholderData: keepPreviousData,
+  })
+}
+
+export function useOwnProjects() {
+  return useQuery({
+    queryKey: ['projects', 'own'],
+    queryFn: () => request<{ items: OwnProject[] }>('/api/auth/projects'),
   })
 }
 
