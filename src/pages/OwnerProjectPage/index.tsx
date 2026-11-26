@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useParams } from 'react-router'
 import {
+  useDeclineApplication,
   useProjectApplications,
   useSelectApplication,
 } from '@/api/applications'
@@ -44,8 +45,24 @@ function ApiProject({ id }: { id: string }) {
         project.recruitment_status === 'recruiting'
     )
   const select = useSelectApplication(id)
-  // isPending only shows on the next render; a second press can come first
-  const choosing = useRef(false)
+  const decline = useDeclineApplication(id)
+  // One 選定 or 婉拒 at a time. isPending only shows on the next render, and a
+  // second press can come first
+  const sending = useRef(false)
+
+  // Settles once the request and the refetch after it are done; a failure
+  // is shown, not thrown, so the dialog can close either way
+  async function send(request: () => Promise<unknown>) {
+    if (sending.current) return
+    sending.current = true
+    try {
+      await request()
+    } catch (error) {
+      toastError(error as Error)
+    } finally {
+      sending.current = false
+    }
+  }
 
   if (!project) {
     return (
@@ -105,30 +122,22 @@ function ApiProject({ id }: { id: string }) {
         />
       )}
 
-      {/* 婉拒 only changes this page for now: there is no decline API yet */}
       {!project.engagement &&
         project.recruitment_status === 'recruiting' &&
         (applications ? (
           <Recruiting
             projectId={project.id}
             candidates={applications.items.flatMap(candidateOf)}
-            onChoose={(candidate) => {
-              if (choosing.current) return
-              choosing.current = true
-              select.mutate(candidate.id, {
-                onError: (error) => {
-                  choosing.current = false
-                  toast.add({
-                    title:
-                      error instanceof ApiError
-                        ? error.message
-                        : '無法連線，請稍後再試',
-                    timeout: 4000,
-                  })
-                },
+            onChoose={(candidate) =>
+              send(async () => {
+                await select.mutateAsync(candidate.id)
+                window.scrollTo(0, 0)
               })
-            }}
-            choosing={select.isPending}
+            }
+            onDecline={(candidate) =>
+              send(() => decline.mutateAsync(candidate.id))
+            }
+            busy={select.isPending || decline.isPending}
           />
         ) : (
           <p className="text-ink-muted">
@@ -147,6 +156,13 @@ function ApiProject({ id }: { id: string }) {
       )}
     </div>
   )
+}
+
+function toastError(error: Error) {
+  toast.add({
+    title: error instanceof ApiError ? error.message : '無法連線，請稍後再試',
+    timeout: 4000,
+  })
 }
 
 // 測試進度 of a real engagement. Only PENDING_NDA can happen for now: the
@@ -246,7 +262,10 @@ function MockProject({ id }: { id: string }) {
         <Recruiting
           projectId={id}
           candidates={recruitCandidates[id] ?? []}
-          onChoose={setChosen}
+          onChoose={(candidate) => {
+            setChosen(candidate)
+            window.scrollTo(0, 0)
+          }}
         />
       )}
     </div>
