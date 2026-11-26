@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ApiError, request } from './client'
-import type { Application, Project } from './types'
+import type { Application, Engagement, Project } from './types'
 
 export function useProjectApplications(projectId: string, enabled: boolean) {
   return useQuery({
@@ -34,6 +34,31 @@ export function useApply() {
       // 409: already applied, or recruitment ended; the project shows which
       if (error instanceof ApiError && error.status === 409) {
         queryClient.invalidateQueries({ queryKey: ['projects', projectId] })
+      }
+    },
+  })
+}
+
+export function useSelectApplication(projectId: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (applicationId: string) =>
+      request<Engagement>(`/api/applications/${applicationId}/select`, {
+        method: 'POST',
+      }),
+    onSuccess: (engagement) => {
+      queryClient.setQueryData(['engagements', engagement.id], engagement)
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['engagements', 'list'] })
+    },
+    onError: (error) => {
+      // 409: chosen already, or recruitment ended; the project shows which
+      if (error instanceof ApiError && error.status === 409) {
+        queryClient.invalidateQueries({ queryKey: ['projects', projectId] })
+        queryClient.invalidateQueries({
+          queryKey: ['applications', { projectId }],
+        })
       }
     },
   })

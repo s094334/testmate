@@ -20,7 +20,10 @@ import { TesterHomePage } from '@/pages/TesterHomePage'
 import { TesterInvitePage } from '@/pages/TesterInvitePage'
 import { TesterProfilePage } from '@/pages/TesterProfilePage'
 import { TesterNdaPage } from '@/pages/TesterNdaPage'
-import { TesterProjectPage } from '@/pages/TesterProjectPage'
+import {
+  TesterEngagementPage,
+  TesterProjectPage,
+} from '@/pages/TesterProjectPage'
 import { TesterExplorePage } from '@/pages/TesterExplorePage'
 import { TesterReportPage } from '@/pages/TesterReportPage'
 
@@ -48,6 +51,7 @@ function App() {
             element={<Navigate to="/projects" replace />}
           />
           <Route path="projects/:id" element={<TesterProjectPage />} />
+          <Route path="engagements/:id" element={<TesterEngagementPage />} />
           <Route path="projects/:id/nda" element={<TesterNdaPage />} />
           <Route path="projects/:id/report" element={<TesterReportPage />} />
         </Route>

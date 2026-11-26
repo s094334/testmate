@@ -5,6 +5,10 @@ import {
   createApplicationRoute,
 } from './applications/create'
 import { listApplications, listApplicationsRoute } from './applications/list'
+import {
+  selectApplication,
+  selectApplicationRoute,
+} from './applications/select'
 import { getCompany, getCompanyRoute } from './auth/get-company'
 import { getProfile, getProfileRoute } from './auth/get-profile'
 import { getSession, getSessionRoute } from './auth/get-session'
@@ -14,6 +18,8 @@ import { logout, logoutRoute } from './auth/logout'
 import { register, registerRoute } from './auth/register'
 import { saveCompany, saveCompanyRoute } from './auth/save-company'
 import { saveProfile, saveProfileRoute } from './auth/save-profile'
+import { getEngagement, getEngagementRoute } from './engagements/get'
+import { listEngagements, listEngagementsRoute } from './engagements/list'
 import { checkOrigin } from './http/origin'
 import { fail, validationFailed } from './http/response'
 import { createProject, createProjectRoute } from './projects/create'
@@ -44,6 +50,9 @@ app.openapi(listProjectsRoute, listProjects)
 app.openapi(getProjectRoute, getProject)
 app.openapi(createApplicationRoute, createApplication)
 app.openapi(listApplicationsRoute, listApplications)
+app.openapi(selectApplicationRoute, selectApplication)
+app.openapi(listEngagementsRoute, listEngagements)
+app.openapi(getEngagementRoute, getEngagement)
 app.openapi(listTagsRoute, listTags)
 
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', '找不到這個 API'))

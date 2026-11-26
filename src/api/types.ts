@@ -157,7 +157,7 @@ export type Project = ProjectCard & {
   special_requirements: string | null
   recruitment_status: 'recruiting' | 'closed' | 'cancelled'
   viewer: { applied: boolean } | null // null：不是登入的測試人員
-  engagement: OwnProject['engagement'] // 暫時一律是 null：合作還沒做
+  engagement: OwnProject['engagement'] // 只有負責人本人看得到，其他人一律是 null
   confidential: {
     how_to_test: string
     success_criteria: string
@@ -180,19 +180,11 @@ export type OwnProject = {
   start_date: string // YYYY-MM-DD
   end_date: string // YYYY-MM-DD
   recruitment_status: 'recruiting' | 'closed' | 'cancelled' // 過了 end_date 的招募中專案是 closed
-  // 暫時一律是 null：合作還沒做
+  // null：還沒有合作
   engagement: {
     id: string
-    status:
-      | 'PENDING_NDA'
-      | 'PENDING_PAYMENT'
-      | 'FUNDED'
-      | 'TESTING'
-      | 'SUBMITTED'
-      | 'DISPUTED'
-      | 'COMPLETED'
-      | 'REFUNDED' // 不會是 CANCELLED：取消的合作不算
-    tester_name: string // FUNDED 之前是去識別化姓名
+    status: Exclude<EngagementStatus, 'CANCELLED'> // 取消的合作不算
+    tester_name: string | null // FUNDED 之前是暱稱；null：還沒填暱稱
   } | null
   created_at: string
 }
@@ -226,6 +218,82 @@ export type Application = {
   status: 'pending' | 'selected' | 'declined'
   created_at: string
   tester: TesterCard | null // null：測試人員看自己的申請
+}
+
+export type EngagementStatus =
+  | 'PENDING_NDA'
+  | 'PENDING_PAYMENT'
+  | 'FUNDED'
+  | 'TESTING'
+  | 'SUBMITTED'
+  | 'DISPUTED'
+  | 'COMPLETED'
+  | 'CANCELLED'
+  | 'REFUNDED'
+
+// One row of GET /api/engagements. Written from worker/engagements/list.ts.
+export type EngagementSummary = {
+  id: string
+  project: Pick<ProjectCard, 'id' | 'name' | 'summary' | 'devices'>
+  status: EngagementStatus
+  // 負責人看到測試人員（FUNDED 之前是暱稱），測試人員看到公司名稱；
+  // null：負責人看還沒填暱稱的測試人員
+  counterpart_name: string | null
+  next_due_at: string | null // 目前狀態等的下一個期限
+  updated_at: string
+}
+
+// From GET /api/engagements/{id} and POST /api/applications/{id}/select.
+// Written from worker/engagements/lib/engagement.ts. Times not reached yet are null.
+export type Engagement = {
+  id: string
+  status: EngagementStatus
+  project: Pick<
+    ProjectCard,
+    'id' | 'name' | 'reward' | 'report_days' | 'devices'
+  >
+  owner: { company_name: string }
+  tester: TesterCard
+  nda_due_at: string
+  nda_signed_at: string | null
+  payment_due_at: string | null
+  funded_at: string | null
+  escrow_balance: number
+  latest_payment: { status: 'pending' | 'paid' | 'failed' } | null
+  settlement: {
+    type: 'full_payout' | 'full_refund' | 'split'
+    platform_fee: number
+    payout: number
+    refund: number
+  } | null
+  start_due_at: string | null
+  environment_provided_at: string | null
+  report_due_at: string | null
+  report_overdue_at: string | null
+  overdue_decision_due_at: string | null
+  deadline_extended: boolean
+  rejection_count: number
+  review_due_at: string | null
+  rating_due_at: string | null
+  my_rating: {
+    id: string
+    engagement_id: string
+    score: number
+    comment: string
+    submitted_at: string
+    published_at: string | null
+  } | null
+  counterpart_rated: boolean
+  created_at: string
+  // FUNDED 以後（不含 CANCELLED）才有；之前是 null
+  disclosed: {
+    how_to_test: string
+    success_criteria: string
+    confidential_details: string | null
+    test_items: { id: string; title: string; steps: string; expected: string }[]
+    owner_contact: { real_name: string; phone: string; email: string }
+    tester_contact: { real_name: string; phone: string; email: string }
+  } | null
 }
 
 // Sent to POST /api/projects. Written from worker/projects/create.ts, not API.md:
