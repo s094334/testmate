@@ -158,6 +158,7 @@ export type Project = ProjectCard & {
   special_requirements: string | null
   recruitment_status: 'recruiting' | 'closed' | 'cancelled'
   viewer: { applied: boolean } | null // null：不是登入的測試人員
+  engagement: OwnProject['engagement'] // 暫時一律是 null：合作還沒做
   confidential: {
     how_to_test: string
     success_criteria: string

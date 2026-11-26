@@ -38,8 +38,11 @@ export function Recruiting({
           >
             邀請與申請
           </TabsTrigger>
+          {/* Hidden until GET /api/projects/{id}/recommendations exists; remove
+              `hidden` to bring 推薦 QA back. Its panel cannot open without the tab */}
           <TabsTrigger
             value="recommended"
+            hidden
             className="bg-page text-ink data-active:bg-role-soft data-active:text-role tablet:flex-none tablet:h-12 tablet:min-h-0 tablet:rounded-none tablet:rounded-t-md tablet:border tablet:border-b-0 tablet:border-transparent tablet:bg-transparent tablet:px-4 tablet:text-[18px] tablet:font-medium tablet:text-ink-subtle tablet:data-active:border-ink tablet:data-active:bg-surface tablet:data-active:text-ink desktop:px-6 desktop:text-[20px] flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out data-active:font-bold"
           >
             推薦 QA

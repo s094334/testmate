@@ -304,6 +304,13 @@ export const ownerProjects: OwnerProject[] = [
   },
 ]
 
+// Project ids found here (o1…) open the fake project, so 測試進度 and 測試報告
+// can still be seen; any other id is read from the API.
+// 合作的 API 做好後移除
+export function isMockOwnerProject(id: string) {
+  return ownerProjects.some((project) => project.id === id)
+}
+
 export type EngagementDetails = {
   tester: EngagedTester
   // PENDING_PAYMENT
