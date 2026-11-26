@@ -20,7 +20,7 @@ import {
 } from '../db/schema'
 import { ok } from '../http/response'
 import { decodeCursor, encodeCursor } from './lib/cursor'
-import { projectSchema } from './lib/project'
+import { projectCardSchema } from './lib/project'
 import { taiwanToday } from './lib/today'
 
 export const listProjectsRoute = createRoute({
@@ -91,22 +91,7 @@ export const listProjectsRoute = createRoute({
         'application/json': {
           schema: z.object({
             data: z.object({
-              items: z.array(
-                projectSchema.pick({
-                  id: true,
-                  name: true,
-                  summary: true,
-                  company: true,
-                  industry: true,
-                  interests: true,
-                  devices: true,
-                  end_date: true,
-                  reward: true,
-                  report_days: true,
-                  application_count: true,
-                  created_at: true,
-                })
-              ),
+              items: z.array(projectCardSchema),
               next_cursor: z.string().nullable(),
             }),
             error: z.null(),
@@ -269,8 +254,6 @@ export const listProjects: RouteHandler<
       end_date: project.endDate,
       reward: project.reward,
       report_days: project.reportDays,
-      // Applications do not exist yet, so nobody has applied
-      application_count: 0,
       created_at: project.createdAt,
     })),
     next_cursor:

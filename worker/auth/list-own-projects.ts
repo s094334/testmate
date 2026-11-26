@@ -28,7 +28,6 @@ export const listOwnProjectsRoute = createRoute({
                   start_date: true,
                   end_date: true,
                   recruitment_status: true,
-                  application_count: true,
                   created_at: true,
                   engagement: true,
                 })
@@ -77,8 +76,6 @@ export const listOwnProjects: RouteHandler<
       end_date: project.endDate,
       // Past end_date it reads closed, but is still listed
       recruitment_status: recruitmentStatusOf(project),
-      // Applications do not exist yet, so nobody has applied
-      application_count: 0,
       // 暫時: engagements do not exist yet, so no project has one
       engagement: null,
       created_at: project.createdAt,
