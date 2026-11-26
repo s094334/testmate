@@ -6,12 +6,16 @@ import type { ZodError } from 'zod'
 // Only the codes used so far; add the rest from API.md「錯誤代碼」 as they are needed
 export type ErrorCode =
   | 'VALIDATION_FAILED'
+  | 'PROFILE_REQUIRED'
   | 'COMPANY_REQUIRED'
   | 'UNAUTHENTICATED'
   | 'INVALID_CREDENTIALS'
   | 'FORBIDDEN'
   | 'NOT_FOUND'
+  | 'INVALID_STATE'
   | 'EMAIL_TAKEN'
+  | 'ALREADY_APPLIED'
+  | 'RECRUITMENT_ENDED'
   | 'TOO_MANY_ATTEMPTS'
   | 'INTERNAL_ERROR'
 

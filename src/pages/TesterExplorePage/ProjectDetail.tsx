@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { useApply } from '@/api/applications'
 import { ApiError } from '@/api/client'
 import { useProject } from '@/api/projects'
 import { useSession } from '@/api/session'
@@ -6,18 +7,12 @@ import { BottomBar } from '@/components/BottomBar'
 import { InfoPopover } from '@/components/InfoPopover'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
+import { toast } from '@/components/ui/toast'
 
-export function ProjectDetail({
-  id,
-  applied,
-  onApply,
-}: {
-  id: string
-  applied: boolean
-  onApply: () => void
-}) {
+export function ProjectDetail({ id }: { id: string }) {
   const { data: project, isPending, error } = useProject(id)
   const { data: user } = useSession()
+  const apply = useApply()
 
   if (!project) {
     return (
@@ -49,6 +44,18 @@ export function ProjectDetail({
 
   const canApply =
     user?.role === 'tester' && project.recruitment_status === 'recruiting'
+  const applied = project.viewer?.applied === true
+
+  function sendApplication() {
+    apply.mutate(id, {
+      onError: (error) =>
+        toast.add({
+          title:
+            error instanceof ApiError ? error.message : '無法連線，請稍後再試',
+          timeout: 4000,
+        }),
+    })
+  }
 
   return (
     <div
@@ -170,7 +177,8 @@ export function ProjectDetail({
             <div className="flex flex-col items-end gap-2">
               <button
                 type="button"
-                onClick={onApply}
+                onClick={sendApplication}
+                disabled={apply.isPending}
                 className="btn btn-primary min-w-40"
               >
                 申請
@@ -206,7 +214,12 @@ export function ProjectDetail({
 
         {canApply && !applied && (
           <>
-            <button type="button" onClick={onApply} className="btn btn-primary">
+            <button
+              type="button"
+              onClick={sendApplication}
+              disabled={apply.isPending}
+              className="btn btn-primary"
+            >
               申請
             </button>
             <p className="text-ink-subtle text-center">

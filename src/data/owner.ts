@@ -24,7 +24,6 @@ export type OwnerProject = {
   summary: string
   details: { location: string; equipment: string; testPeriod: string }
   recruitmentStatus: 'recruiting' | 'closed' | 'cancelled'
-  applicationCount: number
   endsAt: string
   // Same statuses as the tester side (the API never returns CANCELLED here)
   engagement: {
@@ -222,7 +221,6 @@ export const ownerProjects: OwnerProject[] = [
       testPeriod: '2026/11/20–2026/12/05',
     },
     recruitmentStatus: 'recruiting',
-    applicationCount: 3,
     endsAt: '2026-11-19T15:59:59.000Z',
     engagement: null,
     createdAt: '2026-11-09T02:00:00.000Z',
@@ -237,7 +235,6 @@ export const ownerProjects: OwnerProject[] = [
       testPeriod: '2026/11/28–2026/12/05',
     },
     recruitmentStatus: 'closed',
-    applicationCount: 3,
     endsAt: '2026-11-20T15:59:59.000Z',
     engagement: { id: 'e5', status: 'PENDING_PAYMENT', testerName: '哇哩勒' },
     createdAt: '2026-11-10T02:00:00.000Z',
@@ -252,7 +249,6 @@ export const ownerProjects: OwnerProject[] = [
       testPeriod: '2026/11/01–2026/11/05',
     },
     recruitmentStatus: 'closed',
-    applicationCount: 5,
     endsAt: '2026-10-25T15:59:59.000Z',
     engagement: { id: 'e2', status: 'FUNDED', testerName: '哇哩勒' },
     createdAt: '2026-10-15T02:00:00.000Z',
@@ -267,7 +263,6 @@ export const ownerProjects: OwnerProject[] = [
       testPeriod: '2026/11/01–2026/11/08',
     },
     recruitmentStatus: 'closed',
-    applicationCount: 4,
     endsAt: '2026-10-25T15:59:59.000Z',
     engagement: { id: 'e4', status: 'TESTING', testerName: '哇哩勒' },
     createdAt: '2026-10-12T02:00:00.000Z',
@@ -282,7 +277,6 @@ export const ownerProjects: OwnerProject[] = [
       testPeriod: '2026/10/24–2026/10/30',
     },
     recruitmentStatus: 'closed',
-    applicationCount: 2,
     endsAt: '2026-10-18T15:59:59.000Z',
     engagement: { id: 'e6', status: 'SUBMITTED', testerName: '哇哩勒' },
     createdAt: '2026-10-05T02:00:00.000Z',
@@ -297,7 +291,6 @@ export const ownerProjects: OwnerProject[] = [
       testPeriod: '2026/09/01–2026/09/20',
     },
     recruitmentStatus: 'closed',
-    applicationCount: 2,
     endsAt: '2026-08-31T15:59:59.000Z',
     engagement: { id: 'e3', status: 'COMPLETED', testerName: '林小美' },
     createdAt: '2026-08-15T02:00:00.000Z',

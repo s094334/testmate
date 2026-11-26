@@ -140,7 +140,6 @@ export type ProjectCard = {
   end_date: string // YYYY-MM-DD
   reward: number
   report_days: number
-  application_count: number
   created_at: string
 }
 
@@ -181,7 +180,6 @@ export type OwnProject = {
   start_date: string // YYYY-MM-DD
   end_date: string // YYYY-MM-DD
   recruitment_status: 'recruiting' | 'closed' | 'cancelled' // 過了 end_date 的招募中專案是 closed
-  application_count: number
   // 暫時一律是 null：合作還沒做
   engagement: {
     id: string
@@ -197,6 +195,16 @@ export type OwnProject = {
     tester_name: string // FUNDED 之前是去識別化姓名
   } | null
   created_at: string
+}
+
+// From POST /api/applications. Written from worker/applications/lib/application.ts.
+export type Application = {
+  id: string
+  project: ProjectCard
+  source: 'applied' | 'invited' // invited：接受邀請而來
+  status: 'pending' | 'selected' | 'declined'
+  created_at: string
+  tester: null // 負責人的應徵者名單之後才做
 }
 
 // Sent to POST /api/projects. Written from worker/projects/create.ts, not API.md:

@@ -1,5 +1,9 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { HTTPException } from 'hono/http-exception'
+import {
+  createApplication,
+  createApplicationRoute,
+} from './applications/create'
 import { getCompany, getCompanyRoute } from './auth/get-company'
 import { getProfile, getProfileRoute } from './auth/get-profile'
 import { getSession, getSessionRoute } from './auth/get-session'
@@ -37,6 +41,7 @@ app.openapi(listOwnProjectsRoute, listOwnProjects)
 app.openapi(createProjectRoute, createProject)
 app.openapi(listProjectsRoute, listProjects)
 app.openapi(getProjectRoute, getProject)
+app.openapi(createApplicationRoute, createApplication)
 app.openapi(listTagsRoute, listTags)
 
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', '找不到這個 API'))
