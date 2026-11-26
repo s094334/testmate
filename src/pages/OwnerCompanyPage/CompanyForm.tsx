@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { ApiError } from '@/api/client'
 import { useSaveCompany } from '@/api/company'
 import type { Company, Tag } from '@/api/types'
+import { BottomBar } from '@/components/BottomBar'
 import { LockIcon } from '@/components/icons/LockIcon'
 import {
   ownerCompanyFields,
@@ -189,7 +190,7 @@ export function CompanyForm({
           </button>
         </div>
 
-        <div className="border-line bg-surface desktop:hidden tablet:-mx-6 sticky bottom-0 -mx-4 flex flex-col gap-2 border-t px-4 py-3">
+        <BottomBar className="border-line bg-surface desktop:hidden fixed inset-x-0 bottom-0 flex flex-col gap-2 border-t px-4 py-3">
           {saved && <span className="text-owner-text">已儲存</span>}
           {!saved && errors.root && (
             <span className="text-status-dispute-text">
@@ -213,7 +214,7 @@ export function CompanyForm({
           >
             儲存
           </button>
-        </div>
+        </BottomBar>
       </form>
     </div>
   )

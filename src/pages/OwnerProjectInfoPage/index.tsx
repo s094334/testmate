@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router'
 import { ApiError } from '@/api/client'
 import { useProject } from '@/api/projects'
 import { useSession } from '@/api/session'
+import { BottomBar } from '@/components/BottomBar'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import {
   isMockOwnerProject,
@@ -138,7 +139,7 @@ function MockInfo({ id }: { id: string }) {
         </dl>
       </section>
 
-      <div className="bg-surface tablet:hidden sticky bottom-0 z-5 -mx-4 -mt-3 -mb-12 flex gap-2 px-4 pt-2.5 pb-4 shadow-[0_-4px_16px_rgb(30_30_28/8%)]">
+      <BottomBar className="bg-surface tablet:hidden fixed inset-x-0 bottom-0 z-5 flex gap-2 px-4 pt-2.5 pb-4 shadow-[0_-4px_16px_rgb(30_30_28/8%)]">
         <Link
           to={`/owner/projects/${project.id}`}
           className="bg-page text-ink flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out"
@@ -146,7 +147,7 @@ function MockInfo({ id }: { id: string }) {
           <ChevronDownIcon className="rotate-90" />
           上一頁
         </Link>
-      </div>
+      </BottomBar>
     </div>
   )
 }
@@ -328,7 +329,7 @@ function ApiInfo({ id }: { id: string }) {
         </dl>
       </section>
 
-      <div className="bg-surface tablet:hidden sticky bottom-0 z-5 -mx-4 -mt-3 -mb-12 flex gap-2 px-4 pt-2.5 pb-4 shadow-[0_-4px_16px_rgb(30_30_28/8%)]">
+      <BottomBar className="bg-surface tablet:hidden fixed inset-x-0 bottom-0 z-5 flex gap-2 px-4 pt-2.5 pb-4 shadow-[0_-4px_16px_rgb(30_30_28/8%)]">
         <Link
           to={`/owner/projects/${project.id}`}
           className="bg-page text-ink flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 transition-colors duration-150 ease-out"
@@ -336,7 +337,7 @@ function ApiInfo({ id }: { id: string }) {
           <ChevronDownIcon className="rotate-90" />
           上一頁
         </Link>
-      </div>
+      </BottomBar>
     </div>
   )
 }

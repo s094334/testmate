@@ -3,6 +3,7 @@ import { useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { ApiError } from '@/api/client'
 import { useSaveProfile } from '@/api/profile'
 import type { TesterProfile } from '@/api/types'
+import { BottomBar } from '@/components/BottomBar'
 import { CloseIcon } from '@/components/icons/CloseIcon'
 import { PlusIcon } from '@/components/icons/PlusIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
@@ -231,7 +232,7 @@ export function Experience({ profile }: { profile: TesterProfile }) {
         </button>
       </div>
 
-      <div className="border-line bg-surface desktop:hidden sticky bottom-0 -mx-4 -mb-5 flex flex-col gap-2 rounded-b-md border-t px-4 py-3">
+      <BottomBar className="border-line bg-surface desktop:hidden fixed inset-x-0 bottom-0 flex flex-col gap-2 border-t px-4 py-3">
         {saved && <span className="text-tester-text">已儲存</span>}
         {!saved && errors.root && (
           <span className="text-status-dispute-text">
@@ -249,7 +250,7 @@ export function Experience({ profile }: { profile: TesterProfile }) {
         >
           儲存
         </button>
-      </div>
+      </BottomBar>
     </section>
   )
 }
