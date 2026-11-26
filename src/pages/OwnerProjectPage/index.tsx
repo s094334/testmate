@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useParams } from 'react-router'
 import {
   useProjectApplications,
@@ -44,6 +44,8 @@ function ApiProject({ id }: { id: string }) {
         project.recruitment_status === 'recruiting'
     )
   const select = useSelectApplication(id)
+  // isPending only shows on the next render; a second press can come first
+  const choosing = useRef(false)
 
   if (!project) {
     return (
@@ -111,18 +113,22 @@ function ApiProject({ id }: { id: string }) {
             projectId={project.id}
             candidates={applications.items.flatMap(candidateOf)}
             onChoose={(candidate) => {
-              if (select.isPending) return
+              if (choosing.current) return
+              choosing.current = true
               select.mutate(candidate.id, {
-                onError: (error) =>
+                onError: (error) => {
+                  choosing.current = false
                   toast.add({
                     title:
                       error instanceof ApiError
                         ? error.message
                         : '無法連線，請稍後再試',
                     timeout: 4000,
-                  }),
+                  })
+                },
               })
             }}
+            choosing={select.isPending}
           />
         ) : (
           <p className="text-ink-muted">

@@ -10,10 +10,13 @@ export function Candidates({
   candidates,
   onDecline,
   onChoose,
+  choosing = false,
 }: {
   candidates: RecruitCandidate[]
   onDecline: (candidate: RecruitCandidate) => void
   onChoose: (candidate: RecruitCandidate) => void
+  // A 選定 is on its way: every 婉拒 and 選定 waits for it
+  choosing?: boolean
 }) {
   if (candidates.length === 0) {
     return (
@@ -140,6 +143,7 @@ export function Candidates({
                   <button
                     type="button"
                     onClick={() => onDecline(candidate)}
+                    disabled={choosing}
                     className="btn border-role bg-surface text-ink tablet:flex-none flex-1"
                   >
                     婉拒
@@ -150,6 +154,7 @@ export function Candidates({
                       onChoose(candidate)
                       window.scrollTo(0, 0)
                     }}
+                    disabled={choosing}
                     className="btn btn-primary tablet:flex-none flex-1"
                   >
                     選定
