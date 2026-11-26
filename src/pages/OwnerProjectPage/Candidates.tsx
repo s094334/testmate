@@ -16,6 +16,14 @@ export function Candidates({
   onDecline: (candidate: RecruitCandidate) => void
   onChoose: (candidate: RecruitCandidate) => void
 }) {
+  if (candidates.length === 0) {
+    return (
+      <p className="text-ink-muted tablet:p-4 desktop:px-7 desktop:py-6">
+        還沒有人申請
+      </p>
+    )
+  }
+
   return (
     <ul className="tablet:gap-0 flex flex-col gap-3">
       {candidates
