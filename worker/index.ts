@@ -15,6 +15,7 @@ import { register, registerRoute } from './auth/register'
 import { saveCompany, saveCompanyRoute } from './auth/save-company'
 import { saveProfile, saveProfileRoute } from './auth/save-profile'
 import { getEngagement, getEngagementRoute } from './engagements/get'
+import { listEngagements, listEngagementsRoute } from './engagements/list'
 import { checkOrigin } from './http/origin'
 import { fail, validationFailed } from './http/response'
 import { createProject, createProjectRoute } from './projects/create'
@@ -45,6 +46,7 @@ app.openapi(listProjectsRoute, listProjects)
 app.openapi(getProjectRoute, getProject)
 app.openapi(createApplicationRoute, createApplication)
 app.openapi(listApplicationsRoute, listApplications)
+app.openapi(listEngagementsRoute, listEngagements)
 app.openapi(getEngagementRoute, getEngagement)
 app.openapi(listTagsRoute, listTags)
 
