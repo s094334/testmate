@@ -4,6 +4,10 @@ import {
   createApplication,
   createApplicationRoute,
 } from './applications/create'
+import {
+  declineApplication,
+  declineApplicationRoute,
+} from './applications/decline'
 import { listApplications, listApplicationsRoute } from './applications/list'
 import {
   selectApplication,
@@ -51,6 +55,7 @@ app.openapi(getProjectRoute, getProject)
 app.openapi(createApplicationRoute, createApplication)
 app.openapi(listApplicationsRoute, listApplications)
 app.openapi(selectApplicationRoute, selectApplication)
+app.openapi(declineApplicationRoute, declineApplication)
 app.openapi(listEngagementsRoute, listEngagements)
 app.openapi(getEngagementRoute, getEngagement)
 app.openapi(listTagsRoute, listTags)
