@@ -1,4 +1,4 @@
-import { getTableColumns, getTableName } from 'drizzle-orm'
+import { getTableColumns, getTableName, is, SQL, sql } from 'drizzle-orm'
 import type { BatchItem } from 'drizzle-orm/batch'
 import { drizzle } from 'drizzle-orm/d1'
 import type {
@@ -34,6 +34,38 @@ export function insertRows<T extends SQLiteTable>(
   return Array.from({ length: Math.ceil(rows.length / size) }, (_, i) =>
     db.insert(table).values(rows.slice(i * size, (i + 1) * size))
   )
+}
+
+// INSERT … SELECT … WHERE: the row goes in only if `condition` holds when the
+// statement runs, so in a batch an insert can depend on the statements before
+// it, as a conditional UPDATE does. A SELECT with WHERE and no FROM runs on
+// PostgreSQL too. Missing values get their defaults, as .values() gives them
+export function insertWhere<T extends SQLiteTable>(
+  db: Db,
+  table: T,
+  row: SQLiteInsertValue<T>,
+  condition: SQL
+) {
+  const values = Object.entries(getTableColumns(table))
+    // Generated columns are left out of the column list drizzle writes
+    .filter(([, column]) => !column.generated)
+    .map(([key, column]) => {
+      const value = (row as Record<string, unknown>)[key]
+      if (is(value, SQL)) return value
+      if (value !== undefined) return sql.param(value, column)
+      if (column.default !== undefined) {
+        return is(column.default, SQL)
+          ? column.default
+          : sql.param(column.default, column)
+      }
+      if (column.defaultFn) return sql.param(column.defaultFn(), column)
+      if (column.onUpdateFn) return sql.param(column.onUpdateFn(), column)
+      return sql`null`
+    })
+
+  return db
+    .insert(table)
+    .select(sql`select ${sql.join(values, sql`, `)} where ${condition}`)
 }
 
 // D1 errors have no error code or constraint name, only a message such as
