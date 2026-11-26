@@ -21,7 +21,15 @@ const tag = z.object({
   name: z.string(),
 })
 
-// Both roles' signup and PUT /api/auth/profile. The forms check with the same isPhone.
+// Both roles' signup and PUT /api/auth/company. PUT /api/auth/profile has its own,
+// worded 真實姓名.
+export const realNameField = z
+  .string({ error: '請輸入姓名' })
+  .trim()
+  .min(1, '請輸入姓名')
+  .max(50, '姓名最多 50 字')
+
+// Both roles' signup and both PUTs. The forms check with the same isPhone.
 export const phoneField = z
   .string({ error: '請輸入手機號碼' })
   .overwrite(normalizePhone)

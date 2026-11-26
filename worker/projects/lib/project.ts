@@ -62,6 +62,24 @@ export const projectSchema = z.object({
   application_count: z.int(),
   created_at: z.iso.datetime(),
   viewer: z.object({ applied: z.boolean() }).nullable(),
+  // The latest engagement that is not CANCELLED, only for the project's owner.
+  // Also on GET /api/auth/projects
+  engagement: z
+    .object({
+      id: z.uuid(),
+      status: z.enum([
+        'PENDING_NDA',
+        'PENDING_PAYMENT',
+        'FUNDED',
+        'TESTING',
+        'SUBMITTED',
+        'DISPUTED',
+        'COMPLETED',
+        'REFUNDED',
+      ]),
+      tester_name: z.string(),
+    })
+    .nullable(),
   confidential: z
     .object({
       how_to_test: z.string(),
@@ -79,6 +97,19 @@ export const projectSchema = z.object({
     })
     .nullable(),
 })
+
+// end_date is the last day to apply. The phase 9 job that sets closed past
+// it does not exist yet, so the detail and the owner's own list work it out
+// themselves, the same way GET /api/projects leaves those projects out
+export function recruitmentStatusOf(project: {
+  recruitmentStatus: (typeof recruitmentStatuses)[number]
+  endDate: string
+}) {
+  return project.recruitmentStatus === 'recruiting' &&
+    project.endDate < taiwanToday()
+    ? 'closed'
+    : project.recruitmentStatus
+}
 
 // `viewer` is who is reading: only the project's owner gets `confidential`
 export async function findProject(
@@ -143,18 +174,13 @@ export async function findProject(
     report_days: project.reportDays,
     reward: project.reward,
     special_requirements: project.specialRequirements,
-    // end_date is the last day to apply. The phase 9 job that sets closed past
-    // it does not exist yet, so the detail works it out itself, the same way
-    // GET /api/projects leaves those projects out
-    recruitment_status:
-      project.recruitmentStatus === 'recruiting' &&
-      project.endDate < taiwanToday()
-        ? 'closed'
-        : project.recruitmentStatus,
+    recruitment_status: recruitmentStatusOf(project),
     // Applications do not exist yet, so nobody has applied
     application_count: 0,
     created_at: project.createdAt,
     viewer: viewer?.role === 'tester' ? { applied: false } : null,
+    // 暫時: engagements do not exist yet, so no project has one
+    engagement: null,
     confidential:
       viewer?.id === project.ownerId
         ? {
