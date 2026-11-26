@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { BottomBar } from '@/components/BottomBar'
 import { testerProfileFields, type TesterProfileFormValues } from './fields'
 import { FormField } from './FormField'
 import { SignupProgress } from './SignupProgress'
@@ -50,7 +51,7 @@ export function SignupTesterProfilePage({
           errors={errors}
         />
       ))}
-      <div className="flex gap-3">
+      <BottomBar className="border-line bg-surface tablet:static tablet:border-t-0 tablet:p-0 fixed inset-x-0 bottom-0 flex gap-3 border-t px-4 py-3">
         <button
           type="button"
           onClick={
@@ -65,7 +66,7 @@ export function SignupTesterProfilePage({
         <button type="submit" className="btn btn-primary btn-ink flex-1">
           下一步
         </button>
-      </div>
+      </BottomBar>
     </form>
   )
 }

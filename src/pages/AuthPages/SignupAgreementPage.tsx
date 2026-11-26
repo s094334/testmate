@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { BottomBar } from '@/components/BottomBar'
 import { WarningIcon } from '@/components/icons/WarningIcon'
 import { disputeSteps } from './data'
 import { DisputeTermsDialog } from './DisputeTermsDialog'
@@ -85,7 +86,7 @@ export function SignupAgreementPage({
             {errorMessage}
           </span>
         )}
-        <div className="flex gap-3">
+        <BottomBar className="border-line bg-surface tablet:static tablet:border-t-0 tablet:p-0 fixed inset-x-0 bottom-0 flex gap-3 border-t px-4 py-3">
           <button
             type="button"
             onClick={() => onBack(agreed)}
@@ -112,7 +113,7 @@ export function SignupAgreementPage({
               完成註冊
             </button>
           )}
-        </div>
+        </BottomBar>
         <p className="text-ink-muted text-center">
           註冊即表示同意
           <Link
