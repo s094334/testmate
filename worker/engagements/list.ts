@@ -12,7 +12,8 @@ import {
 } from '../db/schema'
 import { requireAuth, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
-import { engagementSchema, isDisclosed, nextDueAtOf } from './lib/engagement'
+import { testerNameOf } from './lib/disclosure'
+import { engagementSchema, nextDueAtOf } from './lib/engagement'
 
 export const listEngagementsRoute = createRoute({
   method: 'get',
@@ -22,10 +23,19 @@ export const listEngagementsRoute = createRoute({
     query: z.object({
       project_id: z.uuid({ error: '專案 id 格式錯誤' }).optional(),
       // ?status=a arrives as a string, ?status=a&status=b as an array; both
-      // become an array before validation, as in projects/list.ts
+      // become an array before validation, as in projects/list.ts. Repeats
+      // are dropped and the rest capped, so a long query string cannot go
+      // past D1's 100 bound parameters per query
       status: z.preprocess(
-        (value) => (value === undefined ? undefined : [value].flat()),
-        z.array(z.enum(engagementStatuses, { error: '狀態不正確' })).optional()
+        (value) =>
+          value === undefined ? undefined : [...new Set([value].flat())],
+        z
+          .array(z.enum(engagementStatuses, { error: '狀態不正確' }))
+          .max(
+            engagementStatuses.length,
+            `狀態最多選 ${engagementStatuses.length} 種`
+          )
+          .optional()
       ),
     }),
   },
@@ -60,7 +70,8 @@ export const listEngagementsRoute = createRoute({
       },
     },
     400: {
-      description: 'VALIDATION_FAILED（project_id 不是 UUID、status 不正確）',
+      description:
+        'VALIDATION_FAILED（project_id 不是 UUID、status 不正確或超過 9 種）',
     },
     401: { description: 'UNAUTHENTICATED（未登入或 session 過期）' },
     403: { description: 'FORBIDDEN（負責人帶的 project_id 不是自己的專案）' },
@@ -103,8 +114,10 @@ export const listEngagements: RouteHandler<
       projectName: projects.name,
       projectSummary: projects.summary,
       companyName: companies.name,
-      testerRealName: testerProfiles.realName,
-      testerNickname: testerProfiles.nickname,
+      tester: {
+        realName: testerProfiles.realName,
+        nickname: testerProfiles.nickname,
+      },
     })
     .from(engagements)
     .innerJoin(projects, eq(projects.id, engagements.projectId))
@@ -159,15 +172,11 @@ export const listEngagements: RouteHandler<
           })),
       },
       status: row.engagement.status,
-      // The owner sees the tester's real name only once the payment is in
-      // escrow, and the nickname before that, as on the applicant list;
-      // the tester sees the company
+      // The tester sees the company
       counterpart_name:
         user.role === 'tester'
           ? row.companyName
-          : isDisclosed(row.engagement.status)
-            ? row.testerRealName
-            : row.testerNickname || null,
+          : testerNameOf(row.engagement.status, row.tester),
       next_due_at: nextDueAtOf(row.engagement),
       updated_at: row.engagement.updatedAt,
     })),

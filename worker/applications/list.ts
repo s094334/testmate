@@ -1,17 +1,11 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
-import { and, asc, eq, inArray } from 'drizzle-orm'
+import { asc, eq } from 'drizzle-orm'
 import { createDb } from '../db'
-import {
-  applications,
-  tags,
-  testerDevices,
-  testerProfileTags,
-  testerProfiles,
-  users,
-} from '../db/schema'
+import { applications } from '../db/schema'
 import { requireAuth, requireRole, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
 import { findProject, projectCardOf } from '../projects/lib/project'
+import { findTesterCards } from '../testers/lib/card'
 import { applicationSchema } from './lib/application'
 
 // Only the owner's side of API.md「16. GET /api/applications」for now.
@@ -68,51 +62,18 @@ export const listApplications: RouteHandler<
       status: applications.status,
       createdAt: applications.createdAt,
       testerId: applications.testerId,
-      nickname: testerProfiles.nickname,
-      avatarShape: users.avatarShape,
-      city: testerProfiles.city,
-      hasQaExperience: testerProfiles.hasQaExperience,
-      qaYears: testerProfiles.qaYears,
-      languages: testerProfiles.languages,
     })
     .from(applications)
-    .innerJoin(testerProfiles, eq(testerProfiles.userId, applications.testerId))
-    .innerJoin(users, eq(users.id, applications.testerId))
     .where(eq(applications.projectId, projectId))
     .orderBy(asc(applications.createdAt), asc(applications.id))
 
-  // Subqueries, not a list of tester ids: a project can have more applicants
-  // than D1's 100 bound parameters per query
-  const applicantIds = db
-    .select({ id: applications.testerId })
-    .from(applications)
-    .where(eq(applications.projectId, projectId))
-
-  const devices = await db
-    .select({
-      userId: testerDevices.userId,
-      deviceTagName: tags.name,
-      brand: testerDevices.brand,
-      model: testerDevices.model,
-      osVersion: testerDevices.osVersion,
-      customName: testerDevices.customName,
-    })
-    .from(testerDevices)
-    .leftJoin(tags, eq(tags.id, testerDevices.deviceTagId))
-    .where(inArray(testerDevices.userId, applicantIds))
-    .orderBy(testerDevices.sortOrder, testerDevices.id)
-
-  const interests = await db
-    .select({ userId: testerProfileTags.userId, name: tags.name })
-    .from(testerProfileTags)
-    .innerJoin(tags, eq(tags.id, testerProfileTags.tagId))
-    .where(
-      and(
-        inArray(testerProfileTags.userId, applicantIds),
-        eq(tags.category, 'interest')
-      )
-    )
-    .orderBy(tags.sortOrder)
+  const testers = await findTesterCards(
+    db,
+    db
+      .select({ id: applications.testerId })
+      .from(applications)
+      .where(eq(applications.projectId, projectId))
+  )
 
   const card = projectCardOf(project)
 
@@ -123,29 +84,8 @@ export const listApplications: RouteHandler<
       source: row.source,
       status: row.status,
       created_at: row.createdAt,
-      tester: {
-        tester_id: row.testerId,
-        nickname: row.nickname || null,
-        avatar_shape: row.avatarShape,
-        city: row.city,
-        qa_years: row.hasQaExperience ? row.qaYears : null,
-        languages: row.languages,
-        devices: devices
-          .filter((device) => device.userId === row.testerId)
-          .map((device) => ({
-            device_tag_name: device.deviceTagName,
-            brand: device.brand,
-            model: device.model,
-            os_version: device.osVersion,
-            custom_name: device.customName,
-          })),
-        interests: interests
-          .filter((interest) => interest.userId === row.testerId)
-          .map((interest) => interest.name),
-        // Ratings do not exist yet
-        average_score: null,
-        rating_count: 0,
-      },
+      tester:
+        testers.find((tester) => tester.tester_id === row.testerId) ?? null,
     })),
   })
 }

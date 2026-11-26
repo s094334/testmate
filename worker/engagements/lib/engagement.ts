@@ -17,14 +17,7 @@ import {
   users,
 } from '../../db/schema'
 import { findTesterCard } from '../../testers/lib/card'
-
-type EngagementStatus = (typeof engagementStatuses)[number]
-
-// From FUNDED on, except CANCELLED: the payment is in escrow, so both sides
-// see the confidential content and each other's contact details
-export function isDisclosed(status: EngagementStatus) {
-  return !['PENDING_NDA', 'PENDING_PAYMENT', 'CANCELLED'].includes(status)
-}
+import { isDisclosed } from './disclosure'
 
 // EngagementSummary's next_due_at: the deadline the current status is waiting on
 export function nextDueAtOf(engagement: typeof engagements.$inferSelect) {
@@ -74,8 +67,7 @@ const contact = z.object({
   email: z.string(),
 })
 
-// API.md `Engagement`. disclosed has environment_info as well, the same as
-// `Project`'s confidential in projects/lib/project.ts
+// API.md `Engagement`
 export const engagementSchema = z.object({
   id: z.uuid(),
   status: z.enum(engagementStatuses),
@@ -130,7 +122,6 @@ export const engagementSchema = z.object({
       how_to_test: z.string(),
       success_criteria: z.string(),
       confidential_details: z.string().nullable(),
-      environment_info: z.string().nullable(),
       test_items: z.array(
         z.object({
           id: z.uuid(),
@@ -162,7 +153,6 @@ export async function findEngagement(db: Db, id: string) {
         howToTest: projects.howToTest,
         successCriteria: projects.successCriteria,
         confidentialDetails: projects.confidentialDetails,
-        environmentInfo: projects.environmentInfo,
       },
       company: {
         name: companies.name,
@@ -250,7 +240,6 @@ export async function findEngagement(db: Db, id: string) {
           how_to_test: project.howToTest,
           success_criteria: project.successCriteria,
           confidential_details: project.confidentialDetails,
-          environment_info: project.environmentInfo,
           test_items: await db
             .select({
               id: projectTestItems.id,
