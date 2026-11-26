@@ -1,6 +1,7 @@
 import { z } from '@hono/zod-openapi'
 import { eq } from 'drizzle-orm'
 import { alias } from 'drizzle-orm/sqlite-core'
+import { testerCardSchema } from '../../applications/lib/application'
 import type { Db } from '../../db'
 import {
   companies,
@@ -15,7 +16,7 @@ import {
   testerProfiles,
   users,
 } from '../../db/schema'
-import { findTesterCard, testerCardSchema } from '../../testers/lib/card'
+import { findTesterCard } from '../../testers/lib/card'
 
 type EngagementStatus = (typeof engagementStatuses)[number]
 

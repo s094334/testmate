@@ -12,7 +12,6 @@ import {
 } from '../db/schema'
 import { requireAuth, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
-import { maskName } from '../testers/lib/card'
 import { engagementSchema, isDisclosed, nextDueAtOf } from './lib/engagement'
 
 export const listEngagementsRoute = createRoute({
@@ -48,7 +47,8 @@ export const listEngagementsRoute = createRoute({
                     devices: engagementSchema.shape.project.shape.devices,
                   }),
                   status: z.enum(engagementStatuses),
-                  counterpart_name: z.string(),
+                  // null: the owner reading a tester with no nickname, before payment
+                  counterpart_name: z.string().nullable(),
                   next_due_at: z.iso.datetime().nullable(),
                   updated_at: z.iso.datetime(),
                 })
@@ -104,6 +104,7 @@ export const listEngagements: RouteHandler<
       projectSummary: projects.summary,
       companyName: companies.name,
       testerRealName: testerProfiles.realName,
+      testerNickname: testerProfiles.nickname,
     })
     .from(engagements)
     .innerJoin(projects, eq(projects.id, engagements.projectId))
@@ -159,13 +160,14 @@ export const listEngagements: RouteHandler<
       },
       status: row.engagement.status,
       // The owner sees the tester's real name only once the payment is in
-      // escrow; the tester sees the company
+      // escrow, and the nickname before that, as on the applicant list;
+      // the tester sees the company
       counterpart_name:
         user.role === 'tester'
           ? row.companyName
           : isDisclosed(row.engagement.status)
             ? row.testerRealName
-            : maskName(row.testerRealName),
+            : row.testerNickname || null,
       next_due_at: nextDueAtOf(row.engagement),
       updated_at: row.engagement.updatedAt,
     })),

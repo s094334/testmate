@@ -1,4 +1,3 @@
-import { z } from '@hono/zod-openapi'
 import { and, eq } from 'drizzle-orm'
 import type { Db } from '../../db'
 import {
@@ -6,47 +5,23 @@ import {
   testerDevices,
   testerProfileTags,
   testerProfiles,
+  users,
 } from '../../db/schema'
 
-// GLOSSARY「去識別化姓名」: 王小平 → 王Ｏ平, 王平 → 王Ｏ
-export function maskName(name: string) {
-  const chars = Array.from(name)
-  if (chars.length <= 1) return name
-  if (chars.length === 2) return `${chars[0]}Ｏ`
-  return `${chars[0]}${'Ｏ'.repeat(chars.length - 2)}${chars.at(-1)}`
-}
-
-// API.md `TesterCard`. custom_name is not in API.md: without it a custom
-// device would arrive as four nulls
-export const testerCardSchema = z.object({
-  tester_id: z.uuid(),
-  masked_name: z.string(),
-  city: z.string(),
-  qa_years: z.int(),
-  languages: z.array(z.object({ name: z.string(), native: z.boolean() })),
-  devices: z.array(
-    z.object({
-      device_tag_name: z.string().nullable(),
-      brand: z.string().nullable(),
-      model: z.string().nullable(),
-      os_version: z.string().nullable(),
-      custom_name: z.string().nullable(),
-    })
-  ),
-  interests: z.array(z.string()),
-  average_score: z.number().nullable(),
-  rating_count: z.int(),
-})
-
+// One tester's `testerCardSchema` (applications/lib/application.ts), built
+// the same way as each applicant in GET /api/applications
 export async function findTesterCard(db: Db, testerId: string) {
   const [profile] = await db
     .select({
-      realName: testerProfiles.realName,
+      nickname: testerProfiles.nickname,
+      avatarShape: users.avatarShape,
       city: testerProfiles.city,
+      hasQaExperience: testerProfiles.hasQaExperience,
       qaYears: testerProfiles.qaYears,
       languages: testerProfiles.languages,
     })
     .from(testerProfiles)
+    .innerJoin(users, eq(users.id, testerProfiles.userId))
     .where(eq(testerProfiles.userId, testerId))
 
   if (!profile) return null
@@ -75,9 +50,10 @@ export async function findTesterCard(db: Db, testerId: string) {
 
   return {
     tester_id: testerId,
-    masked_name: maskName(profile.realName),
+    nickname: profile.nickname || null,
+    avatar_shape: profile.avatarShape,
     city: profile.city,
-    qa_years: profile.qaYears,
+    qa_years: profile.hasQaExperience ? profile.qaYears : null,
     languages: profile.languages,
     devices,
     interests: interests.map((interest) => interest.name),
