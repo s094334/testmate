@@ -3,6 +3,7 @@ import { and, eq } from 'drizzle-orm'
 import type { SessionUser } from '../../auth/lib/session'
 import type { Db } from '../../db'
 import {
+  applications,
   companies,
   minQaYearsOptions,
   projectDevices,
@@ -59,7 +60,6 @@ export const projectSchema = z.object({
   reward: z.int(),
   special_requirements: z.string().nullable(),
   recruitment_status: z.enum(recruitmentStatuses),
-  application_count: z.int(),
   created_at: z.iso.datetime(),
   viewer: z.object({ applied: z.boolean() }).nullable(),
   // The latest engagement that is not CANCELLED, only for the project's owner.
@@ -96,6 +96,21 @@ export const projectSchema = z.object({
       ),
     })
     .nullable(),
+})
+
+// One row of GET /api/projects, also the `project` of an application
+export const projectCardSchema = projectSchema.pick({
+  id: true,
+  name: true,
+  summary: true,
+  company: true,
+  industry: true,
+  interests: true,
+  devices: true,
+  end_date: true,
+  reward: true,
+  report_days: true,
+  created_at: true,
 })
 
 // end_date is the last day to apply. The phase 9 job that sets closed past
@@ -175,10 +190,20 @@ export async function findProject(
     reward: project.reward,
     special_requirements: project.specialRequirements,
     recruitment_status: recruitmentStatusOf(project),
-    // Applications do not exist yet, so nobody has applied
-    application_count: 0,
     created_at: project.createdAt,
-    viewer: viewer?.role === 'tester' ? { applied: false } : null,
+    viewer:
+      viewer?.role === 'tester'
+        ? {
+            applied:
+              (await db.$count(
+                applications,
+                and(
+                  eq(applications.projectId, id),
+                  eq(applications.testerId, viewer.id)
+                )
+              )) > 0,
+          }
+        : null,
     // 暫時: engagements do not exist yet, so no project has one
     engagement: null,
     confidential:
@@ -200,5 +225,24 @@ export async function findProject(
               .orderBy(projectTestItems.sortOrder),
           }
         : null,
+  }
+}
+
+// projectCardSchema's fields out of a findProject result
+export function projectCardOf(
+  project: NonNullable<Awaited<ReturnType<typeof findProject>>>
+) {
+  return {
+    id: project.id,
+    name: project.name,
+    summary: project.summary,
+    company: project.company,
+    industry: project.industry,
+    interests: project.interests,
+    devices: project.devices,
+    end_date: project.end_date,
+    reward: project.reward,
+    report_days: project.report_days,
+    created_at: project.created_at,
   }
 }

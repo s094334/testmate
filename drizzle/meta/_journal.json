@@ -29,6 +29,13 @@
       "when": 1795590863104,
       "tag": "0003_add_tester_nickname",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1795656597881,
+      "tag": "0004_add_applications_and_engagements",
+      "breakpoints": true
     }
   ]
 }

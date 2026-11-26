@@ -1,25 +1,21 @@
 import { useState } from 'react'
 import { useBottomBar } from '@/components/BottomBar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  recommendedTesters,
-  recruitCandidates,
-  type RecruitCandidate,
-} from '@/data/owner'
+import { recommendedTesters, type RecruitCandidate } from '@/data/owner'
 import { Candidates } from './Candidates'
 import { Recommended } from './Recommended'
 
 export function Recruiting({
   projectId,
+  candidates: initialCandidates,
   onChoose,
 }: {
   projectId: string
+  candidates: RecruitCandidate[]
   onChoose: (candidate: RecruitCandidate) => void
 }) {
   const [tab, setTab] = useState('candidates')
-  const [candidates, setCandidates] = useState(
-    recruitCandidates[projectId] ?? []
-  )
+  const [candidates, setCandidates] = useState(initialCandidates)
   const [recommended, setRecommended] = useState(
     recommendedTesters[projectId] ?? []
   )

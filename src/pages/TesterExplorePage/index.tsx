@@ -27,7 +27,6 @@ export function TesterExplorePage() {
   })
   const projects = data?.pages.flatMap((page) => page.items)
   const { data: deviceTags } = useTags('device')
-  const [applied, setApplied] = useState<string[]>([])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -40,13 +39,7 @@ export function TesterExplorePage() {
   }, [query])
 
   if (id) {
-    return (
-      <ProjectDetail
-        id={id}
-        applied={applied.includes(id)}
-        onApply={() => setApplied([...applied, id])}
-      />
-    )
+    return <ProjectDetail id={id} />
   }
 
   return (
