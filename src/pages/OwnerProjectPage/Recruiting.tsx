@@ -9,10 +9,12 @@ export function Recruiting({
   projectId,
   candidates: initialCandidates,
   onChoose,
+  choosing,
 }: {
   projectId: string
   candidates: RecruitCandidate[]
   onChoose: (candidate: RecruitCandidate) => void
+  choosing?: boolean
 }) {
   const [tab, setTab] = useState('candidates')
   const [candidates, setCandidates] = useState(initialCandidates)
@@ -66,6 +68,7 @@ export function Recruiting({
                 )
               }
               onChoose={onChoose}
+              choosing={choosing}
             />
           </TabsContent>
 

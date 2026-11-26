@@ -47,10 +47,12 @@ export function useSelectApplication(projectId: string) {
       request<Engagement>(`/api/applications/${applicationId}/select`, {
         method: 'POST',
       }),
+    // Returns the refetch, so the mutation stays pending until the project
+    // has its engagement and the page has moved on from the applicant list
     onSuccess: (engagement) => {
       queryClient.setQueryData(['engagements', engagement.id], engagement)
-      queryClient.invalidateQueries({ queryKey: ['projects'] })
       queryClient.invalidateQueries({ queryKey: ['engagements', 'list'] })
+      return queryClient.invalidateQueries({ queryKey: ['projects'] })
     },
     onError: (error) => {
       // 409: chosen already, or recruitment ended; the project shows which
