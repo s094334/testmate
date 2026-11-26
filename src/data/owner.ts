@@ -41,7 +41,7 @@ export type RecruitCandidate = {
   fullName: string
   email: string
   avatarShape: AvatarShape
-  rating: number
+  rating: number | null // null：還沒有評價
   reviews: number
   city: string
   years: string

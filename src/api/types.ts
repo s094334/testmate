@@ -197,14 +197,35 @@ export type OwnProject = {
   created_at: string
 }
 
-// From POST /api/applications. Written from worker/applications/lib/application.ts.
+// A tester as the owner sees them before payment: no real name, email or phone.
+// Written from worker/applications/lib/application.ts.
+export type TesterCard = {
+  tester_id: string
+  nickname: string | null // null：暱稱功能之前註冊、還沒填暱稱
+  avatar_shape: AvatarShape
+  city: string
+  qa_years: number | null // null：沒有 QA 經驗；0：有經驗、未滿 1 年
+  languages: { name: string; native: boolean }[]
+  devices: {
+    device_tag_name: string | null // null：自訂裝置，名稱在 custom_name
+    brand: string | null
+    model: string | null
+    os_version: string | null
+    custom_name: string | null
+  }[]
+  interests: string[]
+  average_score: number | null // null：還沒有評價
+  rating_count: number
+}
+
+// From POST and GET /api/applications. Written from worker/applications/lib/application.ts.
 export type Application = {
   id: string
   project: ProjectCard
   source: 'applied' | 'invited' // invited：接受邀請而來
   status: 'pending' | 'selected' | 'declined'
   created_at: string
-  tester: null // 負責人的應徵者名單之後才做
+  tester: TesterCard | null // null：測試人員看自己的申請
 }
 
 // Sent to POST /api/projects. Written from worker/projects/create.ts, not API.md:

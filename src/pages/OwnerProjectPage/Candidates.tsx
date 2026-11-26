@@ -45,13 +45,22 @@ export function Candidates({
                     {candidate.name}
                   </h3>
                   <p className="text-ink-muted inline-flex items-center gap-1">
-                    <span className="text-star flex">
-                      <StarIcon />
-                    </span>
-                    <b className="text-ink">{candidate.rating}</b>
-                    <button type="button" className="min-h-8 cursor-pointer">
-                      （{candidate.reviews} 則評論）
-                    </button>
+                    {candidate.rating === null ? (
+                      '尚無評價'
+                    ) : (
+                      <>
+                        <span className="text-star flex">
+                          <StarIcon />
+                        </span>
+                        <b className="text-ink">{candidate.rating}</b>
+                        <button
+                          type="button"
+                          className="min-h-8 cursor-pointer"
+                        >
+                          （{candidate.reviews} 則評論）
+                        </button>
+                      </>
+                    )}
                   </p>
                 </div>
               </div>
@@ -67,18 +76,25 @@ export function Candidates({
                 </div>
                 <div className="flex gap-2">
                   <dt className="text-ink-subtle w-18 flex-none">裝置</dt>
-                  <dd>{candidate.devices.join('、')}</dd>
+                  {/* One line a brand; a line is already joined with 、 */}
+                  <dd>
+                    {candidate.devices.map((device, i) => (
+                      <span key={i} className="block">
+                        {device}
+                      </span>
+                    ))}
+                  </dd>
                 </div>
                 <div className="flex gap-2">
                   <dt className="text-ink-subtle w-18 flex-none">語言</dt>
                   <dd>{candidate.languages.join('、')}</dd>
                 </div>
                 <div className="flex items-start gap-0">
-                  <dt className="text-ink-subtle w-18 flex-none pt-0.5">
+                  <dt className="text-ink-subtle w-18 flex-none pt-0.5 translate-y-1">
                     興趣
                   </dt>
                   <dd>
-                    <ul className="-ml-0.5 flex flex-wrap gap-1.5">
+                    <ul className="-ml-0.5 flex translate-y-1 flex-wrap gap-1.5">
                       {candidate.interests.map((interest) => (
                         <li
                           key={interest}

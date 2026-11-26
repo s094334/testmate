@@ -227,3 +227,22 @@ export async function findProject(
         : null,
   }
 }
+
+// projectCardSchema's fields out of a findProject result
+export function projectCardOf(
+  project: NonNullable<Awaited<ReturnType<typeof findProject>>>
+) {
+  return {
+    id: project.id,
+    name: project.name,
+    summary: project.summary,
+    company: project.company,
+    industry: project.industry,
+    interests: project.interests,
+    devices: project.devices,
+    end_date: project.end_date,
+    reward: project.reward,
+    report_days: project.report_days,
+    created_at: project.created_at,
+  }
+}

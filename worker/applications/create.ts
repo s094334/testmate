@@ -9,7 +9,11 @@ import {
 } from '../db/schema'
 import { requireAuth, requireRole, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
-import { findProject, recruitmentStatusOf } from '../projects/lib/project'
+import {
+  findProject,
+  projectCardOf,
+  recruitmentStatusOf,
+} from '../projects/lib/project'
 import { applicationSchema } from './lib/application'
 
 export const createApplicationRoute = createRoute({
@@ -120,26 +124,16 @@ export const createApplication: RouteHandler<
 
   // TODO: email the owner that someone applied (phase 4 notifier); there is no mailer yet
 
-  const card = await findProject(db, projectId, user)
-  if (!card) throw new Error(`Project ${projectId} disappeared after applying`)
+  const detail = await findProject(db, projectId, user)
+  if (!detail) {
+    throw new Error(`Project ${projectId} disappeared after applying`)
+  }
 
   return ok(
     c,
     {
       id: applicationId,
-      project: {
-        id: card.id,
-        name: card.name,
-        summary: card.summary,
-        company: card.company,
-        industry: card.industry,
-        interests: card.interests,
-        devices: card.devices,
-        end_date: card.end_date,
-        reward: card.reward,
-        report_days: card.report_days,
-        created_at: card.created_at,
-      },
+      project: projectCardOf(detail),
       source: 'applied' as const,
       status: 'pending' as const,
       created_at: createdAt,

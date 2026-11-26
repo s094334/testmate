@@ -1,6 +1,17 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ApiError, request } from './client'
 import type { Application, Project } from './types'
+
+export function useProjectApplications(projectId: string, enabled: boolean) {
+  return useQuery({
+    queryKey: ['applications', { projectId }],
+    queryFn: () =>
+      request<{ items: Application[] }>(
+        `/api/applications?project_id=${projectId}`
+      ),
+    enabled,
+  })
+}
 
 export function useApply() {
   const queryClient = useQueryClient()
