@@ -20,7 +20,9 @@ export function Progress({
   status,
   details,
 }: {
-  project: OwnerProject
+  project: Pick<OwnerProject, 'id' | 'name'> & {
+    details: Pick<OwnerProject['details'], 'testPeriod'>
+  }
   status: ProjectStatus
   details: EngagementDetails
 }) {
@@ -124,13 +126,19 @@ export function Progress({
             <div className="flex flex-col">
               <h3 className="text-[20px] leading-[1.4]">{tester.fullName}</h3>
               <p className="text-ink-muted inline-flex items-center gap-1">
-                <span className="text-star flex">
-                  <StarIcon />
-                </span>
-                <b className="text-ink">{tester.rating}</b>
-                <button type="button" className="min-h-8 cursor-pointer">
-                  （{tester.reviews} 則評論）
-                </button>
+                {tester.rating === null ? (
+                  '尚無評價'
+                ) : (
+                  <>
+                    <span className="text-star flex">
+                      <StarIcon />
+                    </span>
+                    <b className="text-ink">{tester.rating}</b>
+                    <button type="button" className="min-h-8 cursor-pointer">
+                      （{tester.reviews} 則評論）
+                    </button>
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -152,17 +160,20 @@ export function Progress({
               <dt className="text-ink-subtle w-18 flex-none">語言</dt>
               <dd>{tester.languages.join('、')}</dd>
             </div>
-            <div className="flex gap-2">
-              <dt className="text-ink-subtle w-18 flex-none">Email</dt>
-              <dd className="min-w-0 wrap-anywhere">
-                <a
-                  href={`mailto:${tester.email}`}
-                  className="text-role underline"
-                >
-                  {tester.email}
-                </a>
-              </dd>
-            </div>
+            {/* A real engagement has the email only once the payment is in escrow */}
+            {tester.email && (
+              <div className="flex gap-2">
+                <dt className="text-ink-subtle w-18 flex-none">Email</dt>
+                <dd className="min-w-0 wrap-anywhere">
+                  <a
+                    href={`mailto:${tester.email}`}
+                    className="text-role underline"
+                  >
+                    {tester.email}
+                  </a>
+                </dd>
+              </div>
+            )}
           </dl>
         </div>
 

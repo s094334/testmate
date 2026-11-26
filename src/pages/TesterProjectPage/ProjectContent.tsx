@@ -16,19 +16,22 @@ export function ProjectContent({
         <p className="text-body-large text-ink-muted">{detail.intro}</p>
       </section>
 
-      <section className="flex flex-col gap-3">
-        <h2 className="text-section-title">特殊要求</h2>
-        <ul className="bg-page border-line flex flex-col gap-3 rounded-md border px-6 py-5">
-          {detail.requirements.map((requirement) => (
-            <li
-              key={requirement}
-              className="text-body-large leading-[1.8] whitespace-pre-line"
-            >
-              {requirement}
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* A real project may have none, as on the project detail */}
+      {detail.requirements.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-section-title">特殊要求</h2>
+          <ul className="bg-page border-line flex flex-col gap-3 rounded-md border px-6 py-5">
+            {detail.requirements.map((requirement) => (
+              <li
+                key={requirement}
+                className="text-body-large leading-[1.8] whitespace-pre-line"
+              >
+                {requirement}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="flex flex-col gap-3">
         <h2 className="text-section-title">項目詳情</h2>
@@ -39,8 +42,14 @@ export function ProjectContent({
           </div>
           <div className="flex flex-col gap-0.5">
             <dt className="text-ink-subtle">設備</dt>
+            {/* One device a line, like 設備 on the project detail: a real
+                device is already joined with 、 */}
             <dd className="text-body-large font-bold">
-              {project.devices.join('、')}
+              {project.devices.map((device, i) => (
+                <span key={i} className="block">
+                  {device}
+                </span>
+              ))}
             </dd>
           </div>
           <div className="flex flex-col gap-0.5">

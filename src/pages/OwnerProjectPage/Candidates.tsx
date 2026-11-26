@@ -1,7 +1,6 @@
 import { Avatar } from '@/components/Avatar'
 import { ClockIcon } from '@/components/icons/ClockIcon'
 import { CrossIcon } from '@/components/icons/CrossIcon'
-import { ExclamationIcon } from '@/components/icons/ExclamationIcon'
 import { HeartIcon } from '@/components/icons/HeartIcon'
 import { SendIcon } from '@/components/icons/SendIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
@@ -111,23 +110,15 @@ export function Candidates({
 
             <div className="tablet:w-auto tablet:max-w-90 tablet:flex-none tablet:items-end flex w-full flex-col items-start gap-2.5">
               {candidate.status === 'interest' && (
-                <span className="bg-tester-soft text-tester-text relative inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
+                <span className="bg-tester-soft text-tester-text inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
                   <HeartIcon />
                   接受邀請
-                  <span className="bg-alert text-surface absolute -top-[9px] -right-[9px] flex size-[18px] items-center justify-center rounded-full shadow-[0_0_0_2px_var(--color-surface)]">
-                    <ExclamationIcon />
-                    <span className="sr-only">需要處理</span>
-                  </span>
                 </span>
               )}
               {candidate.status === 'applied' && (
-                <span className="bg-owner-soft text-owner-strong relative inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
+                <span className="bg-owner-soft text-owner-strong inline-flex items-center gap-1.5 rounded-[4px] px-3 py-0.5 font-bold whitespace-nowrap">
                   <SendIcon />
                   主動申請
-                  <span className="bg-alert text-surface absolute -top-[9px] -right-[9px] flex size-[18px] items-center justify-center rounded-full shadow-[0_0_0_2px_var(--color-surface)]">
-                    <ExclamationIcon />
-                    <span className="sr-only">需要處理</span>
-                  </span>
                 </span>
               )}
               {candidate.status === 'noreply' && (

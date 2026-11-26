@@ -205,7 +205,7 @@ export const joinedProjects: {
 export const joinedProjectDetails: Record<
   string,
   {
-    rating: number
+    rating: number | null // null：還沒有評價
     reviews: number
     intro: string
     requirements: string[]
