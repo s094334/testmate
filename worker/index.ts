@@ -5,6 +5,10 @@ import {
   createApplicationRoute,
 } from './applications/create'
 import { listApplications, listApplicationsRoute } from './applications/list'
+import {
+  selectApplication,
+  selectApplicationRoute,
+} from './applications/select'
 import { getCompany, getCompanyRoute } from './auth/get-company'
 import { getProfile, getProfileRoute } from './auth/get-profile'
 import { getSession, getSessionRoute } from './auth/get-session'
@@ -46,6 +50,7 @@ app.openapi(listProjectsRoute, listProjects)
 app.openapi(getProjectRoute, getProject)
 app.openapi(createApplicationRoute, createApplication)
 app.openapi(listApplicationsRoute, listApplications)
+app.openapi(selectApplicationRoute, selectApplication)
 app.openapi(listEngagementsRoute, listEngagements)
 app.openapi(getEngagementRoute, getEngagement)
 app.openapi(listTagsRoute, listTags)
