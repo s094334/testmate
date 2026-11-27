@@ -201,6 +201,12 @@ export const joinedProjects: {
   },
 ]
 
+// Ids found here (p1…) are the mock projects under /tester/projects/:id;
+// any other id is a real engagement under /tester/engagements/:id
+export function isMockJoinedProject(id: string) {
+  return joinedProjects.some((project) => project.id === id)
+}
+
 // Project page details for joined projects, by project id
 export const joinedProjectDetails: Record<
   string,

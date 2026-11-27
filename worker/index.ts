@@ -23,7 +23,9 @@ import { register, registerRoute } from './auth/register'
 import { saveCompany, saveCompanyRoute } from './auth/save-company'
 import { saveProfile, saveProfileRoute } from './auth/save-profile'
 import { getEngagement, getEngagementRoute } from './engagements/get'
+import { getNda, getNdaRoute } from './engagements/get-nda'
 import { listEngagements, listEngagementsRoute } from './engagements/list'
+import { signNda, signNdaRoute } from './engagements/sign-nda'
 import { checkOrigin } from './http/origin'
 import { fail, validationFailed } from './http/response'
 import { createProject, createProjectRoute } from './projects/create'
@@ -58,6 +60,8 @@ app.openapi(selectApplicationRoute, selectApplication)
 app.openapi(declineApplicationRoute, declineApplication)
 app.openapi(listEngagementsRoute, listEngagements)
 app.openapi(getEngagementRoute, getEngagement)
+app.openapi(getNdaRoute, getNda)
+app.openapi(signNdaRoute, signNda)
 app.openapi(listTagsRoute, listTags)
 
 app.notFound((c) => fail(c, 404, 'NOT_FOUND', '找不到這個 API'))
