@@ -4,7 +4,7 @@ import { createDb } from '../db'
 import { companies, ndaSignatures, testerProfiles } from '../db/schema'
 import { requireAuth, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
-import { isDisclosed, maskName } from './lib/disclosure'
+import { testerNameOf } from './lib/disclosure'
 import { findParties, sideOf } from './lib/parties'
 
 export const getNdaRoute = createRoute({
@@ -17,13 +17,14 @@ export const getNdaRoute = createRoute({
   responses: {
     200: {
       description:
-        '保密協議要帶入的值（條文在前端）；FUNDED 之前負責人讀到的測試人員姓名為中間Ｏ',
+        '保密協議要帶入的值（條文在前端）；FUNDED 之前（含 CANCELLED）負責人讀到的 tester_name 是暱稱，之後是真實姓名；測試人員一直讀到自己的真實姓名',
       content: {
         'application/json': {
           schema: z.object({
             data: z.object({
               company_name: z.string(),
-              tester_name: z.string(),
+              // null: the owner reading a tester with no nickname, before FUNDED
+              tester_name: z.string().nullable(),
               signed_at: z.iso.datetime().nullable(),
             }),
             error: z.null(),
@@ -60,7 +61,10 @@ export const getNda: RouteHandler<typeof getNdaRoute, AuthEnv> = async (c) => {
     .from(companies)
     .where(eq(companies.userId, parties.ownerId))
   const [tester] = await db
-    .select({ realName: testerProfiles.realName })
+    .select({
+      realName: testerProfiles.realName,
+      nickname: testerProfiles.nickname,
+    })
     .from(testerProfiles)
     .where(eq(testerProfiles.userId, engagement.testerId))
   const [signature] = await db
@@ -75,8 +79,8 @@ export const getNda: RouteHandler<typeof getNdaRoute, AuthEnv> = async (c) => {
   return ok(c, {
     company_name: company.name,
     tester_name:
-      side === 'owner' && !isDisclosed(engagement.status)
-        ? maskName(tester.realName)
+      side === 'owner'
+        ? testerNameOf(engagement.status, tester)
         : tester.realName,
     signed_at: signature?.signedAt ?? null,
   })
