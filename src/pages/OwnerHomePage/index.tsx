@@ -74,7 +74,7 @@ export function OwnerHomePage() {
                   測試期間 {project.start_date.replaceAll('-', '/')}–
                   {project.end_date.replaceAll('-', '/')}、
                   {project.engagement
-                    ? `測試人員 ${project.engagement.tester_name}`
+                    ? `測試人員 ${project.engagement.tester_name ?? '未設定暱稱'}`
                     : project.test_mode === 'remote'
                       ? '遠端'
                       : project.test_city}

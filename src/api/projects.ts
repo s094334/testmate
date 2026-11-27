@@ -33,9 +33,10 @@ export function useOwnProjects() {
   })
 }
 
-export function useProject(id: string) {
+export function useProject(id: string, enabled = true) {
   return useQuery({
     queryKey: ['projects', id],
     queryFn: () => request<Project>(`/api/projects/${id}`),
+    enabled,
   })
 }

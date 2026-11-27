@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router'
+import { useEngagements } from '@/api/engagements'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { invitedProjects, joinedProjects } from '@/data/tester'
+import { invitedProjects } from '@/data/tester'
 import { InvitedProjects } from './InvitedProjects'
 import { JoinedProjects } from './JoinedProjects'
 import { MyDevices } from './MyDevices'
@@ -10,6 +11,7 @@ import { MyDevicesMobile } from './MyDevicesMobile'
 export function TesterHomePage() {
   const { state } = useLocation()
   const [tab, setTab] = useState(state?.tab ?? 'joined')
+  const { data: engagements } = useEngagements()
 
   return (
     <div className="max-w-page desktop:min-h-128 desktop:flex-1 desktop:flex-row tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
@@ -26,9 +28,18 @@ export function TesterHomePage() {
             className="text-ink-subtle data-active:border-ink data-active:bg-surface data-active:text-ink desktop:px-6 desktop:text-[20px] flex h-12 items-center gap-2 rounded-t-md border border-b-0 border-transparent px-4 text-[18px] font-medium transition-colors duration-150 ease-out data-active:font-bold"
           >
             參與的專案
-            <span className="bg-alert text-surface font-num h-6 min-w-6 rounded-full px-1.5 text-center text-[16px] leading-6 font-semibold">
-              {joinedProjects.filter((project) => project.needsAction).length}
-            </span>
+            {/* Waiting on the tester: the statuses the mock marks needsAction */}
+            {engagements && (
+              <span className="bg-alert text-surface font-num h-6 min-w-6 rounded-full px-1.5 text-center text-[16px] leading-6 font-semibold">
+                {
+                  engagements.items.filter((engagement) =>
+                    ['PENDING_NDA', 'TESTING', 'DISPUTED'].includes(
+                      engagement.status
+                    )
+                  ).length
+                }
+              </span>
+            )}
           </TabsTrigger>
           <TabsTrigger
             value="invited"

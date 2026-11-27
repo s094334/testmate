@@ -1,10 +1,16 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { desc, eq } from 'drizzle-orm'
 import { createDb } from '../db'
-import { projects } from '../db/schema'
+import { engagements, projects, testerProfiles } from '../db/schema'
 import { requireAuth, requireRole, type AuthEnv } from '../http/auth'
 import { ok } from '../http/response'
-import { projectSchema, recruitmentStatusOf } from '../projects/lib/project'
+import {
+  activeEngagementColumns,
+  activeEngagementOn,
+  engagementSummaryOf,
+  projectSchema,
+  recruitmentStatusOf,
+} from '../projects/lib/project'
 
 export const listOwnProjectsRoute = createRoute({
   method: 'get',
@@ -59,8 +65,11 @@ export const listOwnProjects: RouteHandler<
       endDate: projects.endDate,
       recruitmentStatus: projects.recruitmentStatus,
       createdAt: projects.createdAt,
+      engagement: activeEngagementColumns,
     })
     .from(projects)
+    .leftJoin(engagements, activeEngagementOn)
+    .leftJoin(testerProfiles, eq(testerProfiles.userId, engagements.testerId))
     .where(eq(projects.ownerId, c.get('user').id))
     // Same order as GET /api/projects
     .orderBy(desc(projects.createdAt), desc(projects.id))
@@ -76,8 +85,7 @@ export const listOwnProjects: RouteHandler<
       end_date: project.endDate,
       // Past end_date it reads closed, but is still listed
       recruitment_status: recruitmentStatusOf(project),
-      // 暫時: engagements do not exist yet, so no project has one
-      engagement: null,
+      engagement: engagementSummaryOf(project.engagement),
       created_at: project.createdAt,
     })),
   })

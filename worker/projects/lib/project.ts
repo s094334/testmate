@@ -1,10 +1,11 @@
 import { z } from '@hono/zod-openapi'
-import { and, eq } from 'drizzle-orm'
+import { and, eq, ne } from 'drizzle-orm'
 import type { SessionUser } from '../../auth/lib/session'
 import type { Db } from '../../db'
 import {
   applications,
   companies,
+  engagements,
   minQaYearsOptions,
   projectDevices,
   projectTags,
@@ -14,7 +15,9 @@ import {
   tagCategories,
   tags,
   testModes,
+  testerProfiles,
 } from '../../db/schema'
+import { testerNameOf } from '../../engagements/lib/disclosure'
 import { taiwanToday } from './today'
 
 const tag = z.object({
@@ -77,7 +80,8 @@ export const projectSchema = z.object({
         'COMPLETED',
         'REFUNDED',
       ]),
-      tester_name: z.string(),
+      // null: no nickname yet, before payment
+      tester_name: z.string().nullable(),
     })
     .nullable(),
   confidential: z
@@ -126,6 +130,45 @@ export function recruitmentStatusOf(project: {
     : project.recruitmentStatus
 }
 
+// Joined onto projects: the engagement that is not CANCELLED. The partial
+// unique index engagements_one_active_per_project keeps it to one a project
+export const activeEngagementOn = and(
+  eq(engagements.projectId, projects.id),
+  ne(engagements.status, 'CANCELLED')
+)
+
+// Selected next to activeEngagementOn, with testerProfiles joined on the
+// engagement's tester; drizzle makes it null when there is no engagement
+export const activeEngagementColumns = {
+  id: engagements.id,
+  status: engagements.status,
+  realName: testerProfiles.realName,
+  nickname: testerProfiles.nickname,
+}
+
+// projectSchema's engagement out of activeEngagementColumns. Every column is
+// nullable after the left joins; a tester always has a profile
+export function engagementSummaryOf(
+  engagement: {
+    id: string | null
+    status: (typeof engagements.$inferSelect)['status'] | null
+    realName: string | null
+    nickname: string | null
+  } | null
+) {
+  if (!engagement?.id || !engagement.status) return null
+
+  return {
+    id: engagement.id,
+    // activeEngagementOn leaves CANCELLED out
+    status: engagement.status as Exclude<typeof engagement.status, 'CANCELLED'>,
+    tester_name: testerNameOf(engagement.status, {
+      realName: engagement.realName ?? '',
+      nickname: engagement.nickname ?? '',
+    }),
+  }
+}
+
 // `viewer` is who is reading: only the project's owner gets `confidential`
 export async function findProject(
   db: Db,
@@ -137,10 +180,13 @@ export async function findProject(
       project: projects,
       companyName: companies.name,
       industry: { id: tags.id, category: tags.category, name: tags.name },
+      engagement: activeEngagementColumns,
     })
     .from(projects)
     .innerJoin(companies, eq(companies.userId, projects.ownerId))
     .innerJoin(tags, eq(tags.id, companies.industryTagId))
+    .leftJoin(engagements, activeEngagementOn)
+    .leftJoin(testerProfiles, eq(testerProfiles.userId, engagements.testerId))
     .where(eq(projects.id, id))
 
   if (!row) return null
@@ -204,8 +250,10 @@ export async function findProject(
               )) > 0,
           }
         : null,
-    // 暫時: engagements do not exist yet, so no project has one
-    engagement: null,
+    engagement:
+      viewer?.id === project.ownerId
+        ? engagementSummaryOf(row.engagement)
+        : null,
     confidential:
       viewer?.id === project.ownerId
         ? {

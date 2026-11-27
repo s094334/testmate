@@ -1,12 +1,18 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useParams } from 'react-router'
-import { useProjectApplications } from '@/api/applications'
+import {
+  useDeclineApplication,
+  useProjectApplications,
+  useSelectApplication,
+} from '@/api/applications'
 import { ApiError } from '@/api/client'
+import { useEngagement } from '@/api/engagements'
 import { useProject } from '@/api/projects'
 import { useSession } from '@/api/session'
-import type { Application, TesterCard } from '@/api/types'
+import type { Application, Project, TesterCard } from '@/api/types'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { InfoIcon } from '@/components/icons/InfoIcon'
+import { toast } from '@/components/ui/toast'
 import {
   isMockOwnerProject,
   ownerEngagementDetails,
@@ -38,6 +44,25 @@ function ApiProject({ id }: { id: string }) {
         !project.engagement &&
         project.recruitment_status === 'recruiting'
     )
+  const select = useSelectApplication(id)
+  const decline = useDeclineApplication(id)
+  // One 選定 or 婉拒 at a time. isPending only shows on the next render, and a
+  // second press can come first
+  const sending = useRef(false)
+
+  // Settles once the request and the refetch after it are done; a failure
+  // is shown, not thrown, so the dialog can close either way
+  async function send(request: () => Promise<unknown>) {
+    if (sending.current) return
+    sending.current = true
+    try {
+      await request()
+    } catch (error) {
+      toastError(error as Error)
+    } finally {
+      sending.current = false
+    }
+  }
 
   if (!project) {
     return (
@@ -90,15 +115,29 @@ function ApiProject({ id }: { id: string }) {
         </Link>
       </div>
 
-      {/* 測試進度 waits for the engagement API; until then engagement is always null */}
-      {/* 選定 and 婉拒 only change this page for now: choosing is the next step */}
+      {project.engagement && (
+        <EngagementProgress
+          project={project}
+          engagementId={project.engagement.id}
+        />
+      )}
+
       {!project.engagement &&
         project.recruitment_status === 'recruiting' &&
         (applications ? (
           <Recruiting
             projectId={project.id}
             candidates={applications.items.flatMap(candidateOf)}
-            onChoose={() => {}}
+            onChoose={(candidate) =>
+              send(async () => {
+                await select.mutateAsync(candidate.id)
+                window.scrollTo(0, 0)
+              })
+            }
+            onDecline={(candidate) =>
+              send(() => decline.mutateAsync(candidate.id))
+            }
+            busy={select.isPending || decline.isPending}
           />
         ) : (
           <p className="text-ink-muted">
@@ -116,6 +155,57 @@ function ApiProject({ id }: { id: string }) {
         </>
       )}
     </div>
+  )
+}
+
+function toastError(error: Error) {
+  toast.add({
+    title: error instanceof ApiError ? error.message : '無法連線，請稍後再試',
+    timeout: 4000,
+  })
+}
+
+// 測試進度 of a real engagement. Only PENDING_NDA can happen for now: the
+// other statuses show the mock flow's buttons, which do nothing yet
+function EngagementProgress({
+  project,
+  engagementId,
+}: {
+  project: Project
+  engagementId: string
+}) {
+  const { data: engagement, isError } = useEngagement(engagementId)
+
+  if (!engagement) {
+    return (
+      <p className="text-ink-muted">
+        {isError ? '測試進度載入失敗，請重新整理再試一次。' : '載入中…'}
+      </p>
+    )
+  }
+
+  return (
+    <Progress
+      project={{
+        id: project.id,
+        name: project.name,
+        details: {
+          testPeriod: `${project.start_date.replaceAll('-', '/')}–${project.end_date.replaceAll('-', '/')}`,
+        },
+      }}
+      status={engagement.status}
+      details={{
+        tester: {
+          ...testerOf(engagement.tester),
+          // The real name and email only once the payment is in escrow
+          fullName:
+            engagement.disclosed?.tester_contact.real_name ??
+            engagement.tester.nickname ??
+            '未設定暱稱',
+          email: engagement.disclosed?.tester_contact.email ?? '',
+        },
+      }}
+    />
   )
 }
 
@@ -172,7 +262,10 @@ function MockProject({ id }: { id: string }) {
         <Recruiting
           projectId={id}
           candidates={recruitCandidates[id] ?? []}
-          onChoose={setChosen}
+          onChoose={(candidate) => {
+            setChosen(candidate)
+            window.scrollTo(0, 0)
+          }}
         />
       )}
     </div>
@@ -190,33 +283,13 @@ function candidateOf({
 
   return [
     {
+      ...testerOf(tester),
       id,
       // Not the real name or a masked one; see TesterCard
       name: tester.nickname ?? '未設定暱稱',
       // Only known after payment; only the mock projects' 選定 reads them
       fullName: '',
       email: '',
-      avatarShape: tester.avatar_shape,
-      rating: tester.average_score,
-      reviews: tester.rating_count,
-      city: tester.city,
-      // The same ranges as 最低年資 on 發布專案
-      years:
-        tester.qa_years === null
-          ? '無 QA 經驗'
-          : tester.qa_years === 0
-            ? '未滿 1 年'
-            : tester.qa_years <= 2
-              ? '1–2 年'
-              : tester.qa_years <= 5
-                ? '3–5 年'
-                : '超過 5 年',
-      devices: deviceLinesOf(tester.devices),
-      // （母語） as on the project info page
-      languages: tester.languages.map(
-        (language) => language.name + (language.native ? '（母語）' : '')
-      ),
-      interests: tester.interests,
       status:
         status === 'declined'
           ? 'declined'
@@ -225,6 +298,33 @@ function candidateOf({
             : 'applied',
     },
   ]
+}
+
+// The card fields the applicant list and 測試進度 share
+function testerOf(tester: TesterCard) {
+  return {
+    avatarShape: tester.avatar_shape,
+    rating: tester.average_score,
+    reviews: tester.rating_count,
+    city: tester.city,
+    // The same ranges as 最低年資 on 發布專案
+    years:
+      tester.qa_years === null
+        ? '無 QA 經驗'
+        : tester.qa_years === 0
+          ? '未滿 1 年'
+          : tester.qa_years <= 2
+            ? '1–2 年'
+            : tester.qa_years <= 5
+              ? '3–5 年'
+              : '超過 5 年',
+    devices: deviceLinesOf(tester.devices),
+    // （母語） as on the project info page
+    languages: tester.languages.map(
+      (language) => language.name + (language.native ? '（母語）' : '')
+    ),
+    interests: tester.interests,
+  }
 }
 
 // One line a brand, in the order the tester saved them:

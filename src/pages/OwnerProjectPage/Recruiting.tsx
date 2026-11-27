@@ -9,10 +9,16 @@ export function Recruiting({
   projectId,
   candidates: initialCandidates,
   onChoose,
+  onDecline,
+  busy,
 }: {
   projectId: string
   candidates: RecruitCandidate[]
-  onChoose: (candidate: RecruitCandidate) => void
+  onChoose: (candidate: RecruitCandidate) => void | Promise<void>
+  // A real project's 婉拒 goes to the server, which sends the list again.
+  // Without it, as on the mock projects, 婉拒 only changes this page
+  onDecline?: (candidate: RecruitCandidate) => Promise<void>
+  busy?: boolean
 }) {
   const [tab, setTab] = useState('candidates')
   const [candidates, setCandidates] = useState(initialCandidates)
@@ -55,17 +61,20 @@ export function Recruiting({
         >
           <TabsContent value="candidates">
             <Candidates
-              candidates={candidates}
-              onDecline={(candidate) =>
-                setCandidates(
-                  candidates.map((other) =>
-                    other.id === candidate.id
-                      ? { ...other, status: 'declined' }
-                      : other
-                  )
-                )
+              candidates={onDecline ? initialCandidates : candidates}
+              onDecline={
+                onDecline ??
+                ((candidate) =>
+                  setCandidates(
+                    candidates.map((other) =>
+                      other.id === candidate.id
+                        ? { ...other, status: 'declined' }
+                        : other
+                    )
+                  ))
               }
               onChoose={onChoose}
+              busy={busy}
             />
           </TabsContent>
 
