@@ -204,6 +204,14 @@ function EngagementProgress({
             '未設定暱稱',
           email: engagement.disclosed?.tester_contact.email ?? '',
         },
+        ndaSignedAt: engagement.nda_signed_at
+          ? new Date(engagement.nda_signed_at).toLocaleDateString('zh-TW', {
+              timeZone: 'Asia/Taipei',
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+            })
+          : undefined,
       }}
     />
   )

@@ -19,7 +19,7 @@ import { OwnerReportPage } from '@/pages/OwnerReportPage'
 import { TesterHomePage } from '@/pages/TesterHomePage'
 import { TesterInvitePage } from '@/pages/TesterInvitePage'
 import { TesterProfilePage } from '@/pages/TesterProfilePage'
-import { TesterNdaPage } from '@/pages/TesterNdaPage'
+import { TesterEngagementNdaPage, TesterNdaPage } from '@/pages/TesterNdaPage'
 import {
   TesterEngagementPage,
   TesterProjectPage,
@@ -52,6 +52,10 @@ function App() {
           />
           <Route path="projects/:id" element={<TesterProjectPage />} />
           <Route path="engagements/:id" element={<TesterEngagementPage />} />
+          <Route
+            path="engagements/:id/nda"
+            element={<TesterEngagementNdaPage />}
+          />
           <Route path="projects/:id/nda" element={<TesterNdaPage />} />
           <Route path="projects/:id/report" element={<TesterReportPage />} />
         </Route>

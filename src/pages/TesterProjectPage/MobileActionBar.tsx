@@ -1,7 +1,12 @@
 import { Link } from 'react-router'
 import { BottomBar } from '@/components/BottomBar'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
-import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
+import {
+  isMockJoinedProject,
+  joinedProjectDetails,
+  joinedProjects,
+  tester,
+} from '@/data/tester'
 import { Countdown } from './Countdown'
 import { type Rating } from './RateDialog'
 
@@ -66,7 +71,11 @@ export function MobileActionBar({
       </Link>
       {project.status === 'PENDING_NDA' && tester.payout && (
         <Link
-          to={`/tester/projects/${project.id}/nda`}
+          to={
+            isMockJoinedProject(project.id)
+              ? `/tester/projects/${project.id}/nda`
+              : `/tester/engagements/${project.id}/nda`
+          }
           className="btn btn-primary flex-1 px-4"
         >
           簽署保密協議

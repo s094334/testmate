@@ -1,5 +1,10 @@
 import { Link } from 'react-router'
-import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
+import {
+  isMockJoinedProject,
+  joinedProjectDetails,
+  joinedProjects,
+  tester,
+} from '@/data/tester'
 import { Countdown } from './Countdown'
 import { type Rating } from './RateDialog'
 
@@ -149,7 +154,11 @@ export function StatusBanner({
 
       {project.status === 'PENDING_NDA' && tester.payout && (
         <Link
-          to={`/tester/projects/${project.id}/nda`}
+          to={
+            isMockJoinedProject(project.id)
+              ? `/tester/projects/${project.id}/nda`
+              : `/tester/engagements/${project.id}/nda`
+          }
           className="btn btn-primary tablet:inline-flex hidden min-w-40"
         >
           簽署保密協議
