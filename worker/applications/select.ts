@@ -1,19 +1,9 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
 import { and, eq, exists, gte } from 'drizzle-orm'
-import {
-  createDb,
-  insertWhere,
-  isUniqueViolation,
-  saveTogether,
-  type Db,
-} from '../db'
-import {
-  applications,
-  engagementEvents,
-  engagements,
-  projects,
-} from '../db/schema'
+import { createDb, isUniqueViolation, saveTogether, type Db } from '../db'
+import { applications, engagements, projects } from '../db/schema'
 import { engagementSchema, findEngagement } from '../engagements/lib/engagement'
+import { createEngagement } from '../engagements/lib/machine'
 import { requireAuth, requireRole, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
 import { recruitmentStatusOf } from '../projects/lib/project'
@@ -149,32 +139,16 @@ export const selectApplication: RouteHandler<
 
   try {
     await saveTogether(db, [
-      insertWhere(
+      ...createEngagement(
         db,
-        engagements,
         {
           id: engagementId,
           projectId: application.projectId,
           testerId: application.testerId,
           applicationId: id,
-          status: 'PENDING_NDA',
-          ndaDueAt: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
-          createdAt: now,
-          updatedAt: now,
         },
+        now,
         selectable
-      ),
-      insertWhere(
-        db,
-        engagementEvents,
-        {
-          engagementId,
-          fromStatus: null,
-          toStatus: 'PENDING_NDA',
-          actor: 'owner',
-          createdAt: now,
-        },
-        created
       ),
       db
         .update(applications)

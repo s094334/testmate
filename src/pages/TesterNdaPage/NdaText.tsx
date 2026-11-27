@@ -1,3 +1,5 @@
+// Signed with the version in shared/nda.ts: change ndaVersion there with
+// any change to this text
 export function NdaText({
   testerName,
   signedDate,

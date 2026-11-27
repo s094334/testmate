@@ -296,6 +296,16 @@ export type Engagement = {
   } | null
 }
 
+// What GET /api/engagements/{id}/nda gives to fill in the text, which is in
+// src/pages/TesterNdaPage/. Written from worker/engagements/get-nda.ts.
+// The tester gets their own real name. The owner gets the nickname before
+// FUNDED (null when there is none), the real name after
+export type Nda = {
+  company_name: string
+  tester_name: string | null
+  signed_at: string | null
+}
+
 // Sent to POST /api/projects. Written from worker/projects/create.ts, not API.md:
 // API.md「10. POST /api/projects」is older than the 發布專案 form.
 // confidential_details, environment_info and test_items are left out until the

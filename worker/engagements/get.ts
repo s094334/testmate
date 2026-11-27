@@ -1,10 +1,9 @@
 import { createRoute, z, type RouteHandler } from '@hono/zod-openapi'
-import { eq } from 'drizzle-orm'
 import { createDb } from '../db'
-import { engagements, projects } from '../db/schema'
 import { requireAuth, type AuthEnv } from '../http/auth'
 import { fail, ok } from '../http/response'
 import { engagementSchema, findEngagement } from './lib/engagement'
+import { findParties, sideOf } from './lib/parties'
 
 export const getEngagementRoute = createRoute({
   method: 'get',
@@ -38,17 +37,13 @@ export const getEngagement: RouteHandler<
   const user = c.get('user')
   const db = createDb(c.env)
 
-  const [parties] = await db
-    .select({ ownerId: projects.ownerId, testerId: engagements.testerId })
-    .from(engagements)
-    .innerJoin(projects, eq(projects.id, engagements.projectId))
-    .where(eq(engagements.id, id))
+  const parties = await findParties(db, id)
 
   if (!parties) {
     return fail(c, 404, 'NOT_FOUND', '找不到這筆合作')
   }
 
-  if (user.id !== parties.ownerId && user.id !== parties.testerId) {
+  if (!sideOf(parties, user.id)) {
     return fail(c, 403, 'FORBIDDEN', '沒有權限')
   }
 

@@ -8,7 +8,11 @@ import { StatusTag } from '@/components/StatusTag'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { StarIcon } from '@/components/icons/StarIcon'
 import { WarningIcon } from '@/components/icons/WarningIcon'
-import { joinedProjectDetails, joinedProjects } from '@/data/tester'
+import {
+  isMockJoinedProject,
+  joinedProjectDetails,
+  joinedProjects,
+} from '@/data/tester'
 import { DisputeDialog } from './DisputeDialog'
 import { MobileActionBar } from './MobileActionBar'
 import { ProjectContent } from './ProjectContent'
@@ -134,6 +138,13 @@ function ProjectPage({
     project.status === 'TESTING' &&
     !!detail.submitDeadline &&
     new Date(detail.submitDeadline).getTime() < now
+  // A real engagement only: past nda_due_at it stays PENDING_NDA until the
+  // deadline job that cancels it exists, and signing answers 409
+  const ndaExpired =
+    project.status === 'PENDING_NDA' &&
+    !isMockJoinedProject(project.id) &&
+    !!detail.ndaDeadline &&
+    new Date(detail.ndaDeadline).getTime() <= now
 
   return (
     <div className="max-w-page tablet:px-6 desktop:pt-12 desktop:pb-16 mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-12">
@@ -175,6 +186,7 @@ function ProjectPage({
         project={project}
         detail={detail}
         overdue={overdue}
+        ndaExpired={ndaExpired}
         rating={rating}
         onOpenEnvDialog={() => setEnvDialogOpen(true)}
         onOpenDisputeDialog={() => setDisputeDialogOpen(true)}
@@ -187,6 +199,7 @@ function ProjectPage({
         project={project}
         detail={detail}
         overdue={overdue}
+        ndaExpired={ndaExpired}
         rating={rating}
         onOpenEnvDialog={() => setEnvDialogOpen(true)}
         onOpenDisputeDialog={() => setDisputeDialogOpen(true)}
