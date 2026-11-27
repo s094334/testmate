@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ApiError, request } from './client'
+import { request } from './client'
 import type { Engagement, EngagementSummary, Nda } from './types'
 
 export function useEngagements() {
@@ -36,11 +36,9 @@ export function useSignNda(id: string) {
     // ['engagements'] covers all three
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ['engagements'] }),
-    onError: (error) => {
-      // 409: signed already, or past nda_due_at; the engagement shows which
-      if (error instanceof ApiError && error.status === 409) {
-        queryClient.invalidateQueries({ queryKey: ['engagements'] })
-      }
-    },
+    // Any failure, not only a 409: a reply lost on the way may still have
+    // signed. Returns the refetch, so the page sees the engagement as it is
+    // now by the time the mutation fails
+    onError: () => queryClient.invalidateQueries({ queryKey: ['engagements'] }),
   })
 }

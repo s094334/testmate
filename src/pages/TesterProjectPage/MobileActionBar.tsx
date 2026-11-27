@@ -14,6 +14,7 @@ export function MobileActionBar({
   project,
   detail,
   overdue,
+  ndaExpired,
   rating,
   onOpenEnvDialog,
   onOpenDisputeDialog,
@@ -22,6 +23,7 @@ export function MobileActionBar({
   project: (typeof joinedProjects)[number]
   detail: (typeof joinedProjectDetails)[string]
   overdue: boolean
+  ndaExpired: boolean
   rating: Rating | null
   onOpenEnvDialog: () => void
   onOpenDisputeDialog: () => void
@@ -69,7 +71,7 @@ export function MobileActionBar({
         <ChevronDownIcon className="size-4.5 rotate-90" />
         上一頁
       </Link>
-      {project.status === 'PENDING_NDA' && tester.payout && (
+      {project.status === 'PENDING_NDA' && tester.payout && !ndaExpired && (
         <Link
           to={
             isMockJoinedProject(project.id)

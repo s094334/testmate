@@ -12,6 +12,7 @@ export function StatusBanner({
   project,
   detail,
   overdue,
+  ndaExpired,
   rating,
   onOpenEnvDialog,
   onOpenDisputeDialog,
@@ -20,6 +21,7 @@ export function StatusBanner({
   project: (typeof joinedProjects)[number]
   detail: (typeof joinedProjectDetails)[string]
   overdue: boolean
+  ndaExpired: boolean
   rating: Rating | null
   onOpenEnvDialog: () => void
   onOpenDisputeDialog: () => void
@@ -29,7 +31,9 @@ export function StatusBanner({
     <div
       className={`tablet:px-6 tablet:py-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-md px-4 py-3 ${
         {
-          PENDING_NDA: 'bg-role-soft text-role-text',
+          PENDING_NDA: ndaExpired
+            ? 'bg-status-dispute-bg text-status-dispute-text'
+            : 'bg-role-soft text-role-text',
           PENDING_PAYMENT: 'bg-role-soft text-role-text',
           FUNDED: 'bg-role-soft text-role-text',
           TESTING: overdue
@@ -43,8 +47,13 @@ export function StatusBanner({
         }[project.status]
       }`}
     >
-      {project.status === 'PENDING_NDA' && tester.payout && (
+      {project.status === 'PENDING_NDA' && tester.payout && !ndaExpired && (
         <p className="tablet:text-[18px] font-bold">請在期限內簽署保密協議</p>
+      )}
+      {ndaExpired && (
+        <p className="tablet:text-[18px] font-bold">
+          簽署期限已過，系統將自動取消專案
+        </p>
       )}
       {project.status === 'PENDING_NDA' && !tester.payout && (
         <div className="flex flex-col gap-1">
@@ -152,7 +161,7 @@ export function StatusBanner({
         />
       )}
 
-      {project.status === 'PENDING_NDA' && tester.payout && (
+      {project.status === 'PENDING_NDA' && tester.payout && !ndaExpired && (
         <Link
           to={
             isMockJoinedProject(project.id)

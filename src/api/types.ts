@@ -298,10 +298,11 @@ export type Engagement = {
 
 // What GET /api/engagements/{id}/nda gives to fill in the text, which is in
 // src/pages/TesterNdaPage/. Written from worker/engagements/get-nda.ts.
-// tester_name is the real name; the owner gets 王Ｏ明 before FUNDED
+// The tester gets their own real name. The owner gets the nickname before
+// FUNDED (null when there is none), the real name after
 export type Nda = {
   company_name: string
-  tester_name: string
+  tester_name: string | null
   signed_at: string | null
 }
 
