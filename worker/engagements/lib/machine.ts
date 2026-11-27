@@ -4,6 +4,7 @@
 import { and, eq, exists, gt, type SQL } from 'drizzle-orm'
 import type { BatchItem } from 'drizzle-orm/batch'
 import type { SQLiteColumn } from 'drizzle-orm/sqlite-core'
+import { ndaVersion } from '../../../shared/nda'
 import { insertWhere, isUniqueViolation, saveTogether, type Db } from '../../db'
 import {
   engagementEvents,
@@ -48,7 +49,7 @@ export const transitions = {
     to: 'PENDING_PAYMENT',
     by: 'tester',
     notAllowed: '這筆合作目前不能簽署保密協議',
-    before: { column: 'ndaDueAt', passed: '已經超過簽署期限' },
+    before: { column: 'ndaDueAt', passed: '簽署期限' },
     set: (now) => ({ paymentDueAt: new Date(now.getTime() + 3 * day) }),
     alsoWrite: ({ db, engagement, now, happened }) => [
       insertWhere(
@@ -57,9 +58,7 @@ export const transitions = {
         {
           engagementId: engagement.id,
           testerId: engagement.testerId,
-          // The text is in the frontend (src/pages/TesterNdaPage/); change
-          // this along with it. Only stored, the API never returns it
-          version: '2026-1',
+          version: ndaVersion,
           signedAt: now,
         },
         happened

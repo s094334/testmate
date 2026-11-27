@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Link, Navigate, useParams } from 'react-router'
 import { ApiError } from '@/api/client'
 import { useEngagement, useNda, useSignNda } from '@/api/engagements'
+import type { Engagement } from '@/api/types'
 import { ChevronDownIcon } from '@/components/icons/ChevronDownIcon'
 import { toast } from '@/components/ui/toast'
 import { joinedProjectDetails, joinedProjects, tester } from '@/data/tester'
@@ -41,8 +43,10 @@ export function TesterEngagementNdaPage() {
   const engagementQuery = useEngagement(id)
   const ndaQuery = useNda(id)
   const sign = useSignNda(id)
+  const queryClient = useQueryClient()
   // isPending only shows on the next render, and a second press can come first
   const sending = useRef(false)
+  const [now] = useState(() => Date.now())
   const engagement = engagementQuery.data
   const nda = ndaQuery.data
   const error = engagementQuery.error ?? ndaQuery.error
@@ -72,9 +76,15 @@ export function TesterEngagementNdaPage() {
     )
   }
 
-  // Signed already, or cancelled. Not while signing here: the engagement is
-  // read again before the mutation settles
-  if (engagement.status !== 'PENDING_NDA' && !sign.isPending && !sign.data) {
+  // Signed already, cancelled, or past nda_due_at (the deadline job that
+  // cancels it does not exist yet). Not while signing here: the engagement
+  // is read again before the mutation settles
+  if (
+    (engagement.status !== 'PENDING_NDA' ||
+      new Date(engagement.nda_due_at).getTime() <= now) &&
+    !sign.isPending &&
+    !sign.data
+  ) {
     return <Navigate to={`/tester/engagements/${id}`} replace />
   }
 
@@ -82,7 +92,7 @@ export function TesterEngagementNdaPage() {
     <NdaPage
       projectPath={`/tester/engagements/${id}`}
       companyName={nda.company_name}
-      testerName={nda.tester_name}
+      testerName={nda.tester_name ?? ''}
       signedAt={sign.data?.nda_signed_at ?? null}
       busy={sign.isPending}
       onSign={async () => {
@@ -92,6 +102,14 @@ export function TesterEngagementNdaPage() {
           await sign.mutateAsync()
           window.scrollTo({ top: 0 })
         } catch (error) {
+          // Signed after all, or by now not waiting for a signature: the
+          // engagement read again takes the page back, with nothing to report
+          if (
+            queryClient.getQueryData<Engagement>(['engagements', id])
+              ?.status !== 'PENDING_NDA'
+          ) {
+            return
+          }
           toast.add({
             title:
               error instanceof ApiError
